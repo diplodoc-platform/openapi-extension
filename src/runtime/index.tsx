@@ -6,7 +6,7 @@ import {Sandbox} from './sandbox';
 
 import './index.scss';
 
-export const Runtime: React.FC = () => {
+export const OpenapiSandbox: React.FC = () => {
     const [sandbox, setSandbox] = useState<HTMLElement | null>(null);
 
     useEffect(() => {
@@ -22,7 +22,7 @@ export const Runtime: React.FC = () => {
 
         return createPortal(<Sandbox { ...props } />, sandbox);
     } catch (error) {
-        console.log(error);
+        console.error(error);
 
         return null;
     }

@@ -6,24 +6,28 @@
   "types": "index.d.ts",
   "exports": {
     ".": {
-      "default": "./plugin/index.min.js",
       "production": "./plugin/index.min.js",
-      "development": "./plugin/index.js"
+      "development": "./plugin/index.js",
+      "default": "./plugin/index.min.js"
     },
     "./includer": {
       "node": "./includer/index.js"
     },
     "./runtime": {
-      "default": "./runtime/index.min.js",
       "production": "./runtime/index.min.js",
-      "development": "./runtime/index.js"
+      "development": "./runtime/index.js",
+      "default": "./runtime/index.min.js"
+    },
+    "./runtime/styles": {
+      "production": "./runtime/index.min.css",
+      "development": "./runtime/index.css",
+      "default": "./runtime/index.min.css"
     }
   },
   "scripts": {
     "build": "run-p build:*",
     "build:plugin": "node esbuild",
-    "build:common": "swc src/types.ts --out-dir .",
-    "build:includer": "swc --only src/includer/**/* src/includer/* --out-dir .",
+    "build:includer": "swc --only src/types.ts src/includer/**/* src/includer/* --out-dir .",
     "build:declarations": "tsc --emitDeclarationOnly --outDir .",
     "prepublish": "npm run build",
     "test": "jest",

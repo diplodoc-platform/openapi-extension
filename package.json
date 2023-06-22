@@ -41,11 +41,6 @@
     "lint:fix": "eslint --fix .",
     "typecheck": "tsc --noEmit"
   },
-  "keywords": [
-    "diplodoc",
-    "markdown-it"
-  ],
-  "license": "ISC",
   "files": [
     "plugin",
     "runtime",
@@ -93,5 +88,17 @@
     "json-schema": "^0.4.0",
     "json-stringify-safe": "^5.0.1",
     "slugify": "^1.6.6"
+  },
+  "keywords": [
+    "diplodoc",
+    "markdown-it"
+  ],
+  "bugs": {
+    "url": "https://github.com/diplodoc-platform/openapi-extension/issues"
+  },
+  "homepage": "https://github.com/diplodoc-platform/openapi-extension#readme",
+  "repository": {
+    "type": "git",
+    "url": "git@https://github.com/diplodoc-platform/openapi-extension.git"
   }
 }

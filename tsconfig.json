@@ -16,7 +16,8 @@
     "noEmitOnError": true,
     "experimentalDecorators": true,
     "allowJs": true,
-    "declaration": true
+    "declaration": true,
+    "isolatedModules": true
   },
   "include": [
     "src"

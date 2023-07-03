@@ -1,0 +1,46 @@
+openapi: 3.0.2
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+paths:
+  /test:
+    get:
+      tags:
+        - test-controller
+      summary: Simple get operation
+      description: Defines a simple get operation with no inputs and a complex
+      operationId: basic
+      responses:
+        "200":
+          description: Base 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cat"
+        "404":
+          description: Base 404 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cat"
+components:
+  schemas:
+    Cat:
+      type: object
+      properties:
+        type:
+          type: string
+        foo:
+          type: string
+      description: Cat class
+    Dog:
+      type: object
+      properties:
+        type:
+          type: string
+        foo:
+          type: string
+      description: Dog class

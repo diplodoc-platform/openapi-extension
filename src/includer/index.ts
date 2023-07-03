@@ -1,6 +1,7 @@
 import assert from 'assert';
 import {resolve, join, dirname} from 'path';
-import {mkdir, writeFile} from 'fs/promises';
+import nodeFS from 'fs/promises';
+import {fs as virtualFS} from '../__helpers__/virtualFS';
 import {matchFilter} from './utils';
 
 import {dump} from 'js-yaml';
@@ -45,6 +46,8 @@ class OpenApiIncluderError extends Error {
     }
 }
 
+const fs = typeof jest === 'undefined' ? nodeFS : virtualFS;
+
 async function includerFunction(params: IncluderFunctionParams<OpenApiIncluderParams>) {
     const {
         readBasePath,
@@ -84,7 +87,7 @@ async function includerFunction(params: IncluderFunctionParams<OpenApiIncluderPa
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const writePath = join(writeBasePath, tocDirPath, params.item.include!.path);
 
-        await mkdir(writePath, {recursive: true});
+        await fs.mkdir(writePath, {recursive: true});
         await generateToc({data, writePath, leadingPage, filter, vars});
         await generateContent({data, writePath, leadingPage, filter, noindex, vars, hidden, allRefs, sandbox});
     } catch (error) {
@@ -154,8 +157,8 @@ async function generateToc(params: GenerateTocParams): Promise<void> {
 
     addLeadingPage(toc, leadingPageMode, leadingPageName, 'index.md');
 
-    await mkdir(dirname(writePath), {recursive: true});
-    await writeFile(join(writePath, 'toc.yaml'), dump(toc));
+    await fs.mkdir(dirname(writePath), {recursive: true});
+    await fs.writeFile(join(writePath, 'toc.yaml'), dump(toc));
 }
 
 function addLeadingPage(section: YfmTocItem, mode: LeadingPageMode, name: string, href: string) {
@@ -253,8 +256,8 @@ async function generateContent(params: GenerateContentParams): Promise<void> {
     }
 
     for (const {path, content} of results) {
-        await mkdir(dirname(path), {recursive: true});
-        await writeFile(path, content);
+        await fs.mkdir(dirname(path), {recursive: true});
+        await fs.writeFile(path, content);
     }
 }
 

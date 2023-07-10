@@ -5,6 +5,10 @@ function isTitle(line: string): boolean {
     return line.startsWith('# ') || line.startsWith('## ');
 }
 
+function isMetaOrHTML(line: string): boolean {
+    return line.includes('<');
+}
+
 function extractTitle(line: string): string {
     if (line[1] === '#') {
         return line.slice(3);
@@ -18,12 +22,14 @@ export function splitBySections(md: OpenapiMD): OpenapiMDSections {
     const sections: OpenapiMDSections = {};
     let pending: string | undefined;
 
-    console.log(lines);
-
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
         if (isTitle(line)) {
             pending = extractTitle(line);
+        }
+
+        if (isMetaOrHTML(line)) {
+            continue;
         }
 
         if (pending) {

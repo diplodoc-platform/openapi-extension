@@ -1,22 +1,20 @@
-import {includerFunction as includer} from '../../includer';
+import {fs} from '../__helpers__/virtualFS';
+import {includerFunction as includer} from '../includer';
+import path from 'node:path';
 
 
-const PRESETS = ['basic'] as const;
-
-type Preset = typeof PRESETS[number];
-
-export function runPreset(preset: Preset): Promise<void> {
+export function runPreset(input: string): Promise<void> {
     return includer({
         index: 0,
         readBasePath: '',
         writeBasePath: '',
         vars: {},
         passedParams: {
-            input: `src/__tests__/mocks/${preset}.yaml`,
+            input: path.join(input, 'spec.yaml'),
         },
         tocPath: 'toc',
         item: {
-            name: preset,
+            name: input,
             href: '',
             include: {
                 path: 'openapi',
@@ -24,5 +22,5 @@ export function runPreset(preset: Preset): Promise<void> {
             },
             items: [],
         },
-    });
+    }, fs);
 }

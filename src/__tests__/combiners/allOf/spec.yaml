@@ -7,25 +7,36 @@ servers:
     description: Generated server url
 paths:
   /test:
-    get:
+    post:
       tags:
         - test-controller
-      summary: Simple get operation
+      summary: TEST ENDPOINT
       description: Defines a simple get operation with no inputs and a complex
-      operationId: basic
+      operationId: allOf
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/Cat"
+                - properties:
+                    name:
+                      type: string
+
       responses:
         "200":
           description: Base 200 response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Cat"
-        "404":
-          description: Base 404 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Cat"
+                properties:
+                  name:
+                    type: string
+                    default: "a"
+                allOf:
+                  - $ref: "#/components/schemas/Dog"
+
 components:
   schemas:
     Cat:

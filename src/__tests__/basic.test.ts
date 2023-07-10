@@ -1,18 +1,34 @@
-import {parseTable} from '../__helpers__/validators/elements/table';
-import {splitBySections} from '../__helpers__/validators/splitBySections';
+import {MDSections} from '../__helpers__/constants';
 import {fs} from '../__helpers__/virtualFS';
-import {runPreset} from './mocks/run';
+import {runPreset} from './run';
 
 describe('basci openapi project', () => {
-    afterEach(() => {
+    beforeEach(async () => {
         fs.reset();
     });
-    it('starts project', async () => {
-        await runPreset('basic');
 
-        const basic = fs.match('basic.md');
-        const sections = splitBySections(basic);
+    it('renders description', async () => {
+        await runPreset(__dirname);
 
+        const sections = fs.sections('basic.md');
 
-    }, 20_000);
+        expect(sections[MDSections.TITLE]).toMatchSnapshot();
+    });
+
+    it('renders request url', async () => {
+        await runPreset(__dirname);
+
+        const sections = fs.sections('basic.md');
+
+        expect(sections[MDSections.REQUEST]).toMatchSnapshot();
+    });
+
+    it('renders different components', async () => {
+        await runPreset(__dirname);
+
+        const sections = fs.sections('basic.md');
+
+        expect(sections[MDSections.OK]).toMatchSnapshot();
+        expect(sections[MDSections.NOT_FOUND]).toMatchSnapshot();
+    });
 });

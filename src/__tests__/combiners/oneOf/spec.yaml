@@ -1,0 +1,117 @@
+openapi: 3.0.2
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+paths:
+  /empty:
+    post:
+      tags:
+        - test-controller
+      summary: TEST ENDPOINT
+      description: Defines a simple get operation with no inputs and a complex
+      operationId: empty
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/Dog"
+                - $ref: "#/components/schemas/Cat"
+      responses:
+        "200":
+          description: Base 200 response
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Dog"
+                  - $ref: "#/components/schemas/Cat"
+
+  /filled:
+    post:
+      tags:
+        - test-controller
+      summary: TEST ENDPOINT
+      description: Defines a simple get operation with no inputs and a complex
+      operationId: filled
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+                age:
+                  type: number
+              oneOf:
+                - $ref: "#/components/schemas/Dog"
+                - $ref: "#/components/schemas/Cat"
+      responses:
+        "200":
+          description: Base 200 response
+          content:
+            application/json:
+              schema:
+                properties:
+                  name:
+                    type: string
+                  age:
+                    type: number
+                oneOf:
+                  - $ref: "#/components/schemas/Dog"
+                  - $ref: "#/components/schemas/Cat"
+  /parameters:
+    post:
+      tags:
+        - test-controller
+      summary: TEST ENDPOINT
+      description: Defines a simple get operation with no inputs and a complex
+      operationId: parameters
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                pet:
+                  oneOf:
+                    - $ref: "#/components/schemas/Dog"
+                    - $ref: "#/components/schemas/Cat"
+      responses:
+        "200":
+          description: Base 200 response
+          content:
+            application/json:
+              schema:
+                properties:
+                  pet:
+                    oneOf:
+                      - $ref: "#/components/schemas/Dog"
+                      - $ref: "#/components/schemas/Cat"
+                oneOf:
+                  - $ref: "#/components/schemas/Dog"
+                  - $ref: "#/components/schemas/Cat"
+
+components:
+  schemas:
+    Cat:
+      type: object
+      properties:
+        type:
+          type: string
+        foo:
+          type: string
+      description: Cat class
+    Dog:
+      type: object
+      properties:
+        type:
+          type: string
+        foo:
+          type: string
+      description: Dog class

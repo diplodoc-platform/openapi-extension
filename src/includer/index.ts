@@ -1,7 +1,7 @@
 import assert from 'assert';
 import {resolve, join, dirname} from 'path';
 import nodeFS from 'fs/promises';
-import {fs as virtualFS} from '../__helpers__/virtualFS';
+import {BasicFS} from '../__helpers__/virtualFS';
 import {matchFilter} from './utils';
 
 import {dump} from 'js-yaml';
@@ -46,9 +46,12 @@ class OpenApiIncluderError extends Error {
     }
 }
 
-const fs = typeof jest === 'undefined' ? nodeFS : virtualFS;
+type FS = BasicFS | typeof nodeFS;
 
-async function includerFunction(params: IncluderFunctionParams<OpenApiIncluderParams>) {
+async function includerFunction(
+    params: IncluderFunctionParams<OpenApiIncluderParams>,
+    fs: FS = nodeFS,
+) {
     const {
         readBasePath,
         writeBasePath,
@@ -88,8 +91,8 @@ async function includerFunction(params: IncluderFunctionParams<OpenApiIncluderPa
         const writePath = join(writeBasePath, tocDirPath, params.item.include!.path);
 
         await fs.mkdir(writePath, {recursive: true});
-        await generateToc({data, writePath, leadingPage, filter, vars});
-        await generateContent({data, writePath, leadingPage, filter, noindex, vars, hidden, allRefs, sandbox});
+        await generateToc({data, writePath, leadingPage, filter, vars}, fs);
+        await generateContent({data, writePath, leadingPage, filter, noindex, vars, hidden, allRefs, sandbox}, fs);
     } catch (error) {
         if (error && !(error instanceof OpenApiIncluderError)) {
             // eslint-disable-next-line no-ex-assign
@@ -120,7 +123,7 @@ export type GenerateTocParams = {
     filter: OpenApiIncluderParams['filter'];
 };
 
-async function generateToc(params: GenerateTocParams): Promise<void> {
+async function generateToc(params: GenerateTocParams, fs: FS): Promise<void> {
     const {data, writePath, leadingPage, filter, vars} = params;
     const leadingPageName = leadingPage?.name ?? LEADING_PAGE_NAME_DEFAULT;
     const leadingPageMode = leadingPage?.mode ?? LeadingPageMode.Leaf;
@@ -190,7 +193,7 @@ type EndpointRoute = {
     content: string;
 };
 
-async function generateContent(params: GenerateContentParams): Promise<void> {
+async function generateContent(params: GenerateContentParams, fs: FS): Promise<void> {
     const {
         data,
         writePath,

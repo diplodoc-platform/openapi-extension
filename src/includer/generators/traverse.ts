@@ -371,8 +371,9 @@ function merge(
     if (needToSaveRef && combiners.length === 1) {
         const inner = combiners[0];
         const merged = merge(inner);
+        const description = [value.description, (inner as JSONSchema6).description, merged.description].find(Boolean);
 
-        merged.description = merged.description || (inner as JSONSchema6).description;
+        merged.description = description;
 
         return merged;
     }

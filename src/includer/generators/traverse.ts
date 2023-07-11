@@ -371,8 +371,9 @@ function merge(
     if (needToSaveRef && combiners.length === 1) {
         const inner = combiners[0];
         const merged = merge(inner);
+        const description = [value.description, (inner as JSONSchema6).description, merged.description].find(Boolean);
 
-        merged.description = merged.description || (inner as JSONSchema6).description;
+        merged.description = description;
 
         return merged;
     }
@@ -385,7 +386,7 @@ function merge(
 
     let description = value.description || '';
     const properties: Record<string, any> = value.properties || {};
-    const required: string[] = [];
+    const required: string[] = value.required || [];
 
     for (const element of value.allOf || []) {
         if (typeof element === 'boolean') {
@@ -458,14 +459,18 @@ function inferType(value: OpenJSONSchema): JSONSchemaType {
 
     if (value.oneOf?.length) {
         const types = (
-            [...new Set(value.oneOf)].filter(Boolean) as OpenJSONSchema[]
+            value.oneOf.filter(Boolean) as OpenJSONSchema[]
         )
             .map(inferType)
             .flat();
 
         return {
-            unionOf: types,
+            unionOf: [... new Set(types)],
         };
+    }
+
+    if (value.allOf?.length === 1) {
+        return inferType(value.allOf[0] as JSONSchema6);
     }
 
     throw new Error(`Unsupported value: ${stringify(value)}`);

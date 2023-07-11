@@ -1,7 +1,14 @@
 import assert from 'assert';
 import {resolve, join, dirname} from 'path';
-import {mkdir, writeFile} from 'fs/promises';
+import nodeFS from 'fs/promises';
 import {matchFilter} from './utils';
+
+export type BasicFS = {
+    mkdir(targer: string, options: any): void;
+    writeFile(path: string, content: string): void;
+    readFile(path: string): string;
+};
+
 
 import {dump} from 'js-yaml';
 
@@ -45,7 +52,12 @@ class OpenApiIncluderError extends Error {
     }
 }
 
-async function includerFunction(params: IncluderFunctionParams<OpenApiIncluderParams>) {
+type FS = BasicFS | typeof nodeFS;
+
+async function includerFunction(
+    params: IncluderFunctionParams<OpenApiIncluderParams>,
+    fs: FS = nodeFS,
+) {
     const {
         readBasePath,
         writeBasePath,
@@ -84,9 +96,9 @@ async function includerFunction(params: IncluderFunctionParams<OpenApiIncluderPa
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const writePath = join(writeBasePath, tocDirPath, params.item.include!.path);
 
-        await mkdir(writePath, {recursive: true});
-        await generateToc({data, writePath, leadingPage, filter, vars});
-        await generateContent({data, writePath, leadingPage, filter, noindex, vars, hidden, allRefs, sandbox});
+        await fs.mkdir(writePath, {recursive: true});
+        await generateToc({data, writePath, leadingPage, filter, vars}, fs);
+        await generateContent({data, writePath, leadingPage, filter, noindex, vars, hidden, allRefs, sandbox}, fs);
     } catch (error) {
         if (error && !(error instanceof OpenApiIncluderError)) {
             // eslint-disable-next-line no-ex-assign
@@ -117,7 +129,7 @@ export type GenerateTocParams = {
     filter: OpenApiIncluderParams['filter'];
 };
 
-async function generateToc(params: GenerateTocParams): Promise<void> {
+async function generateToc(params: GenerateTocParams, fs: FS): Promise<void> {
     const {data, writePath, leadingPage, filter, vars} = params;
     const leadingPageName = leadingPage?.name ?? LEADING_PAGE_NAME_DEFAULT;
     const leadingPageMode = leadingPage?.mode ?? LeadingPageMode.Leaf;
@@ -154,8 +166,8 @@ async function generateToc(params: GenerateTocParams): Promise<void> {
 
     addLeadingPage(toc, leadingPageMode, leadingPageName, 'index.md');
 
-    await mkdir(dirname(writePath), {recursive: true});
-    await writeFile(join(writePath, 'toc.yaml'), dump(toc));
+    await fs.mkdir(dirname(writePath), {recursive: true});
+    await fs.writeFile(join(writePath, 'toc.yaml'), dump(toc));
 }
 
 function addLeadingPage(section: YfmTocItem, mode: LeadingPageMode, name: string, href: string) {
@@ -187,7 +199,7 @@ type EndpointRoute = {
     content: string;
 };
 
-async function generateContent(params: GenerateContentParams): Promise<void> {
+async function generateContent(params: GenerateContentParams, fs: FS): Promise<void> {
     const {
         data,
         writePath,
@@ -253,8 +265,8 @@ async function generateContent(params: GenerateContentParams): Promise<void> {
     }
 
     for (const {path, content} of results) {
-        await mkdir(dirname(path), {recursive: true});
-        await writeFile(path, content);
+        await fs.mkdir(dirname(path), {recursive: true});
+        await fs.writeFile(path, content);
     }
 }
 

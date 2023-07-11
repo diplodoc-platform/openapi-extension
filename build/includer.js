@@ -1,24 +1,24 @@
-const {globSync} = require('glob')
-const path = require('node:path')
-const esbuild = require('esbuild')
+const {globSync} = require('glob');
+const path = require('node:path');
+const esbuild = require('esbuild');
 
-const IN_PATH = path.resolve('src', 'includer')
-const OUT_PATH = 'includer'
-const FORMATS = ['cjs', 'esm']
+const IN_PATH = path.resolve('src', 'includer');
+const OUT_PATH = 'includer';
+const FORMATS = ['cjs', 'esm'];
 
-const tsFiles = globSync(`${IN_PATH}/**/*.ts`)
+const tsFiles = globSync(`${IN_PATH}/**/*.ts`);
 
 const build = (files, format) => Promise.all(files.map((name) => {
-    const newFilePath = path.resolve(OUT_PATH, format, name.substring(IN_PATH.length + 1))
-    const jsFile = newFilePath.replace('.ts', '.js')
+    const newFilePath = path.resolve(OUT_PATH, format, name.substring(IN_PATH.length + 1));
+    const jsFile = newFilePath.replace('.ts', '.js');
 
     return esbuild.build({
-            format,
-            target: 'es2016',
-            entryPoints: [name],
-            outfile: jsFile,
-            packages: 'external'
-    })
-}))
+        format,
+        target: 'es2016',
+        entryPoints: [name],
+        outfile: jsFile,
+        packages: 'external',
+    });
+}));
 
-const result = Promise.all(FORMATS.map((format) => build(tsFiles, format)))
+Promise.all(FORMATS.map((format) => build(tsFiles, format)));

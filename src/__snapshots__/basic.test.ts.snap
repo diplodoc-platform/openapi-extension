@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`basci openapi project renders description 1`] = `
+[
+  "# TEST ENDPOINT",
+  "Defines a simple get operation with no inputs and a complex",
+]
+`;
+
+exports[`basci openapi project renders different components 1`] = `
+[
+  "## 200 OK",
+  "Base 200 response",
+  "#### Body",
+  "{% cut "application/json" %}",
+  "\`\`\`",
+  "{",
+  "    "type": "string",",
+  "    "foo": "string"",
+  "}",
+  "\`\`\`",
+  "{% endcut %}",
+  "#||| **Name** | **Type** | **Description** ||",
+  "|| type | string |  ||",
+  "|| foo | string |  |||#",
+]
+`;
+
+exports[`basci openapi project renders different components 2`] = `
+[
+  "## 404 Not Found",
+  "Base 404 response",
+  "#### Body",
+  "{% cut "application/json" %}",
+  "\`\`\`",
+  "{",
+  "    "type": "string",",
+  "    "bar": "string"",
+  "}",
+  "\`\`\`",
+  "{% endcut %}",
+  "#||| **Name** | **Type** | **Description** ||",
+  "|| type | string |  ||",
+  "|| bar | string |  |||#",
+]
+`;
+
+exports[`basci openapi project renders request url 1`] = `
+[
+  "## Request",
+  "#||| **method** | **url** | **description** ||",
+  "|| ",
+  "\`\`\`",
+  "GET",
+  "\`\`\`",
+  " | ",
+  "\`\`\`",
+  "http://localhost:8080/test",
+  "\`\`\`",
+  " | ",
+  "\`\`\`",
+  "Generated server url",
+  "\`\`\`",
+  " |||#",
+]
+`;

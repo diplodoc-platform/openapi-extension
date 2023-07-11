@@ -4,4 +4,5 @@ module.exports = {
     testEnvironment: 'node',
     testRegex: '.test.ts$',
     rootDir: 'src/__tests__',
+    snapshotResolver: '../../jest.snapshots.js',
 };

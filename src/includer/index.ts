@@ -1,8 +1,14 @@
 import assert from 'assert';
 import {resolve, join, dirname} from 'path';
 import nodeFS from 'fs/promises';
-import {BasicFS} from '../__tests__/__helpers__/virtualFS';
 import {matchFilter} from './utils';
+
+export type BasicFS = {
+    mkdir(targer: string, options: any): void;
+    writeFile(path: string, content: string): void;
+    readFile(path: string): string;
+};
+
 
 import {dump} from 'js-yaml';
 

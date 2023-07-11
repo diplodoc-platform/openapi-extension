@@ -46,4 +46,12 @@ describe('oneOf operator', () => {
 
         expect(sections[MDSections.OK]).toMatchSnapshot();
     });
+
+    it('renders each table only one time', async () => {
+        await runPreset(__dirname);
+
+        const page = fs.match('parameters.md');
+
+        expect(page).toMatchSnapshot();
+    });
 });

@@ -1,5 +1,105 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`oneOf operator renders each table only one time 1`] = `
+"<div class="openapi">
+
+# TEST ENDPOINT
+
+Defines a simple get operation with no inputs and a complex
+
+## Request
+
+#||| **method** | **url** | **description** ||
+
+|| 
+\`\`\`
+POST
+\`\`\`
+ | 
+\`\`\`
+http://localhost:8080/parameters
+\`\`\`
+ | 
+\`\`\`
+Generated server url
+\`\`\`
+ |||#
+
+#### Body
+
+{% cut "application/json" %}
+
+
+\`\`\`
+{
+    "pet": {}
+}
+\`\`\`
+
+
+{% endcut %}
+
+
+#||| **Name** | **Type** | **Description** ||
+
+|| pet | object | [Dog](#dog)
+or [Cat](#cat) |||#
+
+### Dog
+
+Dog class
+
+#||| **Name** | **Type** | **Description** ||
+
+|| type | string |  ||
+
+|| foo | string |  |||#
+
+### Cat
+
+Cat class
+
+#||| **Name** | **Type** | **Description** ||
+
+|| type | string |  ||
+
+|| foo | string |  |||#
+
+## Responses
+
+## 200 OK
+
+Base 200 response
+
+#### Body
+
+{% cut "application/json" %}
+
+
+\`\`\`
+{
+    "pet": {}
+}
+\`\`\`
+
+
+{% endcut %}
+
+
+#||| **Name** | **Type** | **Description** ||
+
+|| pet | object | [Dog](#dog)
+or [Cat](#cat) ||
+
+|| ...rest | oneOf | [Dog](#dog)
+or [Cat](#cat) |||#
+#### Or value from:
+
+<!-- markdownlint-disable-file -->
+
+</div>"
+`;
+
 exports[`oneOf operator renders oneOf as parameter 1`] = `
 [
   "## Request",
@@ -26,7 +126,7 @@ exports[`oneOf operator renders oneOf as parameter 1`] = `
   "\`\`\`",
   "{% endcut %}",
   "#||| **Name** | **Type** | **Description** ||",
-  "|| pet | object, object | [Dog](#dog)",
+  "|| pet | object | [Dog](#dog)",
   "or [Cat](#cat) |||#",
   "### Dog",
   "Dog class",
@@ -54,7 +154,7 @@ exports[`oneOf operator renders oneOf in parameters and response 1`] = `
   "\`\`\`",
   "{% endcut %}",
   "#||| **Name** | **Type** | **Description** ||",
-  "|| pet | object, object | [Dog](#dog)",
+  "|| pet | object | [Dog](#dog)",
   "or [Cat](#cat) ||",
   "|| ...rest | oneOf | [Dog](#dog)",
   "or [Cat](#cat) |||#",

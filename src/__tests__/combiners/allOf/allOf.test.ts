@@ -23,4 +23,20 @@ describe('allOf operator', () => {
         expect(sections[MDSections.OK]).toMatchSnapshot();
     });
 
+    it('save type of element from allOf in request', async () => {
+        await runPreset(__dirname);
+
+        const sections = fs.sections('allOfSingle.md');
+
+        expect(sections[MDSections.REQUEST]).toMatchSnapshot();
+    });
+
+    it('save type of element from allOf in response', async () => {
+        await runPreset(__dirname);
+
+        const sections = fs.sections('allOfSingle.md');
+
+        expect(sections[MDSections.REQUEST]).toMatchSnapshot();
+    });
+
 });

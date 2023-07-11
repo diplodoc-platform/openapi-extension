@@ -36,6 +36,33 @@ paths:
                     default: "a"
                 allOf:
                   - $ref: "#/components/schemas/Dog"
+  /single:
+    post:
+      tags:
+        - test-controller
+      summary: TEST ENDPOINT
+      description: Defines a simple get operation with no inputs and a complex
+      operationId: allOfSingle
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                pet:
+                  allOf:
+                    - $ref: '#/components/schemas/Mice'
+
+      responses:
+        "200":
+          description: Base 200 response
+          content:
+            application/json:
+              schema:
+                properties:
+                  pet:
+                    allOf:
+                      - $ref: '#/components/schemas/Mice'
 
 components:
   schemas:
@@ -52,6 +79,9 @@ components:
       properties:
         type:
           type: string
-        foo:
+        baz:
           type: string
       description: Dog class
+    Mice:
+      allOf:
+        - $ref: "#/components/schemas/Cat"

@@ -458,18 +458,18 @@ function inferType(value: OpenJSONSchema): JSONSchemaType {
 
     if (value.oneOf?.length) {
         const types = (
-            [...new Set(value.oneOf)].filter(Boolean) as OpenJSONSchema[]
+            value.oneOf.filter(Boolean) as OpenJSONSchema[]
         )
             .map(inferType)
             .flat();
 
         return {
-            unionOf: types,
+            unionOf: [... new Set(types)],
         };
     }
 
-    if (value.allOf?.length) {
-        return 'object';
+    if (value.allOf?.length === 1) {
+        return inferType(value.allOf[0] as JSONSchema6);
     }
 
     throw new Error(`Unsupported value: ${stringify(value)}`);

@@ -126,7 +126,7 @@
         "parser": "@typescript-eslint/parser",
         "parserOptions": {
             "sourceType": "module",
-            "project": ["./tsconfig.json"]
+            "project": ["./tsconfig.test.json"]
         },
         "plugins": [
             "@typescript-eslint"

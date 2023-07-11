@@ -1,0 +1,58 @@
+openapi: 3.0.2
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+paths:
+  /description:
+    post:
+      tags:
+        - test-controller
+      summary: TEST ENDPOINT
+      operationId: description
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  pet:
+                    allOf:
+                      - $ref: '#/components/schemas/Pet'
+                        description: From response
+                  petWithoutDescription:
+                    allOf:
+                      - $ref: '#/components/schemas/Cat'
+                  refToSchemaWithDescription:
+                      allOf:
+                        - $ref: '#/components/schemas/Dog'
+                  simpleDescription:
+                        type: object
+                        description: 'Simple description'
+          description: ''
+
+components:
+  schemas:
+    Pet:
+      allOf:
+        - $ref: '#/components/schemas/Cat'
+          description: 'From allOf in Pet'
+      description: 'From pet'
+    Cat:
+      type: object
+      properties:
+        type:
+          type: string
+        foo:
+          type: string
+      description: Cat class
+    Dog:
+      type: object
+      properties:
+        type:
+          type: string
+        bar:
+          type: string
+      description: Dog class

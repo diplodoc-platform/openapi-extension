@@ -1,5 +1,5 @@
-import {MDSections} from '../../../__helpers__/constants';
-import {fs} from '../../../__helpers__/virtualFS';
+import {MDSections} from '../../__helpers__/constants';
+import {fs} from '../../__helpers__/virtualFS';
 import {runPreset} from '../../run';
 
 describe('allOf operator', () => {
@@ -7,7 +7,7 @@ describe('allOf operator', () => {
         fs.reset();
     });
 
-    it('renders allOf in request', async () => {
+    it('renders in request', async () => {
         await runPreset(__dirname);
 
         const sections = fs.sections('complex.md');
@@ -15,7 +15,7 @@ describe('allOf operator', () => {
         expect(sections[MDSections.REQUEST]).toMatchSnapshot();
     });
 
-    it('renders allOf in response', async () => {
+    it('renders in response', async () => {
         await runPreset(__dirname);
 
         const sections = fs.sections('complex.md');

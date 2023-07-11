@@ -1,7 +1,7 @@
 import assert from 'assert';
 import {resolve, join, dirname} from 'path';
 import nodeFS from 'fs/promises';
-import {BasicFS} from '../__helpers__/virtualFS';
+import {BasicFS} from '../__tests__/__helpers__/virtualFS';
 import {matchFilter} from './utils';
 
 import {dump} from 'js-yaml';

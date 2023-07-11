@@ -1,5 +1,5 @@
 import {OpenapiMDSections} from './typings';
-import {splitBySections} from './validators/splitBySections';
+import {splitBySections} from './md/splitBySections';
 
 export type BasicFS = {
     mkdir(targer: string, options: any): void;

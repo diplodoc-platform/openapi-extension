@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`allOf operator renders allOf in request 1`] = `
+exports[`allOf operator renders in request 1`] = `
 [
   "## Request",
   "#||| **method** | **url** | **description** ||",
@@ -27,8 +27,7 @@ exports[`allOf operator renders allOf in request 1`] = `
   "\`\`\`",
   "{% endcut %}",
   "#||| **Name** | **Type** | **Description** ||",
-  "|| name | string | Default: \`b\` ||",
-  "|| age | object |  ||",
+  "|| age | object, object |  ||",
   "|| ...rest | oneOf | [Dog](#dog)",
   "or [Cat](#cat) |||#",
   "#### Or value from:",
@@ -45,7 +44,7 @@ exports[`allOf operator renders allOf in request 1`] = `
 ]
 `;
 
-exports[`allOf operator renders allOf in response 1`] = `
+exports[`allOf operator renders in response 1`] = `
 [
   "## 200 OK",
   "Base 200 response",
@@ -59,8 +58,7 @@ exports[`allOf operator renders allOf in response 1`] = `
   "\`\`\`",
   "{% endcut %}",
   "#||| **Name** | **Type** | **Description** ||",
-  "|| name | string | Default: \`b\` ||",
-  "|| age | object |  ||",
+  "|| age | object, object |  ||",
   "|| ...rest | oneOf | [Dog](#dog)",
   "or [Cat](#cat) |||#",
   "#### Or value from:",

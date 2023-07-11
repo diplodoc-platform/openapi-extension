@@ -1,5 +1,5 @@
-import {MDSections} from '../../../__helpers__/constants';
-import {fs} from '../../../__helpers__/virtualFS';
+import {MDSections} from '../../__helpers__/constants';
+import {fs} from '../../__helpers__/virtualFS';
 import {runPreset} from '../../run';
 
 describe('oneOf operator', () => {

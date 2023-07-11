@@ -1,4 +1,4 @@
-import {fs} from '../__helpers__/virtualFS';
+import {fs} from './__helpers__/virtualFS';
 import {includerFunction as includer} from '../includer';
 import path from 'node:path';
 

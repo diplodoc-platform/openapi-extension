@@ -468,6 +468,10 @@ function inferType(value: OpenJSONSchema): JSONSchemaType {
         };
     }
 
+    if (value.allOf?.length) {
+        return 'object';
+    }
+
     throw new Error(`Unsupported value: ${stringify(value)}`);
 }
 

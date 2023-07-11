@@ -1,0 +1,72 @@
+openapi: 3.0.2
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+paths:
+  /description:
+    post:
+      tags:
+        - test-controller
+      summary: TEST ENDPOINT
+      operationId: description
+      parameters:
+        - name: a
+          in: query
+          schema:
+            type: number
+        - name: b
+          in: query
+          required: false
+          schema:
+            type: number
+        - name: c
+          in: query
+          required: true
+          schema:
+            type: number
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              type: object
+              properties:
+                a: 
+                  type: number
+                b: 
+                  type: number
+                c: 
+                  type: number
+              required:
+                - a
+
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cat'
+                  
+          description: ''
+
+components:
+  schemas:
+    Cat:
+      type: object
+      properties:
+        type:
+          type: string
+        foo:
+          type: string
+      description: Cat class
+    Dog:
+      properties:
+        d:  
+          type: number 
+        e: 
+          type: number
+      required:
+        - b
+        - d

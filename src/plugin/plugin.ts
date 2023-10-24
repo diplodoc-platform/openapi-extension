@@ -1,6 +1,6 @@
 import type StateBlock from 'markdown-it/lib/rules_block/state_block';
 import type Token from 'markdown-it/lib/token';
-import type {MarkdownItPluginCb} from '@doc-tools/transform/lib/plugins/typings';
+import type {MarkdownItPluginCb} from '@diplodoc/transform/lib/plugins/typings';
 import {escape} from 'html-escaper';
 
 const startMark = '{% openapi sandbox %}';

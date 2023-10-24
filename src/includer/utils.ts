@@ -1,5 +1,5 @@
 import {Endpoint, OpenApiIncluderParams, Specification, Tag} from './models';
-import {evalExp} from '@doc-tools/transform/lib/liquid/evaluation';
+import {evalExp} from '@diplodoc/transform/lib/liquid/evaluation';
 
 export function concatNewLine(prefix: string, suffix: string) {
     return prefix.trim().length ? `${prefix}<br>${suffix}` : suffix;

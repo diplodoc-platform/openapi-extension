@@ -1,6 +1,6 @@
 {
   "name": "@diplodoc/openapi-extension",
-  "version": "1.3.5",
+  "version": "1.3.6",
   "description": "OpenAPI extension for Diplodoc transformer and builder",
   "main": "plugin/cjs/index.min.js",
   "types": "plugin/index.d.ts",

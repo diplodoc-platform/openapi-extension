@@ -4,6 +4,10 @@
   "description": "OpenAPI extension for Diplodoc transformer and builder",
   "main": "plugin/cjs/index.min.js",
   "types": "plugin/index.d.ts",
+  "engines": {
+    "node": ">=18",
+    "npm": ">=9.*"
+  },
   "exports": {
     ".": {
       "require": "./plugin/cjs/index.min.js",
@@ -91,6 +95,12 @@
     "json-schema": "^0.4.0",
     "json-stringify-safe": "^5.0.1",
     "slugify": "^1.6.6"
+  },
+  "overrides": {
+    "react-sortable-hoc": {
+      "react": "^18.2.0",
+      "react-dom": "^18.2.0"
+    }
   },
   "keywords": [
     "diplodoc",

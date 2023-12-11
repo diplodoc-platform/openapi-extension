@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.8](https://github.com/diplodoc-platform/openapi-extension/compare/v1.4.7...v1.4.8) (2023-12-11)
+
+
+### Bug Fixes
+
+* Fix peerDeps range ([4ee050b](https://github.com/diplodoc-platform/openapi-extension/commit/4ee050b8e8bdb57e30fa9dcdadc2d8ce601242b8))
+
 ## [1.4.0](https://github.com/diplodoc-platform/openapi-extension/compare/v1.3.4...v1.4.0) (2023-10-30)
 
 

@@ -60,7 +60,7 @@
     "@diplodoc/eslint-config": "^1.0.15",
     "@diplodoc/prettier-config": "^1.0.0",
     "@diplodoc/tsconfig": "^1.0.2",
-    "@gravity-ui/uikit": "^5.18.0",
+    "@gravity-ui/uikit": "^5.24.0",
     "@swc/cli": "^0.1.62",
     "@swc/core": "^1.3.60",
     "@types/html-escaper": "^3.0.0",

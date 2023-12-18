@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.9](https://github.com/diplodoc-platform/openapi-extension/compare/v1.4.8...v1.4.9) (2023-12-18)
+
+
+### Bug Fixes
+
+* Update core deps ([3d21f10](https://github.com/diplodoc-platform/openapi-extension/commit/3d21f10766999835127ab84ce48110a88f7c5828))
+
 ## [1.4.8](https://github.com/diplodoc-platform/openapi-extension/compare/v1.4.7...v1.4.8) (2023-12-11)
 
 

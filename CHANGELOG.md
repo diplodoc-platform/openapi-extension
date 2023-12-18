@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.10](https://github.com/diplodoc-platform/openapi-extension/compare/v1.4.9...v1.4.10) (2023-12-18)
+
+
+### Bug Fixes
+
+* Downgrane markdown-it peer dep ([5e4ace0](https://github.com/diplodoc-platform/openapi-extension/commit/5e4ace0a347d09711952ca585e4731a320645e0d))
+* Remove unused dev deps ([b771eaf](https://github.com/diplodoc-platform/openapi-extension/commit/b771eafff7336ca6fec34427aaa53fab2dd897e9))
+
 ## [1.4.9](https://github.com/diplodoc-platform/openapi-extension/compare/v1.4.8...v1.4.9) (2023-12-18)
 
 

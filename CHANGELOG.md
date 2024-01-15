@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.11](https://github.com/diplodoc-platform/openapi-extension/compare/v1.4.10...v1.4.11) (2024-01-15)
+
+
+### Bug Fixes
+
+* spacing in openapi response codes ([0fb06c2](https://github.com/diplodoc-platform/openapi-extension/commit/0fb06c215ec286a4237b2dff38d1426ef1fbc73e))
+
 ## [1.4.10](https://github.com/diplodoc-platform/openapi-extension/compare/v1.4.9...v1.4.10) (2023-12-18)
 
 

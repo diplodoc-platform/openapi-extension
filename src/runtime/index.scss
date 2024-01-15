@@ -108,3 +108,8 @@
         color: var(--dc-openapi-status-code-server);
     }
 }
+
+// make a spacing after each openapi response block
+[class^="openapi__response__code__"] > :last-child {
+    margin-bottom: 15px;
+}

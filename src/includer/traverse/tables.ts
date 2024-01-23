@@ -209,6 +209,19 @@ function prepareComplexDescription(baseDescription: string, value: OpenJSONSchem
         );
     }
 
+    if (typeof value.minLength !== 'undefined') {
+        description = concatNewLine(
+            description,
+            `<span style="color:gray;">Min length</span>: \`${value.minLength}\``,
+        );
+    }
+    if (typeof value.maxLength !== 'undefined') {
+        description = concatNewLine(
+            description,
+            `<span style="color:gray;">Max length</span>: \`${value.maxLength}\``,
+        );
+    }
+
     return description;
 }
 

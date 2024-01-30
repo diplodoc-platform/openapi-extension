@@ -110,16 +110,16 @@ describe('openapi project with examples', () => {
                                 oneOf: [
                                     {
                                         type: 'string',
-                                        default: 's'
+                                        default: 's',
                                     },
                                     {
                                         type: 'integer',
-                                        default: '0'
-                                    }
-                                ]
+                                        default: '0',
+                                    },
+                                ],
                             },
-                        }
-                    }
+                        },
+                    },
                 },
             })
             .response(200, {
@@ -152,23 +152,23 @@ describe('openapi project with examples', () => {
                                         properties: {
                                             c: {
                                                 type: 'string',
-                                                default: 'c'
-                                            }
-                                        }
+                                                default: 'c',
+                                            },
+                                        },
                                     },
                                     {
                                         type: 'object',
                                         properties: {
                                             d: {
                                                 type: 'string',
-                                                default: 'd'
-                                            }
-                                        }
-                                    }
-                                ]
+                                                default: 'd',
+                                            },
+                                        },
+                                    },
+                                ],
                             },
-                        }
-                    }
+                        },
+                    },
                 },
             })
             .response(200, {
@@ -203,11 +203,11 @@ describe('openapi project with examples', () => {
                                                 properties: {
                                                     a: {
                                                         type: 'string',
-                                                        default: 'a'
-                                                    }
-                                                }
-                                            }
-                                        ]
+                                                        default: 'a',
+                                                    },
+                                                },
+                                            },
+                                        ],
                                     },
                                     {
                                         allOf: [
@@ -216,16 +216,16 @@ describe('openapi project with examples', () => {
                                                 properties: {
                                                     b: {
                                                         type: 'string',
-                                                        default: 'b'
-                                                    }
-                                                }
-                                            }
-                                        ]
-                                    }
-                                ]
+                                                        default: 'b',
+                                                    },
+                                                },
+                                            },
+                                        ],
+                                    },
+                                ],
                             },
-                        }
-                    }
+                        },
+                    },
                 },
             })
             .response(200, {

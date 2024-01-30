@@ -350,6 +350,10 @@ function prepareSampleElement(
                     )}.\n You can pass only one scheme to items`,
                 );
             }
+            if (schema.items.oneOf) {
+                return schema.items.oneOf
+                    .map((item) => prepareSampleElement(key, item, isRequired(key, schema), downCallstack));
+            }
             return [
                 prepareSampleElement(key, schema.items, isRequired(key, schema), downCallstack),
             ];

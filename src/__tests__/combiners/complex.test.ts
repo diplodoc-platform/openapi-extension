@@ -47,9 +47,9 @@ describe('operators complex test', () => {
                                                     properties: {
                                                         c: {
                                                             type: 'string',
-                                                            default: 'c'
-                                                        }
-                                                    }
+                                                            default: 'c',
+                                                        },
+                                                    },
                                                 },
                                             ],
                                         },
@@ -60,9 +60,9 @@ describe('operators complex test', () => {
                                                     properties: {
                                                         d: {
                                                             type: 'number',
-                                                            default: 10
-                                                        }
-                                                    }
+                                                            default: 10,
+                                                        },
+                                                    },
                                                 },
                                             ],
                                         },
@@ -93,9 +93,9 @@ describe('operators complex test', () => {
                                                     properties: {
                                                         c: {
                                                             type: 'string',
-                                                            default: 'c'
-                                                        }
-                                                    }
+                                                            default: 'c',
+                                                        },
+                                                    },
                                                 },
                                             ],
                                         },
@@ -106,9 +106,9 @@ describe('operators complex test', () => {
                                                     properties: {
                                                         d: {
                                                             type: 'number',
-                                                            default: 10
-                                                        }
-                                                    }
+                                                            default: 10,
+                                                        },
+                                                    },
                                                 },
                                             ],
                                         },

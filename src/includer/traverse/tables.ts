@@ -333,14 +333,13 @@ function prepareSampleElement(
     }
 
     const downCallstack = callstack.concat(value);
-
-    if (value.oneOf?.length) {
-        return prepareSampleElement(key, value.oneOf[0], isRequired(key, value), downCallstack);
-    }
-
     const type = inferType(value);
 
     const schema = findNonNullOneOfElement(value);
+
+    if (value.oneOf?.length) {
+        return prepareSampleElement(key, schema, isRequired(key, value), downCallstack);
+    }
 
     switch (type) {
         case 'object':

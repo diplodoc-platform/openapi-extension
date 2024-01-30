@@ -43,16 +43,26 @@ describe('operators complex test', () => {
                                         {
                                             allOf: [
                                                 {
-                                                    type: 'number',
-                                                    default: 10,
+                                                    type: 'object',
+                                                    properties: {
+                                                        c: {
+                                                            type: 'string',
+                                                            default: 'c'
+                                                        }
+                                                    }
                                                 },
                                             ],
                                         },
                                         {
                                             allOf: [
                                                 {
-                                                    type: 'boolean',
-                                                    default: true,
+                                                    type: 'object',
+                                                    properties: {
+                                                        d: {
+                                                            type: 'number',
+                                                            default: 10
+                                                        }
+                                                    }
                                                 },
                                             ],
                                         },
@@ -79,16 +89,26 @@ describe('operators complex test', () => {
                                         {
                                             allOf: [
                                                 {
-                                                    type: 'number',
-                                                    default: 10,
+                                                    type: 'object',
+                                                    properties: {
+                                                        c: {
+                                                            type: 'string',
+                                                            default: 'c'
+                                                        }
+                                                    }
                                                 },
                                             ],
                                         },
                                         {
                                             allOf: [
                                                 {
-                                                    type: 'boolean',
-                                                    default: true,
+                                                    type: 'object',
+                                                    properties: {
+                                                        d: {
+                                                            type: 'number',
+                                                            default: 10
+                                                        }
+                                                    }
                                                 },
                                             ],
                                         },

@@ -32,7 +32,10 @@ Generated server url{.openapi__request__description}
 
 \`\`\`json
 {
-    "name": "b"
+    "name": "b",
+    "age": {
+        "c": "c"
+    }
 }
 \`\`\`
 
@@ -86,7 +89,10 @@ Base 200 response
 
 \`\`\`json
 {
-    "name": "b"
+    "name": "b",
+    "age": {
+        "c": "c"
+    }
 }
 \`\`\`
 

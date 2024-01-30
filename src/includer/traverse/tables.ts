@@ -157,10 +157,8 @@ export function prepareTableRowData(
             };
         }
 
-        const returnType =
-            (inner.ref?.length || inner.type.split('\n').length || 0) <= 1
-                ? `${inner.type}[]`
-                : `(${inner.type})[]`;
+        const isUnionType = (inner.ref?.length || inner.type.split('\n').length || 0) > 1;
+        const returnType = isUnionType ? `(${inner.type})[]` : `${inner.type}[]`;
 
         return {
             type: returnType,

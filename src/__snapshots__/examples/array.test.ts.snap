@@ -199,8 +199,8 @@ Generated server url{.openapi__request__description}
 
 #||| **Name** | **Type** | **Description** ||
 
-|| a | string 
-or integer[] |  |||#
+|| a | (string 
+or integer)[] |  |||#
 
 ## Responses
 

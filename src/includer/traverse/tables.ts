@@ -157,7 +157,10 @@ export function prepareTableRowData(
             };
         }
 
-        const returnType = (inner.ref?.length || 0) <= 1 ? `${inner.type}[]` : `(${inner.type})[]`;
+        const returnType =
+            (inner.ref?.length || inner.type.split('\n').length || 0) <= 1
+                ? `${inner.type}[]`
+                : `(${inner.type})[]`;
 
         return {
             type: returnType,

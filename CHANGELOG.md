@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.12](https://github.com/diplodoc-platform/openapi-extension/compare/v1.4.11...v1.4.12) (2024-01-30)
+
+
+### Bug Fixes
+
+* array + oneOf ([df7753e](https://github.com/diplodoc-platform/openapi-extension/commit/df7753ecddb2e8a238af74d3ef65d085782bb97d))
+* nested oneOf + allOf ([02e1e5e](https://github.com/diplodoc-platform/openapi-extension/commit/02e1e5e41181772a3b247028636deeee540ce58c))
+
 ## [1.4.11](https://github.com/diplodoc-platform/openapi-extension/compare/v1.4.10...v1.4.11) (2024-01-15)
 
 

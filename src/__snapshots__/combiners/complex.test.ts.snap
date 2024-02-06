@@ -35,7 +35,9 @@ Generated server url{.openapi__request__description}
     "name": "b",
     "age": {
         "c": "c"
-    }
+    },
+    "type": "string",
+    "bar": "string"
 }
 \`\`\`
 
@@ -92,7 +94,9 @@ Base 200 response
     "name": "b",
     "age": {
         "c": "c"
-    }
+    },
+    "type": "string",
+    "bar": "string"
 }
 \`\`\`
 

@@ -235,6 +235,13 @@ function findNonNullOneOfElement(schema: OpenJSONSchema): OpenJSONSchema {
         const merged = RefsService.merge(v);
 
         if (Object.keys(merged.properties || {}).length) {
+            if (v.oneOf?.length) {
+                const option = v.oneOf[0];
+                if (typeof option === 'object' && option.properties) {
+                    v.properties = {...v.properties, ...option.properties};
+                }
+                delete v.oneOf;
+            }
             return v;
         }
 

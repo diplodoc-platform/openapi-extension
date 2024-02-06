@@ -43,14 +43,39 @@ Generated server url{.openapi__request__description}
 {% endcut %}
 
 
-#||| **Name** | **Type** | **Description** ||
+#|||
+ **Name** 
+|
+ **Type** 
+|
+ **Description** 
+||
 
-|| name | string | <span style="color:gray;">Default</span>: \`b\` ||
+||
+ name 
+|
+ string 
+|
+ <span style="color:gray;">Default</span>: \`b\` 
+||
 
-|| age | any |  ||
+||
+ age 
+|
+ any 
+|
+ 
+ 
+||
 
-|| ...rest | oneOf | [Dog](#dog) 
-or [Cat](#cat) |||#
+||
+ ...rest 
+|
+ oneOf 
+|
+ [Dog](#dog) 
+or [Cat](#cat) 
+|||#
 #### Or value from:
 
 
@@ -58,21 +83,61 @@ or [Cat](#cat) |||#
 
 Dog class
 
-#||| **Name** | **Type** | **Description** ||
+#|||
+ **Name** 
+|
+ **Type** 
+|
+ **Description** 
+||
 
-|| type | string |  ||
+||
+ type 
+|
+ string 
+|
+ 
+ 
+||
 
-|| bar | string |  |||#
+||
+ bar 
+|
+ string 
+|
+ 
+ 
+|||#
 
 ### Cat
 
 Cat class
 
-#||| **Name** | **Type** | **Description** ||
+#|||
+ **Name** 
+|
+ **Type** 
+|
+ **Description** 
+||
 
-|| type | string |  ||
+||
+ type 
+|
+ string 
+|
+ 
+ 
+||
 
-|| foo | string |  |||#
+||
+ foo 
+|
+ string 
+|
+ 
+ 
+|||#
 
 ## Responses
 
@@ -100,14 +165,39 @@ Base 200 response
 {% endcut %}
 
 
-#||| **Name** | **Type** | **Description** ||
+#|||
+ **Name** 
+|
+ **Type** 
+|
+ **Description** 
+||
 
-|| name | string | <span style="color:gray;">Default</span>: \`b\` ||
+||
+ name 
+|
+ string 
+|
+ <span style="color:gray;">Default</span>: \`b\` 
+||
 
-|| age | any |  ||
+||
+ age 
+|
+ any 
+|
+ 
+ 
+||
 
-|| ...rest | oneOf | [Dog](#dog) 
-or [Cat](#cat) |||#
+||
+ ...rest 
+|
+ oneOf 
+|
+ [Dog](#dog) 
+or [Cat](#cat) 
+|||#
 #### Or value from:
 
 

@@ -41,17 +41,58 @@ Generated server url{.openapi__request__description}
 {% endcut %}
 
 
-#||| **Name** | **Type** | **Description** ||
+#|||
+ **Name** 
+|
+ **Type** 
+|
+ **Description** 
+||
 
-|| a<span class="openapi__required">*</span> | number |  ||
+||
+ a<span class="openapi__required">*</span> 
+|
+ number 
+|
+ 
+ 
+||
 
-|| b<span class="openapi__required">*</span> | number |  ||
+||
+ b<span class="openapi__required">*</span> 
+|
+ number 
+|
+ 
+ 
+||
 
-|| c | number |  ||
+||
+ c 
+|
+ number 
+|
+ 
+ 
+||
 
-|| d<span class="openapi__required">*</span> | number |  ||
+||
+ d<span class="openapi__required">*</span> 
+|
+ number 
+|
+ 
+ 
+||
 
-|| e | number |  |||#
+||
+ e 
+|
+ number 
+|
+ 
+ 
+|||#
 
 ## Responses
 
@@ -77,11 +118,31 @@ Cat class
 {% endcut %}
 
 
-#||| **Name** | **Type** | **Description** ||
+#|||
+ **Name** 
+|
+ **Type** 
+|
+ **Description** 
+||
 
-|| type | string |  ||
+||
+ type 
+|
+ string 
+|
+ 
+ 
+||
 
-|| foo | string |  |||#
+||
+ foo 
+|
+ string 
+|
+ 
+ 
+|||#
 
 </div>
 <!-- markdownlint-disable-file -->

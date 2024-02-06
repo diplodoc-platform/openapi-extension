@@ -107,9 +107,22 @@ Generated server url{.openapi__request__description}
 {% endcut %}
 
 
-#||| **Name** | **Type** | **Description** ||
+#|||
+ **Name** 
+|
+ **Type** 
+|
+ **Description** 
+||
 
-|| name | string |  |||#
+||
+ name 
+|
+ string 
+|
+ 
+ 
+|||#
 
 ## Responses
 
@@ -178,17 +191,42 @@ Generated server url{.openapi__request__description}
 {% endcut %}
 
 
-#||| **Name** | **Type** | **Description** ||
+#|||
+ **Name** 
+|
+ **Type** 
+|
+ **Description** 
+||
 
-|| ...rest | oneOf | [Cat](#cat) |||#
+||
+ ...rest 
+|
+ oneOf 
+|
+ [Cat](#cat) 
+|||#
 #### Or value from:
 
 
 ### Cat
 
-#||| **Name** | **Type** | **Description** ||
+#|||
+ **Name** 
+|
+ **Type** 
+|
+ **Description** 
+||
 
-|| name | string |  |||#
+||
+ name 
+|
+ string 
+|
+ 
+ 
+|||#
 
 ## Responses
 

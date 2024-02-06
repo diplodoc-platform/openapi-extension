@@ -49,11 +49,31 @@ Base 200 response
 {% endcut %}
 
 
-#||| **Name** | **Type** | **Description** ||
+#|||
+ **Name** 
+|
+ **Type** 
+|
+ **Description** 
+||
 
-|| type | string |  ||
+||
+ type 
+|
+ string 
+|
+ 
+ 
+||
 
-|| foo | string |  |||#
+||
+ foo 
+|
+ string 
+|
+ 
+ 
+|||#
 
 </div>
 
@@ -79,11 +99,31 @@ Base 200 response
 {% endcut %}
 
 
-#||| **Name** | **Type** | **Description** ||
+#|||
+ **Name** 
+|
+ **Type** 
+|
+ **Description** 
+||
 
-|| type | string |  ||
+||
+ type 
+|
+ string 
+|
+ 
+ 
+||
 
-|| bar | string |  |||#
+||
+ bar 
+|
+ string 
+|
+ 
+ 
+|||#
 
 </div>
 <!-- markdownlint-disable-file -->

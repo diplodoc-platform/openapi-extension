@@ -57,33 +57,98 @@ Generated server url{.openapi__request__description}
 {% endcut %}
 
 
-#||| **Name** | **Type** | **Description** ||
+#|||
+ **Name** 
+|
+ **Type** 
+|
+ **Description** 
+||
 
-|| pet | [Cat](#cat) | From response ||
+||
+ pet 
+|
+ [Cat](#cat) 
+|
+ From response
+ 
+||
 
-|| petWithoutDescription | [Cat](#cat) | Cat class ||
+||
+ petWithoutDescription 
+|
+ [Cat](#cat) 
+|
+ Cat class
+ 
+||
 
-|| refToSchemaWithDescription | [Dog](#dog) | Dog class |||#
+||
+ refToSchemaWithDescription 
+|
+ [Dog](#dog) 
+|
+ Dog class
+ 
+|||#
 
 ### Cat
 
 Cat class
 
-#||| **Name** | **Type** | **Description** ||
+#|||
+ **Name** 
+|
+ **Type** 
+|
+ **Description** 
+||
 
-|| name | string |  ||
+||
+ name 
+|
+ string 
+|
+ 
+ 
+||
 
-|| foo | string | <span style="color:gray;">Min length</span>: \`3\` |||#
+||
+ foo 
+|
+ string 
+|
+ <span style="color:gray;">Min length</span>: \`3\` 
+|||#
 
 ### Dog
 
 Dog class
 
-#||| **Name** | **Type** | **Description** ||
+#|||
+ **Name** 
+|
+ **Type** 
+|
+ **Description** 
+||
 
-|| name | string | Pet name<br><span style="color:gray;">Max length</span>: \`100\` ||
+||
+ name 
+|
+ string 
+|
+ Pet name
+<br><span style="color:gray;">Max length</span>: \`100\` 
+||
 
-|| bar | string | <span style="color:gray;">Min length</span>: \`1\`<br><span style="color:gray;">Max length</span>: \`99\` |||#
+||
+ bar 
+|
+ string 
+|
+ <span style="color:gray;">Min length</span>: \`1\`<br><span style="color:gray;">Max length</span>: \`99\` 
+|||#
 
 </div>
 <!-- markdownlint-disable-file -->

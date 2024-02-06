@@ -61,8 +61,11 @@ function table(data: any[][]) {
     const [names, ...rest] = data;
 
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-    const colgen = (col: any) =>
-        Array.isArray(col) ? `${EOL}${table(col)}${EOL}` : escapeTableColContent(` ${col} `);
+    const colgen = (col: any) => {
+        const content = Array.isArray(col) ? table(col) : escapeTableColContent(` ${col} `);
+
+        return `${EOL}${content}${EOL}`
+    }
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     const rowgen = (row: any) => `||${row.map(colgen).join('|')}||`;
 

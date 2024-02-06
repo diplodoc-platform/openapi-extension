@@ -188,14 +188,17 @@ export function prepareTableRowData(
 }
 
 function prepareComplexDescription(baseDescription: string, value: OpenJSONSchema): string {
-    let description = baseDescription;
+    let description = baseDescription + EOL; 
+
     const enumValues = value.enum?.map((s) => `\`${s}\``).join(', ');
+
     if (typeof enumValues !== 'undefined') {
         description = concatNewLine(
             description,
             `<span style="color:gray;">Enum</span>: ${enumValues}`,
         );
     }
+
     if (typeof value.default !== 'undefined') {
         description = concatNewLine(
             description,
@@ -216,6 +219,7 @@ function prepareComplexDescription(baseDescription: string, value: OpenJSONSchem
             `<span style="color:gray;">Min length</span>: \`${value.minLength}\``,
         );
     }
+
     if (typeof value.maxLength !== 'undefined') {
         description = concatNewLine(
             description,

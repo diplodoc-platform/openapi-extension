@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.4.13](https://github.com/diplodoc-platform/openapi-extension/compare/v1.4.12...v1.4.13) (2024-02-06)
+
+
+### Bug Fixes
+
+* eol ([bcf6f2d](https://github.com/diplodoc-platform/openapi-extension/commit/bcf6f2d4058ceea3350f4db31649942a417aa1bf))
+* properties + oneOf ([68d7ce2](https://github.com/diplodoc-platform/openapi-extension/commit/68d7ce299f9dc31570a5cc88aa962f1ec3e167cc))
+* update tests ([8313052](https://github.com/diplodoc-platform/openapi-extension/commit/8313052724c16326d1b5e89d0c9983310c767ca1))
+
 ## [1.4.12](https://github.com/diplodoc-platform/openapi-extension/compare/v1.4.11...v1.4.12) (2024-01-30)
 
 

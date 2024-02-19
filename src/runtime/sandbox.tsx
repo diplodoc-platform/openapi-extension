@@ -14,7 +14,8 @@ export const Sandbox: React.FC<SandboxProps> = (props) => {
         path: useRef(null),
         search: useRef(null),
         headers: useRef(null),
-        body: useRef(null),
+        bodyJson: useRef(null),
+        bodyFormData: useRef(null),
     };
     const [request, setRequest] = useState<Promise<Response> | null>(null);
 
@@ -55,8 +56,8 @@ export const Sandbox: React.FC<SandboxProps> = (props) => {
                     title={Text.HEADER_PARAMS_SECTION_TITLE}
                     params={preparedHeaders}
                 />
-                <BodyJson ref={refs.body} value={props.body} bodyType={props.bodyType} />
-                <BodyFormData ref={refs.body} schema={props.schema} example={props.body} bodyType={props.bodyType} />
+                <BodyJson ref={refs.bodyJson} value={props.body} bodyType={props.bodyType} />
+                <BodyFormData ref={refs.bodyFormData} schema={props.schema} example={props.body} bodyType={props.bodyType} />
                 {request && <Result request={request} />}
                 <div>
                     <Button size="l" view="action" type="submit">

@@ -5,7 +5,7 @@ export const merge = <T, R>(items: T[], iterator: (item: T) => Record<string, R>
     return items.reduce((acc, item) => Object.assign(acc, iterator(item)), {} as Record<string, R>);
 };
 
-export const prepareRequest = (urlTemplate: string, {search, headers, path, body}: FormState, bodyType?: string) => {
+export const prepareRequest = (urlTemplate: string, {search, headers, path, bodyJson, bodyFormData}: FormState, bodyType?: string) => {
     const requestUrl = Object.entries(path).reduce((acc, [key, value]) => {
         return acc.replace(`{${key}}`, encodeURIComponent(value));
     }, urlTemplate);
@@ -25,8 +25,28 @@ export const prepareRequest = (urlTemplate: string, {search, headers, path, body
             'Content-Type': 'application/json',
         } : headers,
         // TODO: match request types (www-form-url-encoded should be handled too)
-        body: body ? {body} : {},
+        body: prepareBody({bodyFormData, bodyJson, bodyType}),
     };
+};
+
+export const prepareBody = ({
+    bodyType,
+    bodyJson,
+    bodyFormData,
+}: {
+    bodyType?: string;
+    bodyJson: string | undefined;
+    bodyFormData: FormData | undefined;
+}) => {
+    switch (bodyType) {
+        case 'application/json':
+            return {body: bodyJson};
+        case 'multipart/form-data':
+            return {body: bodyFormData};
+
+        default:
+            return {};
+    }
 };
 
 export const prepareHeaders = ({

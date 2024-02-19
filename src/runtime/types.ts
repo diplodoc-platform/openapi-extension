@@ -9,7 +9,8 @@ export type FormState = {
     path: Record<string, string>;
     search: Record<string, string>;
     headers: Record<string, string>;
-    body: string | undefined;
+    bodyJson: string | undefined;
+    bodyFormData: FormData | undefined;
 };
 
 export type ResponseState = {

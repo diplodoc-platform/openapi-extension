@@ -188,7 +188,7 @@ export function prepareTableRowData(
 }
 
 function prepareComplexDescription(baseDescription: string, value: OpenJSONSchema): string {
-    let description = baseDescription + EOL; 
+    let description = baseDescription + EOL;
 
     const enumValues = value.enum?.map((s) => `\`${s}\``).join(', ');
 

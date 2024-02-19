@@ -58,7 +58,7 @@ export const Response: React.FC<{
                             </Text>
                         </Card>
                         <ClipboardButton
-                            size={16}
+                            size={'m'}
                             text={text}
                             className={yfmSandbox('clipboard-button')}
                         />

@@ -110,7 +110,7 @@ function sandbox({
     const searchParams = params?.filter((param: Parameter) => param.in === 'query');
     const headers = params?.filter((param: Parameter) => param.in === 'header');
     let bodyStr: null | string = null;
-    if (requestBody?.type === 'application/json') {
+    if (requestBody?.type === 'application/json' || requestBody?.type === 'multipart/form-data') {
         bodyStr = JSON.stringify(prepareSampleObject(requestBody?.schema ?? {}), null, 2);
     }
 
@@ -119,6 +119,8 @@ function sandbox({
         searchParams,
         headers,
         body: bodyStr,
+        schema: requestBody?.schema ?? {},
+        bodyType: requestBody?.type,
         method,
         security,
         path: path,

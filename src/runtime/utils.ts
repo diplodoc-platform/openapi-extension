@@ -5,7 +5,7 @@ export const merge = <T, R>(items: T[], iterator: (item: T) => Record<string, R>
     return items.reduce((acc, item) => Object.assign(acc, iterator(item)), {} as Record<string, R>);
 };
 
-export const prepareRequest = (urlTemplate: string, {search, headers, path, body}: FormState) => {
+export const prepareRequest = (urlTemplate: string, {search, headers, path, body}: FormState, bodyType?: string) => {
     const requestUrl = Object.entries(path).reduce((acc, [key, value]) => {
         return acc.replace(`{${key}}`, encodeURIComponent(value));
     }, urlTemplate);
@@ -20,7 +20,10 @@ export const prepareRequest = (urlTemplate: string, {search, headers, path, body
 
     return {
         url,
-        headers: body ? {...headers, 'Content-Type': 'application/json'} : headers,
+        headers: bodyType === 'application/json' ? {
+            ...headers,
+            'Content-Type': 'application/json',
+        } : headers,
         // TODO: match request types (www-form-url-encoded should be handled too)
         body: body ? {body} : {},
     };

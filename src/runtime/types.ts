@@ -40,6 +40,8 @@ export type SandboxProps = {
     searchParams?: Parameters;
     headers?: Parameters;
     body?: string;
+    bodyType?: string;
+    schema?: OpenJSONSchema;
     security?: Security[];
 };
 

@@ -8,6 +8,7 @@ import {Column} from './Column';
 
 type Props = {
     value: Nullable<string>;
+    bodyType?: string;
 };
 
 type State = {
@@ -15,7 +16,7 @@ type State = {
     value: Nullable<string>;
 };
 
-export class Body extends React.Component<Props, State> implements Field<string, string> {
+export class BodyJson extends React.Component<Props, State> implements Field<string, string> {
     constructor(props: Props) {
         super(props);
 
@@ -28,7 +29,7 @@ export class Body extends React.Component<Props, State> implements Field<string,
     render() {
         const {error, value} = this.state;
 
-        if (value === undefined || value === null) {
+        if (value === undefined || value === null || this.props.bodyType !== 'application/json') {
             return null;
         }
 

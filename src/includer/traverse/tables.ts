@@ -346,6 +346,8 @@ function prepareSampleElement(
                     return 'c3073b9d-edd0-49f2-a28d-b7ded8ff9a8b';
                 case 'date-time':
                     return '2022-12-29T18:02:01Z';
+                case 'binary':
+                    return null;
                 default:
                     return 'string';
             }

@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/diplodoc-platform/openapi-extension/compare/v1.4.13...v2.0.0) (2024-02-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** update gravity-ui/uikit v6
+
+### Features
+
+* **deps:** update gravity-ui/uikit v6 ([2c85d9d](https://github.com/diplodoc-platform/openapi-extension/commit/2c85d9d59938a501e299883213e5b1554b2df69d))
+
 ## [1.4.13](https://github.com/diplodoc-platform/openapi-extension/compare/v1.4.12...v1.4.13) (2024-02-06)
 
 

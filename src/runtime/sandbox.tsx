@@ -1,7 +1,7 @@
 import type {FormState, SandboxProps} from './types';
 import React, {useRef, useState} from 'react';
 import {Button} from '@gravity-ui/uikit';
-import {BodyJson, BodyFormData, Column, Params, Result} from './components';
+import {BodyFormData, BodyJson, Column, Params, Result} from './components';
 
 import {Text, yfmSandbox} from '../plugin/constants';
 import {collectErrors, collectValues, prepareHeaders, prepareRequest} from './utils';
@@ -27,7 +27,11 @@ export const Sandbox: React.FC<SandboxProps> = (props) => {
         }
 
         const values = collectValues(refs) as FormState;
-        const {url, headers, body} = prepareRequest((props.host ?? '') + '/' + props.path, values, props.bodyType);
+        const {url, headers, body} = prepareRequest(
+            (props.host ?? '') + '/' + props.path,
+            values,
+            props.bodyType,
+        );
 
         setRequest(
             fetch(url, {
@@ -57,7 +61,12 @@ export const Sandbox: React.FC<SandboxProps> = (props) => {
                     params={preparedHeaders}
                 />
                 <BodyJson ref={refs.bodyJson} value={props.body} bodyType={props.bodyType} />
-                <BodyFormData ref={refs.bodyFormData} schema={props.schema} example={props.body} bodyType={props.bodyType} />
+                <BodyFormData
+                    ref={refs.bodyFormData}
+                    schema={props.schema}
+                    example={props.body}
+                    bodyType={props.bodyType}
+                />
                 {request && <Result request={request} />}
                 <div>
                     <Button size="l" view="action" type="submit">

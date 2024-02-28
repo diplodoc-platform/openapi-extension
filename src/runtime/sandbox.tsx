@@ -67,12 +67,12 @@ export const Sandbox: React.FC<SandboxProps> = (props) => {
                     example={props.body}
                     bodyType={props.bodyType}
                 />
-                {request && <Result request={request} />}
                 <div>
                     <Button size="l" view="action" type="submit">
                         {Text.BUTTON_SUBMIT}
                     </Button>
                 </div>
+                {request && <Result request={request} />}
             </Column>
         </form>
     );

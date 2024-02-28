@@ -1,9 +1,9 @@
 import React from 'react';
 import {Text, TextArea} from '@gravity-ui/uikit';
+import {JSONSchema6Definition} from 'json-schema';
 
 import {Text as TextEnum} from '../../plugin/constants';
 import {OpenJSONSchema} from '../../includer/models';
-import { JSONSchema6Definition } from 'json-schema';
 
 import type {Field, Nullable} from '../types';
 import {Column} from './Column';

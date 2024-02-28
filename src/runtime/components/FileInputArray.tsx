@@ -20,7 +20,7 @@ export const FileInputArray: React.FC<Props> = ({onChange}) => {
                 setInputs((oldState) => {
                     const file = event.target.files?.[0];
                     const nextState = {...oldState, [idWithChange]: file }
-                    
+
                     onChange(Object.values(nextState).filter(isFile));
 
                     return nextState;
@@ -35,10 +35,10 @@ export const FileInputArray: React.FC<Props> = ({onChange}) => {
 
     const createOnRemove = useCallback(
         (idForRemove: number) => () => {
-            setInputs((OldState) => {
-                delete OldState[idForRemove];
+            setInputs((oldState) => {
+                delete oldState[idForRemove];
 
-                return OldState;
+                return oldState;
             });
         },
         [setInputs],

@@ -29,7 +29,6 @@ import {
     Responses,
     Schema,
     Security,
-    Server,
 } from '../models';
 
 import {concatNewLine} from '../utils';
@@ -133,29 +132,30 @@ function sandbox({
 
 function request(data: Endpoint) {
     const {path, method: type, servers} = data;
-    let description: string | undefined;
 
-    const url = block(servers.map(({url}) => code(url + '/' + path)));
+    const requests = servers.map((server, index) => {
+        const args = [`--method: var(--dc-openapi-methods-${type})`];
 
-    const requestTableRow = [method(type), `${url}`];
+        if (index !== servers.length) {
+            args.push('margin-bottom: 12px');
+        }
 
-    if (servers.every((server: Server) => server.description)) {
-        description = block(servers.map(({description}) => description));
-    }
+        return block([
+            `<div class="openapi__request__wrapper" style="${args.join(';')}">`,
+            `<div class="openapi__request">`,
+            method(type, path, server),
+            '</div>',
+            server.description || '',
+            '</div>',
+        ]);
+    });
 
-    const requestTable = block([
-        '<div class="openapi__request__wrapper">',
-        `<div class="openapi__request" style="--method: var(--dc-openapi-methods-${type})">`,
-        ...requestTableRow,
+    const result = [
+        title(2)(REQUEST_SECTION_NAME),
+        '<div class="openapi__requests">',
+        ...requests,
         '</div>',
-        '</div>',
-    ]);
-
-    const result = [title(2)(REQUEST_SECTION_NAME), requestTable];
-
-    if (description) {
-        result.push(`${description}{.openapi__request__description}`);
-    }
+    ];
 
     return block(result);
 }
@@ -233,7 +233,13 @@ function openapiBody(pagePrintedRefs: Set<string>, obj?: Schema) {
     const {content, tableRefs} = tableFromSchema(schema);
     const parsedSchema = prepareSampleObject(schema);
 
-    result = [...result, cut(code(stringify(parsedSchema, null, 4), 'json'), type), content];
+    result = [
+        '<div class="openapi-entity">',
+        ...result,
+        cut(code(stringify(parsedSchema, null, 4), 'json'), type),
+        content,
+        '</div>',
+    ];
 
     result.push(...printAllTables(pagePrintedRefs, tableRefs));
 
@@ -242,6 +248,21 @@ function openapiBody(pagePrintedRefs: Set<string>, obj?: Schema) {
 
 function isPrimitive(type: OpenJSONSchema['type']) {
     return PRIMITIVE_JSON6_SCHEMA_TYPES.has(type);
+}
+
+function entity(ref: string, schema: OpenJSONSchema) {
+    const schemaTable = tableFromSchema(schema);
+    const titleLevel = schema._runtime ? 4 : 3;
+
+    const markup = block([
+        '<div class="openapi-entity">',
+        title(titleLevel)(ref),
+        schema._emptyDescription ? '' : schema.description,
+        schemaTable.content,
+        '</div>',
+    ]);
+
+    return {markup, refs: schemaTable.tableRefs};
 }
 
 function printAllTables(pagePrintedRefs: Set<string>, tableRefs: TableRef[]): string[] {
@@ -264,18 +285,12 @@ function printAllTables(pagePrintedRefs: Set<string>, tableRefs: TableRef[]): st
             continue;
         }
 
-        const schemaTable = tableFromSchema(schema);
-        const titleLevel = schema._runtime ? 4 : 3;
-
-        result.push(
-            block([
-                title(titleLevel)(tableRef),
-                schema._emptyDescription ? '' : schema.description,
-                schemaTable.content,
-            ]),
-        );
-        tableRefs.push(...schemaTable.tableRefs);
         pagePrintedRefs.add(tableRef);
+
+        const {refs, markup} = entity(tableRef, schema);
+
+        result.push(markup);
+        tableRefs.push(...refs);
     }
     return result;
 }

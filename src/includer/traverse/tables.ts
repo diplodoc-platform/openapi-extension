@@ -1,17 +1,11 @@
 import RefsService from '../services/refs';
 import stringify from 'json-stringify-safe';
 
-import {anchor, table, tableParameterName, title} from '../ui';
+import {anchor, table, tableParameterName} from '../ui';
 import {concatNewLine} from '../utils';
 import {EOL} from '../constants';
 import {OpenJSONSchema, OpenJSONSchemaDefinition} from '../models';
-import {
-    collectRefs,
-    descriptionForOneOfElement,
-    extractOneOfElements,
-    inferType,
-    typeToText,
-} from './types';
+import {collectRefs, extractOneOfElements, inferType, typeToText} from './types';
 
 type TableRow = [string, string, string];
 
@@ -20,7 +14,6 @@ export type TableRef = string;
 type TableFromSchemaResult = {
     content: string;
     tableRefs: TableRef[];
-    oneOfRefs?: TableRef[];
 };
 
 export function tableFromSchema(schema: OpenJSONSchema): TableFromSchemaResult {
@@ -47,20 +40,7 @@ export function tableFromSchema(schema: OpenJSONSchema): TableFromSchemaResult {
     }
 
     const {rows, refs} = prepareObjectSchemaTable(schema);
-    let content = rows.length ? table([['Name', 'Type', 'Description'], ...rows]) : '';
-
-    if (schema.oneOf?.length) {
-        const oneOfElements = extractOneOfElements(schema);
-        const oneOfElementsRefs = oneOfElements
-            .map((value) => value && RefsService.find(value))
-            .filter(Boolean) as string[];
-
-        content += EOL + title(4)('Or value from:') + EOL;
-
-        refs.push(...oneOfElementsRefs);
-
-        return {content, tableRefs: refs, oneOfRefs: oneOfElementsRefs};
-    }
+    const content = rows.length ? table([['Name', 'Type', 'Description'], ...rows]) : '';
 
     return {content, tableRefs: refs};
 }
@@ -107,10 +87,22 @@ function prepareObjectSchemaTable(schema: OpenJSONSchema): PrepareObjectSchemaTa
         }
     });
 
-    if (schema.oneOf?.length) {
-        const restElementsDescription = descriptionForOneOfElement(schema, true);
+    if (merged.oneOf?.length) {
+        const oneOfElements = extractOneOfElements(schema);
+        const oneOfElementsRefs = oneOfElements.map(
+            (value) =>
+                [value, value && RefsService.find(value)] as [OpenJSONSchema, string | undefined],
+        );
 
-        result.rows.push(['...rest', 'oneOf', restElementsDescription]);
+        oneOfElementsRefs.forEach(([value, ref]) => {
+            if (!ref) {
+                return;
+            }
+
+            result.rows.push(['oneOf', anchor(ref), value.description || '']);
+
+            result.refs.push(ref);
+        });
     }
 
     return result;

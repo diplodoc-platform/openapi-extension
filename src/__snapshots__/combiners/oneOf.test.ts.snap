@@ -7,23 +7,28 @@ exports[`oneOf operator support renders empty 1`] = `
 
 ## Request
 
-<div class="openapi__request__wrapper">
+<div class="openapi__requests">
 
-<div class="openapi__request" style="--method: var(--dc-openapi-methods-post)">
+<div class="openapi__request__wrapper" style="--method: var(--dc-openapi-methods-post);margin-bottom: 12px">
 
-POST {.openapi__method}
+<div class="openapi__request">
 
-
+POST {.openapi__method} 
 \`\`\`
 http://localhost:8080/test
 \`\`\`
 
 
-</div>
 
 </div>
 
-Generated server url{.openapi__request__description}
+Generated server url
+
+</div>
+
+</div>
+
+<div class="openapi-entity">
 
 ### Body
 
@@ -50,15 +55,24 @@ Generated server url{.openapi__request__description}
 ||
 
 ||
- ...rest 
-|
  oneOf 
 |
  [Dog](#dog) 
-or [Cat](#cat) 
-|||#
-#### Or value from:
+|
+ Dog class 
+||
 
+||
+ oneOf 
+|
+ [Cat](#cat) 
+|
+ Cat class 
+|||#
+
+</div>
+
+<div class="openapi-entity">
 
 ### Dog
 
@@ -90,6 +104,10 @@ Dog class
  
 |||#
 
+</div>
+
+<div class="openapi-entity">
+
 ### Cat
 
 Cat class
@@ -120,11 +138,15 @@ Cat class
  
 |||#
 
+</div>
+
 ## Responses
 
 <div class="openapi__response__code__200">
 
 ## 200 OK
+
+<div class="openapi-entity">
 
 ### Body
 
@@ -151,16 +173,22 @@ Cat class
 ||
 
 ||
- ...rest 
-|
  oneOf 
 |
- Base 200 response
-[Dog](#dog) 
-or [Cat](#cat) 
-|||#
-#### Or value from:
+ [Dog](#dog) 
+|
+ Dog class 
+||
 
+||
+ oneOf 
+|
+ [Cat](#cat) 
+|
+ Cat class 
+|||#
+
+</div>
 
 </div>
 <!-- markdownlint-disable-file -->
@@ -175,23 +203,28 @@ exports[`oneOf operator support renders filled 1`] = `
 
 ## Request
 
-<div class="openapi__request__wrapper">
+<div class="openapi__requests">
 
-<div class="openapi__request" style="--method: var(--dc-openapi-methods-post)">
+<div class="openapi__request__wrapper" style="--method: var(--dc-openapi-methods-post);margin-bottom: 12px">
 
-POST {.openapi__method}
+<div class="openapi__request">
 
-
+POST {.openapi__method} 
 \`\`\`
 http://localhost:8080/test
 \`\`\`
 
 
-</div>
 
 </div>
 
-Generated server url{.openapi__request__description}
+Generated server url
+
+</div>
+
+</div>
+
+<div class="openapi-entity">
 
 ### Body
 
@@ -238,15 +271,24 @@ Generated server url{.openapi__request__description}
 ||
 
 ||
- ...rest 
-|
  oneOf 
 |
  [Dog](#dog) 
-or [Cat](#cat) 
-|||#
-#### Or value from:
+|
+ Dog class 
+||
 
+||
+ oneOf 
+|
+ [Cat](#cat) 
+|
+ Cat class 
+|||#
+
+</div>
+
+<div class="openapi-entity">
 
 ### Dog
 
@@ -278,6 +320,10 @@ Dog class
  
 |||#
 
+</div>
+
+<div class="openapi-entity">
+
 ### Cat
 
 Cat class
@@ -308,11 +354,15 @@ Cat class
  
 |||#
 
+</div>
+
 ## Responses
 
 <div class="openapi__response__code__200">
 
 ## 200 OK
+
+<div class="openapi-entity">
 
 ### Body
 
@@ -359,16 +409,22 @@ Cat class
 ||
 
 ||
- ...rest 
-|
  oneOf 
 |
- Base 200 response
-[Dog](#dog) 
-or [Cat](#cat) 
-|||#
-#### Or value from:
+ [Dog](#dog) 
+|
+ Dog class 
+||
 
+||
+ oneOf 
+|
+ [Cat](#cat) 
+|
+ Cat class 
+|||#
+
+</div>
 
 </div>
 <!-- markdownlint-disable-file -->
@@ -383,23 +439,28 @@ exports[`oneOf operator support renders parameter 1`] = `
 
 ## Request
 
-<div class="openapi__request__wrapper">
+<div class="openapi__requests">
 
-<div class="openapi__request" style="--method: var(--dc-openapi-methods-post)">
+<div class="openapi__request__wrapper" style="--method: var(--dc-openapi-methods-post);margin-bottom: 12px">
 
-POST {.openapi__method}
+<div class="openapi__request">
 
-
+POST {.openapi__method} 
 \`\`\`
 http://localhost:8080/test
 \`\`\`
 
 
-</div>
 
 </div>
 
-Generated server url{.openapi__request__description}
+Generated server url
+
+</div>
+
+</div>
+
+<div class="openapi-entity">
 
 ### Body
 
@@ -440,15 +501,24 @@ or [Cat](#cat)
 ||
 
 ||
- ...rest 
-|
  oneOf 
 |
  [Dog](#dog) 
-or [Cat](#cat) 
-|||#
-#### Or value from:
+|
+ Dog class 
+||
 
+||
+ oneOf 
+|
+ [Cat](#cat) 
+|
+ Cat class 
+|||#
+
+</div>
+
+<div class="openapi-entity">
 
 ### Dog
 
@@ -480,6 +550,10 @@ Dog class
  
 |||#
 
+</div>
+
+<div class="openapi-entity">
+
 ### Cat
 
 Cat class
@@ -510,11 +584,15 @@ Cat class
  
 |||#
 
+</div>
+
 ## Responses
 
 <div class="openapi__response__code__200">
 
 ## 200 OK
+
+<div class="openapi-entity">
 
 ### Body
 
@@ -555,16 +633,22 @@ or [Cat](#cat)
 ||
 
 ||
- ...rest 
-|
  oneOf 
 |
- Base 200 response
-[Dog](#dog) 
-or [Cat](#cat) 
-|||#
-#### Or value from:
+ [Dog](#dog) 
+|
+ Dog class 
+||
 
+||
+ oneOf 
+|
+ [Cat](#cat) 
+|
+ Cat class 
+|||#
+
+</div>
 
 </div>
 <!-- markdownlint-disable-file -->

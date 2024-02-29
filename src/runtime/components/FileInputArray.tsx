@@ -6,7 +6,7 @@ const isFile = (item: undefined | File): item is File => item !== undefined;
 
 type Props = {
     onChange(value: File[]): void;
-}
+};
 
 type IndexedFiles = Record<number, File | undefined>;
 
@@ -19,7 +19,7 @@ export const FileInputArray: React.FC<Props> = ({onChange}) => {
             (event) => {
                 setInputs((oldState) => {
                     const file = event.target.files?.[0];
-                    const nextState = {...oldState, [idWithChange]: file }
+                    const nextState = {...oldState, [idWithChange]: file};
 
                     onChange(Object.values(nextState).filter(isFile));
 
@@ -30,7 +30,7 @@ export const FileInputArray: React.FC<Props> = ({onChange}) => {
     );
 
     const onAdd = useCallback(() => {
-        setInputs((prevState) => ({...prevState, [ref.current++]: undefined }));
+        setInputs((prevState) => ({...prevState, [ref.current++]: undefined}));
     }, [setInputs, ref]);
 
     const createOnRemove = useCallback(
@@ -71,4 +71,3 @@ export const FileInputArray: React.FC<Props> = ({onChange}) => {
         </Column>
     );
 };
-

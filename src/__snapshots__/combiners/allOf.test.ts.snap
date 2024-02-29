@@ -7,23 +7,28 @@ exports[`allOf operator support renders simple allOf 1`] = `
 
 ## Request
 
-<div class="openapi__request__wrapper">
+<div class="openapi__requests">
 
-<div class="openapi__request" style="--method: var(--dc-openapi-methods-post)">
+<div class="openapi__request__wrapper" style="--method: var(--dc-openapi-methods-post);margin-bottom: 12px">
 
-POST {.openapi__method}
+<div class="openapi__request">
 
-
+POST {.openapi__method} 
 \`\`\`
 http://localhost:8080/test
 \`\`\`
 
 
-</div>
 
 </div>
 
-Generated server url{.openapi__request__description}
+Generated server url
+
+</div>
+
+</div>
+
+<div class="openapi-entity">
 
 ### Body
 
@@ -77,6 +82,8 @@ Generated server url{.openapi__request__description}
  
 |||#
 
+</div>
+
 ## Responses
 
 <div class="openapi__response__code__200">
@@ -84,6 +91,8 @@ Generated server url{.openapi__request__description}
 ## 200 OK
 
 Base 200 response
+
+<div class="openapi-entity">
 
 ### Body
 
@@ -136,6 +145,8 @@ Base 200 response
 |||#
 
 </div>
+
+</div>
 <!-- markdownlint-disable-file -->
 
 </div>"
@@ -148,23 +159,28 @@ exports[`allOf operator support renders single allOf 1`] = `
 
 ## Request
 
-<div class="openapi__request__wrapper">
+<div class="openapi__requests">
 
-<div class="openapi__request" style="--method: var(--dc-openapi-methods-post)">
+<div class="openapi__request__wrapper" style="--method: var(--dc-openapi-methods-post);margin-bottom: 12px">
 
-POST {.openapi__method}
+<div class="openapi__request">
 
-
+POST {.openapi__method} 
 \`\`\`
 http://localhost:8080/test
 \`\`\`
 
 
-</div>
 
 </div>
 
-Generated server url{.openapi__request__description}
+Generated server url
+
+</div>
+
+</div>
+
+<div class="openapi-entity">
 
 ### Body
 
@@ -200,6 +216,10 @@ Generated server url{.openapi__request__description}
  Cat class
  
 |||#
+
+</div>
+
+<div class="openapi-entity">
 
 ### Cat
 
@@ -231,6 +251,8 @@ Cat class
  
 |||#
 
+</div>
+
 ## Responses
 
 <div class="openapi__response__code__200">
@@ -238,6 +260,8 @@ Cat class
 ## 200 OK
 
 Base 200 response
+
+<div class="openapi-entity">
 
 ### Body
 
@@ -273,6 +297,8 @@ Base 200 response
  Cat class
  
 |||#
+
+</div>
 
 </div>
 <!-- markdownlint-disable-file -->

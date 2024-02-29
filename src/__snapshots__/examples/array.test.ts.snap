@@ -7,23 +7,28 @@ exports[`openapi project with examples renders array + allOf example 1`] = `
 
 ## Request
 
-<div class="openapi__request__wrapper">
+<div class="openapi__requests">
 
-<div class="openapi__request" style="--method: var(--dc-openapi-methods-post)">
+<div class="openapi__request__wrapper" style="--method: var(--dc-openapi-methods-post);margin-bottom: 12px">
 
-POST {.openapi__method}
+<div class="openapi__request">
 
-
+POST {.openapi__method} 
 \`\`\`
 http://localhost:8080/test
 \`\`\`
 
 
-</div>
 
 </div>
 
-Generated server url{.openapi__request__description}
+Generated server url
+
+</div>
+
+</div>
+
+<div class="openapi-entity">
 
 ### Body
 
@@ -62,6 +67,8 @@ Generated server url{.openapi__request__description}
  
 |||#
 
+</div>
+
 ## Responses
 
 <div class="openapi__response__code__200">
@@ -69,6 +76,8 @@ Generated server url{.openapi__request__description}
 ## 200 OK
 
 Base 200 response
+
+<div class="openapi-entity">
 
 ### Body
 
@@ -84,6 +93,8 @@ Base 200 response
 
 
 </div>
+
+</div>
 <!-- markdownlint-disable-file -->
 
 </div>"
@@ -96,23 +107,28 @@ exports[`openapi project with examples renders array + oneOf + allOf example 1`]
 
 ## Request
 
-<div class="openapi__request__wrapper">
+<div class="openapi__requests">
 
-<div class="openapi__request" style="--method: var(--dc-openapi-methods-post)">
+<div class="openapi__request__wrapper" style="--method: var(--dc-openapi-methods-post);margin-bottom: 12px">
 
-POST {.openapi__method}
+<div class="openapi__request">
 
-
+POST {.openapi__method} 
 \`\`\`
 http://localhost:8080/test
 \`\`\`
 
 
-</div>
 
 </div>
 
-Generated server url{.openapi__request__description}
+Generated server url
+
+</div>
+
+</div>
+
+<div class="openapi-entity">
 
 ### Body
 
@@ -153,6 +169,8 @@ Generated server url{.openapi__request__description}
  
 |||#
 
+</div>
+
 ## Responses
 
 <div class="openapi__response__code__200">
@@ -160,6 +178,8 @@ Generated server url{.openapi__request__description}
 ## 200 OK
 
 Base 200 response
+
+<div class="openapi-entity">
 
 ### Body
 
@@ -175,6 +195,8 @@ Base 200 response
 
 
 </div>
+
+</div>
 <!-- markdownlint-disable-file -->
 
 </div>"
@@ -187,23 +209,28 @@ exports[`openapi project with examples renders array + oneOf example 1`] = `
 
 ## Request
 
-<div class="openapi__request__wrapper">
+<div class="openapi__requests">
 
-<div class="openapi__request" style="--method: var(--dc-openapi-methods-post)">
+<div class="openapi__request__wrapper" style="--method: var(--dc-openapi-methods-post);margin-bottom: 12px">
 
-POST {.openapi__method}
+<div class="openapi__request">
 
-
+POST {.openapi__method} 
 \`\`\`
 http://localhost:8080/test
 \`\`\`
 
 
-</div>
 
 </div>
 
-Generated server url{.openapi__request__description}
+Generated server url
+
+</div>
+
+</div>
+
+<div class="openapi-entity">
 
 ### Body
 
@@ -241,6 +268,8 @@ or integer)[]
  
 |||#
 
+</div>
+
 ## Responses
 
 <div class="openapi__response__code__200">
@@ -248,6 +277,8 @@ or integer)[]
 ## 200 OK
 
 Base 200 response
+
+<div class="openapi-entity">
 
 ### Body
 
@@ -263,6 +294,8 @@ Base 200 response
 
 
 </div>
+
+</div>
 <!-- markdownlint-disable-file -->
 
 </div>"
@@ -275,23 +308,28 @@ exports[`openapi project with examples renders example field 1`] = `
 
 ## Request
 
-<div class="openapi__request__wrapper">
+<div class="openapi__requests">
 
-<div class="openapi__request" style="--method: var(--dc-openapi-methods-post)">
+<div class="openapi__request__wrapper" style="--method: var(--dc-openapi-methods-post);margin-bottom: 12px">
 
-POST {.openapi__method}
+<div class="openapi__request">
 
-
+POST {.openapi__method} 
 \`\`\`
 http://localhost:8080/test
 \`\`\`
 
 
-</div>
 
 </div>
 
-Generated server url{.openapi__request__description}
+Generated server url
+
+</div>
+
+</div>
+
+<div class="openapi-entity">
 
 ### Body
 
@@ -315,6 +353,8 @@ Generated server url{.openapi__request__description}
 
 any[]
 
+</div>
+
 ## Responses
 
 <div class="openapi__response__code__200">
@@ -322,6 +362,8 @@ any[]
 ## 200 OK
 
 Base 200 response
+
+<div class="openapi-entity">
 
 ### Body
 
@@ -337,6 +379,8 @@ Base 200 response
 
 
 </div>
+
+</div>
 <!-- markdownlint-disable-file -->
 
 </div>"
@@ -349,23 +393,28 @@ exports[`openapi project with examples renders infered example 1`] = `
 
 ## Request
 
-<div class="openapi__request__wrapper">
+<div class="openapi__requests">
 
-<div class="openapi__request" style="--method: var(--dc-openapi-methods-post)">
+<div class="openapi__request__wrapper" style="--method: var(--dc-openapi-methods-post);margin-bottom: 12px">
 
-POST {.openapi__method}
+<div class="openapi__request">
 
-
+POST {.openapi__method} 
 \`\`\`
 http://localhost:8080/test
 \`\`\`
 
 
-</div>
 
 </div>
 
-Generated server url{.openapi__request__description}
+Generated server url
+
+</div>
+
+</div>
+
+<div class="openapi-entity">
 
 ### Body
 
@@ -386,6 +435,10 @@ Generated server url{.openapi__request__description}
 
 [Cat](#cat)[]
 
+</div>
+
+<div class="openapi-entity">
+
 ### Cat
 
 #|||
@@ -405,6 +458,8 @@ Generated server url{.openapi__request__description}
  
 |||#
 
+</div>
+
 ## Responses
 
 <div class="openapi__response__code__200">
@@ -412,6 +467,8 @@ Generated server url{.openapi__request__description}
 ## 200 OK
 
 Base 200 response
+
+<div class="openapi-entity">
 
 ### Body
 
@@ -427,6 +484,8 @@ Base 200 response
 
 
 </div>
+
+</div>
 <!-- markdownlint-disable-file -->
 
 </div>"
@@ -439,23 +498,28 @@ exports[`openapi project with examples renders nested arrays exmaple 1`] = `
 
 ## Request
 
-<div class="openapi__request__wrapper">
+<div class="openapi__requests">
 
-<div class="openapi__request" style="--method: var(--dc-openapi-methods-post)">
+<div class="openapi__request__wrapper" style="--method: var(--dc-openapi-methods-post);margin-bottom: 12px">
 
-POST {.openapi__method}
+<div class="openapi__request">
 
-
+POST {.openapi__method} 
 \`\`\`
 http://localhost:8080/test
 \`\`\`
 
 
-</div>
 
 </div>
 
-Generated server url{.openapi__request__description}
+Generated server url
+
+</div>
+
+</div>
+
+<div class="openapi-entity">
 
 ### Body
 
@@ -478,6 +542,10 @@ Generated server url{.openapi__request__description}
 
 [Cat](#cat)[][]
 
+</div>
+
+<div class="openapi-entity">
+
 ### Cat
 
 #|||
@@ -497,6 +565,8 @@ Generated server url{.openapi__request__description}
  
 |||#
 
+</div>
+
 ## Responses
 
 <div class="openapi__response__code__200">
@@ -504,6 +574,8 @@ Generated server url{.openapi__request__description}
 ## 200 OK
 
 Base 200 response
+
+<div class="openapi-entity">
 
 ### Body
 
@@ -517,6 +589,8 @@ Base 200 response
 
 {% endcut %}
 
+
+</div>
 
 </div>
 <!-- markdownlint-disable-file -->

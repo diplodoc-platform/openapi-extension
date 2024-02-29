@@ -7,23 +7,26 @@ exports[`basic openapi project renders description 1`] = `
 
 ## Request
 
-<div class="openapi__request__wrapper">
+<div class="openapi__requests">
 
-<div class="openapi__request" style="--method: var(--dc-openapi-methods-post)">
+<div class="openapi__request__wrapper" style="--method: var(--dc-openapi-methods-post);margin-bottom: 12px">
 
-POST {.openapi__method}
+<div class="openapi__request">
 
-
+POST {.openapi__method} 
 \`\`\`
 http://localhost:8080/test
 \`\`\`
 
 
-</div>
 
 </div>
 
-Generated server url{.openapi__request__description}
+Generated server url
+
+</div>
+
+</div>
 
 ## Responses
 
@@ -32,6 +35,8 @@ Generated server url{.openapi__request__description}
 ## 200 OK
 
 Base 200 response
+
+<div class="openapi-entity">
 
 ### Body
 
@@ -77,11 +82,15 @@ Base 200 response
 
 </div>
 
+</div>
+
 <div class="openapi__response__code__404">
 
 ## 404 Not Found
 
 Base 200 response
+
+<div class="openapi-entity">
 
 ### Body
 
@@ -124,6 +133,8 @@ Base 200 response
  
  
 |||#
+
+</div>
 
 </div>
 <!-- markdownlint-disable-file -->

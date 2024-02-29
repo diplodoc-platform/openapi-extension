@@ -9,7 +9,7 @@ import {
     HTML_COMMENTS_OPEN_DIRECTIVE,
 } from '../constants';
 
-import {TitleDepth} from '../models';
+import {Server, TitleDepth} from '../models';
 
 const openapiBlock = bem('openapi');
 
@@ -52,8 +52,12 @@ function code(text: string, type = '') {
     return EOL + ['```' + appliedType, text, '```'].join(EOL) + EOL;
 }
 
-function method(text: string) {
-    return `${text.toUpperCase()} {.openapi__method}`;
+function method(text: string, path: string, server: Server) {
+    let result = `${text.toUpperCase()} {.openapi__method}`;
+
+    result += ` ${code(server.url + '/' + path)}` + EOL;
+
+    return result;
 }
 
 /* eslint-disable-next-line @typescript-eslint/no-explicit-any */

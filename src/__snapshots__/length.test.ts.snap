@@ -7,29 +7,34 @@ exports[`length renders correct length limits 1`] = `
 
 ## Request
 
-<div class="openapi__request__wrapper">
+<div class="openapi__requests">
 
-<div class="openapi__request" style="--method: var(--dc-openapi-methods-post)">
+<div class="openapi__request__wrapper" style="--method: var(--dc-openapi-methods-post);margin-bottom: 12px">
 
-POST {.openapi__method}
+<div class="openapi__request">
 
-
+POST {.openapi__method} 
 \`\`\`
 http://localhost:8080/test
 \`\`\`
 
 
-</div>
 
 </div>
 
-Generated server url{.openapi__request__description}
+Generated server url
+
+</div>
+
+</div>
 
 ## Responses
 
 <div class="openapi__response__code__200">
 
 ## 200 OK
+
+<div class="openapi-entity">
 
 ### Body
 
@@ -92,6 +97,10 @@ Generated server url{.openapi__request__description}
  
 |||#
 
+</div>
+
+<div class="openapi-entity">
+
 ### Cat
 
 Cat class
@@ -121,6 +130,10 @@ Cat class
  <span style="color:gray;">Min length</span>: \`3\` 
 |||#
 
+</div>
+
+<div class="openapi-entity">
+
 ### Dog
 
 Dog class
@@ -149,6 +162,8 @@ Dog class
 |
  <span style="color:gray;">Min length</span>: \`1\`<br><span style="color:gray;">Max length</span>: \`99\` 
 |||#
+
+</div>
 
 </div>
 <!-- markdownlint-disable-file -->

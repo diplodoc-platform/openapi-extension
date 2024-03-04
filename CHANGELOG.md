@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.1.0](https://github.com/diplodoc-platform/openapi-extension/compare/v2.0.0...v2.1.0) (2024-03-04)
+
+
+### Features
+
+* add form-data format with string, file and file Array ([fb54fa8](https://github.com/diplodoc-platform/openapi-extension/commit/fb54fa8c4a0806758c86e2e9d7df6047ded9835d))
+* support multiple servers, change oneOf render ([d70a4b1](https://github.com/diplodoc-platform/openapi-extension/commit/d70a4b1f59de9435fcf347c40a6a2f6d8db20e2e))
+
+
+### Bug Fixes
+
+* add refs ([fbecfd8](https://github.com/diplodoc-platform/openapi-extension/commit/fbecfd82163aaaf35fa06fb287eed8bc7e72a0c5))
+* refactor ([687c928](https://github.com/diplodoc-platform/openapi-extension/commit/687c928b9d2de06638d1b166670a8de024ec6725))
+* swap send button with response section and refactor ([9c7ba51](https://github.com/diplodoc-platform/openapi-extension/commit/9c7ba51d1090780ce3c8de7e5d98bdefb18a227b))
+
 ## [2.0.0](https://github.com/diplodoc-platform/openapi-extension/compare/v1.4.13...v2.0.0) (2024-02-20)
 
 

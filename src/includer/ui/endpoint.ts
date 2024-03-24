@@ -2,6 +2,7 @@ import stringify from 'json-stringify-safe';
 import RefsService from '../services/refs';
 
 import {
+    BLOCK,
     COOKIES_SECTION_NAME,
     HEADERS_SECTION_NAME,
     INFO_TAB_NAME,
@@ -182,7 +183,7 @@ function parameters(pagePrintedRefs: Set<string>, params?: Parameters) {
                 }
             }
             tables.push(title(3)(heading));
-            tables.push(table([['Name', 'Type', 'Description'], ...rows]));
+            tables.push(table([['Name', 'Description'], ...rows]));
             tables.push(...printAllTables(pagePrintedRefs, tableRefs));
         }
     }
@@ -203,7 +204,7 @@ function parameterRow(param: Parameter): {cells: string[]; ref?: TableRef[]} {
         description = concatNewLine(description, `Default: \`${param.default}\``);
     }
     return {
-        cells: [tableParameterName(param.name, param.required), row.type, description],
+        cells: [tableParameterName(param.name, param.required), `${bold('Type: ' + row.type)}${BLOCK}${BLOCK}${description}`],
         ref: row.ref,
     };
 }

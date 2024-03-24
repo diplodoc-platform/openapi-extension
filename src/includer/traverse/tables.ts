@@ -1,13 +1,13 @@
 import RefsService from '../services/refs';
 import stringify from 'json-stringify-safe';
 
-import {anchor, table, tableParameterName} from '../ui';
+import {anchor, bold, table, tableParameterName} from '../ui';
 import {concatNewLine} from '../utils';
-import {EOL} from '../constants';
+import {BLOCK, EOL} from '../constants';
 import {OpenJSONSchema, OpenJSONSchemaDefinition} from '../models';
 import {collectRefs, extractOneOfElements, inferType, typeToText} from './types';
 
-type TableRow = [string, string, string];
+type TableRow = [string, string];
 
 export type TableRef = string;
 
@@ -40,7 +40,7 @@ export function tableFromSchema(schema: OpenJSONSchema): TableFromSchemaResult {
     }
 
     const {rows, refs} = prepareObjectSchemaTable(schema);
-    const content = rows.length ? table([['Name', 'Type', 'Description'], ...rows]) : '';
+    const content = rows.length ? table([['Name', 'Description'], ...rows]) : '';
 
     return {content, tableRefs: refs};
 }
@@ -61,7 +61,7 @@ function prepareObjectSchemaTable(schema: OpenJSONSchema): PrepareObjectSchemaTa
         const name = tableParameterName(key, isRequired(key, merged));
         const {type, description, ref, runtimeRef} = prepareTableRowData(value, key, tableRef);
 
-        result.rows.push([name, type, description]);
+        result.rows.push([name, `${bold('Type: ' + type)}${BLOCK}${BLOCK}${description}`]);
 
         if (ref) {
             result.refs.push(...ref);
@@ -99,7 +99,7 @@ function prepareObjectSchemaTable(schema: OpenJSONSchema): PrepareObjectSchemaTa
                 return;
             }
 
-            result.rows.push(['oneOf', anchor(ref), value.description || '']);
+            result.rows.push([`${bold('oneOf')} ${anchor(ref)}`, value.description || '']);
 
             result.refs.push(ref);
         });

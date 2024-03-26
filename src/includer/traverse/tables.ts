@@ -1,9 +1,9 @@
 import RefsService from '../services/refs';
 import stringify from 'json-stringify-safe';
 
-import {anchor, bold, table, tableParameterName} from '../ui';
+import {anchor, block, bold, table, tableParameterName} from '../ui';
 import {concatNewLine} from '../utils';
-import {BLOCK, EOL} from '../constants';
+import {EOL} from '../constants';
 import {OpenJSONSchema, OpenJSONSchemaDefinition} from '../models';
 import {collectRefs, extractOneOfElements, inferType, typeToText} from './types';
 
@@ -61,7 +61,7 @@ function prepareObjectSchemaTable(schema: OpenJSONSchema): PrepareObjectSchemaTa
         const name = tableParameterName(key, isRequired(key, merged));
         const {type, description, ref, runtimeRef} = prepareTableRowData(value, key, tableRef);
 
-        result.rows.push([name, `${bold('Type: ' + type)}${BLOCK}${BLOCK}${description}`]);
+        result.rows.push([name, block([`${bold('Type:')} ${type}`, description])]);
 
         if (ref) {
             result.refs.push(...ref);
@@ -145,7 +145,7 @@ export function prepareTableRowData(
             return {
                 type: `${anchor(inner.runtimeRef, key)}[]`,
                 runtimeRef: inner.runtimeRef,
-                description: innerDescription,
+                description: prepareComplexDescription(innerDescription, value),
             };
         }
 
@@ -156,7 +156,7 @@ export function prepareTableRowData(
             type: returnType,
             // if inner.ref present, inner description will be in separate table
             ref: inner.ref,
-            description: innerDescription,
+            description: prepareComplexDescription(innerDescription, value),
         };
     }
 
@@ -216,6 +216,49 @@ function prepareComplexDescription(baseDescription: string, value: OpenJSONSchem
         description = concatNewLine(
             description,
             `<span style="color:gray;">Max length</span>: \`${value.maxLength}\``,
+        );
+    }
+
+    if (typeof value.maxItems !== 'undefined') {
+        description = concatNewLine(
+            description,
+            `<span style="color:gray;">Max items</span>: \`${value.maxItems}\``,
+        );
+    }
+
+    if (typeof value.minItems !== 'undefined') {
+        description = concatNewLine(
+            description,
+            `<span style="color:gray;">Min items</span>: \`${value.minItems}\``,
+        );
+    }
+
+    if (typeof value.pattern !== 'undefined') {
+        description = concatNewLine(
+            description,
+            `<span style="color:gray;">Pattern</span>: \`${value.pattern}\``,
+        );
+    }
+
+    if (typeof value.uniqueItems !== 'undefined') {
+        description = concatNewLine(description, `<span style="color:gray;">Unique items</span>`);
+    }
+
+    if (typeof value.minimum !== 'undefined') {
+        description = concatNewLine(
+            description,
+            `<span style="color:gray;">Min value${
+                value.exclusiveMinimum ? ' (exclusive)' : ''
+            }</span>: \`${value.minimum}\``,
+        );
+    }
+
+    if (typeof value.maximum !== 'undefined') {
+        description = concatNewLine(
+            description,
+            `<span style="color:gray;">Max value${
+                value.exclusiveMaximum ? ' (exclusive)' : ''
+            }</span>: \`${value.maximum}\``,
         );
     }
 

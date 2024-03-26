@@ -2,7 +2,6 @@ import stringify from 'json-stringify-safe';
 import RefsService from '../services/refs';
 
 import {
-    BLOCK,
     COOKIES_SECTION_NAME,
     HEADERS_SECTION_NAME,
     INFO_TAB_NAME,
@@ -204,7 +203,10 @@ function parameterRow(param: Parameter): {cells: string[]; ref?: TableRef[]} {
         description = concatNewLine(description, `Default: \`${param.default}\``);
     }
     return {
-        cells: [tableParameterName(param.name, param.required), `${bold('Type: ' + row.type)}${BLOCK}${BLOCK}${description}`],
+        cells: [
+            tableParameterName(param.name, param.required),
+            block([`${bold('Type:')} ${row.type}`, description]),
+        ],
         ref: row.ref,
     };
 }

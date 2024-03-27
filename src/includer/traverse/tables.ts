@@ -99,7 +99,10 @@ function prepareObjectSchemaTable(schema: OpenJSONSchema): PrepareObjectSchemaTa
                 return;
             }
 
-            result.rows.push([`${bold('oneOf')} ${anchor(ref)}`, value.description || '']);
+            result.rows.push([
+                '...rest',
+                block([`${bold('oneOf')} ${anchor(ref)}`, value.description || '']),
+            ]);
 
             result.refs.push(ref);
         });

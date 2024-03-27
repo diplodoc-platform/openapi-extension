@@ -50,35 +50,33 @@ Generated server url
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  type 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 ||
 
 ||
  foo 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 ||
 
 ||
  name 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 |||#
 
@@ -113,34 +111,32 @@ Base 200 response
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  name 
 |
- string 
-|
- <span style="color:gray;">Default</span>: \`a\` 
+ **Type:** string
+
+<span style="color:gray;">Default</span>: \`a\` 
 ||
 
 ||
  type 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 ||
 
 ||
  baz 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 |||#
 
@@ -203,17 +199,15 @@ Generated server url
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  pet 
 |
- [Cat](#cat) 
-|
- Cat class
+ **Type:** [Cat](#cat)
+
+Cat class
  
 |||#
 
@@ -228,26 +222,24 @@ Cat class
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  type 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 ||
 
 ||
  foo 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 |||#
 
@@ -284,17 +276,15 @@ Base 200 response
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  pet 
 |
- [Cat](#cat) 
-|
- Cat class
+ **Type:** [Cat](#cat)
+
+Cat class
  
 |||#
 

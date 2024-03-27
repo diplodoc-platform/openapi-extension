@@ -126,17 +126,15 @@ Generated server url
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  name 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 |||#
 
@@ -221,17 +219,13 @@ Generated server url
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
- oneOf 
+ ...rest 
 |
- [Cat](#cat) 
-|
-  
+ **oneOf** [Cat](#cat) 
 |||#
 
 </div>
@@ -243,17 +237,15 @@ Generated server url
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  name 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 |||#
 

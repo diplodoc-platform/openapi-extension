@@ -53,42 +53,40 @@ Generated server url
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  name 
 |
- string 
-|
- <span style="color:gray;">Default</span>: \`b\` 
+ **Type:** string
+
+<span style="color:gray;">Default</span>: \`b\` 
 ||
 
 ||
  age 
 |
- any 
-|
- 
+ **Type:** any
+
+
  
 ||
 
 ||
- oneOf 
+ ...rest 
 |
- [Dog](#dog) 
-|
- Dog class 
+ **oneOf** [Dog](#dog)
+
+Dog class 
 ||
 
 ||
- oneOf 
+ ...rest 
 |
- [Cat](#cat) 
-|
- Cat class 
+ **oneOf** [Cat](#cat)
+
+Cat class 
 |||#
 
 </div>
@@ -102,26 +100,24 @@ Dog class
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  type 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 ||
 
 ||
  bar 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 |||#
 
@@ -136,26 +132,24 @@ Cat class
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  type 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 ||
 
 ||
  foo 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 |||#
 
@@ -194,42 +188,40 @@ Base 200 response
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  name 
 |
- string 
-|
- <span style="color:gray;">Default</span>: \`b\` 
+ **Type:** string
+
+<span style="color:gray;">Default</span>: \`b\` 
 ||
 
 ||
  age 
 |
- any 
-|
- 
+ **Type:** any
+
+
  
 ||
 
 ||
- oneOf 
+ ...rest 
 |
- [Dog](#dog) 
-|
- Dog class 
+ **oneOf** [Dog](#dog)
+
+Dog class 
 ||
 
 ||
- oneOf 
+ ...rest 
 |
- [Cat](#cat) 
-|
- Cat class 
+ **oneOf** [Cat](#cat)
+
+Cat class 
 |||#
 
 </div>

@@ -49,53 +49,51 @@ Generated server url
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  a<span class="openapi__required">*</span> 
 |
- number 
-|
- 
+ **Type:** number
+
+
  
 ||
 
 ||
  b<span class="openapi__required">*</span> 
 |
- number 
-|
- 
+ **Type:** number
+
+
  
 ||
 
 ||
  c 
 |
- number 
-|
- 
+ **Type:** number
+
+
  
 ||
 
 ||
  d<span class="openapi__required">*</span> 
 |
- number 
-|
- 
+ **Type:** number
+
+
  
 ||
 
 ||
  e 
 |
- number 
-|
- 
+ **Type:** number
+
+
  
 |||#
 
@@ -130,26 +128,24 @@ Cat class
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  type 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 ||
 
 ||
  foo 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 |||#
 

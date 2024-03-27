@@ -66,44 +66,42 @@ Generated server url
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  pet 
 |
- [Cat](#cat) 
-|
- From response
+ **Type:** [Cat](#cat)
+
+From response
  
 ||
 
 ||
  petWithoutDescription 
 |
- [Cat](#cat) 
-|
- Cat class
+ **Type:** [Cat](#cat)
+
+Cat class
  
 ||
 
 ||
  refToSchemaWithDescription 
 |
- [Dog](#dog) 
-|
- Dog class
+ **Type:** [Dog](#dog)
+
+Dog class
  
 ||
 
 ||
  simpleDescription 
 |
- object 
-|
- Simple description
+ **Type:** object
+
+Simple description
  
 |||#
 
@@ -118,26 +116,24 @@ Cat class
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  type 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 ||
 
 ||
  foo 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 |||#
 
@@ -152,26 +148,24 @@ Dog class
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  type 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 ||
 
 ||
  bar 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 |||#
 

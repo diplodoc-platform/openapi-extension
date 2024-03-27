@@ -53,17 +53,16 @@ Generated server url
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  a 
 |
- object[] 
-|
- 
+ **Type:** object[]
+
+
+
  
 |||#
 
@@ -155,17 +154,16 @@ Generated server url
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  a 
 |
- any[] 
-|
- 
+ **Type:** any[]
+
+
+
  
 |||#
 
@@ -253,18 +251,17 @@ Generated server url
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  a 
 |
- (string 
-or integer)[] 
-|
- 
+ **Type:** (string 
+or integer)[]
+
+
+
  
 |||#
 
@@ -444,17 +441,15 @@ Generated server url
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  name 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 |||#
 
@@ -551,17 +546,15 @@ Generated server url
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  name 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 |||#
 

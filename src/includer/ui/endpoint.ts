@@ -182,7 +182,7 @@ function parameters(pagePrintedRefs: Set<string>, params?: Parameters) {
                 }
             }
             tables.push(title(3)(heading));
-            tables.push(table([['Name', 'Type', 'Description'], ...rows]));
+            tables.push(table([['Name', 'Description'], ...rows]));
             tables.push(...printAllTables(pagePrintedRefs, tableRefs));
         }
     }
@@ -203,7 +203,10 @@ function parameterRow(param: Parameter): {cells: string[]; ref?: TableRef[]} {
         description = concatNewLine(description, `Default: \`${param.default}\``);
     }
     return {
-        cells: [tableParameterName(param.name, param.required), row.type, description],
+        cells: [
+            tableParameterName(param.name, param.required),
+            block([`${bold('Type:')} ${row.type}`, description]),
+        ],
         ref: row.ref,
     };
 }

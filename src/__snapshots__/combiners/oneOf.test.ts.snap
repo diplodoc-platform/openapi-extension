@@ -49,25 +49,23 @@ Generated server url
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
- oneOf 
+ ...rest 
 |
- [Dog](#dog) 
-|
- Dog class 
+ **oneOf** [Dog](#dog)
+
+Dog class 
 ||
 
 ||
- oneOf 
+ ...rest 
 |
- [Cat](#cat) 
-|
- Cat class 
+ **oneOf** [Cat](#cat)
+
+Cat class 
 |||#
 
 </div>
@@ -81,26 +79,24 @@ Dog class
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  type 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 ||
 
 ||
  baz 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 |||#
 
@@ -115,26 +111,24 @@ Cat class
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  type 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 ||
 
 ||
  foo 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 |||#
 
@@ -167,25 +161,23 @@ Cat class
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
- oneOf 
+ ...rest 
 |
- [Dog](#dog) 
-|
- Dog class 
+ **oneOf** [Dog](#dog)
+
+Dog class 
 ||
 
 ||
- oneOf 
+ ...rest 
 |
- [Cat](#cat) 
-|
- Cat class 
+ **oneOf** [Cat](#cat)
+
+Cat class 
 |||#
 
 </div>
@@ -247,43 +239,41 @@ Generated server url
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  name 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 ||
 
 ||
  age 
 |
- number 
-|
- 
+ **Type:** number
+
+
  
 ||
 
 ||
- oneOf 
+ ...rest 
 |
- [Dog](#dog) 
-|
- Dog class 
+ **oneOf** [Dog](#dog)
+
+Dog class 
 ||
 
 ||
- oneOf 
+ ...rest 
 |
- [Cat](#cat) 
-|
- Cat class 
+ **oneOf** [Cat](#cat)
+
+Cat class 
 |||#
 
 </div>
@@ -297,26 +287,24 @@ Dog class
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  type 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 ||
 
 ||
  baz 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 |||#
 
@@ -331,26 +319,24 @@ Cat class
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  type 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 ||
 
 ||
  foo 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 |||#
 
@@ -385,43 +371,41 @@ Cat class
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  name 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 ||
 
 ||
  age 
 |
- number 
-|
- 
+ **Type:** number
+
+
  
 ||
 
 ||
- oneOf 
+ ...rest 
 |
- [Dog](#dog) 
-|
- Dog class 
+ **oneOf** [Dog](#dog)
+
+Dog class 
 ||
 
 ||
- oneOf 
+ ...rest 
 |
- [Cat](#cat) 
-|
- Cat class 
+ **oneOf** [Cat](#cat)
+
+Cat class 
 |||#
 
 </div>
@@ -485,35 +469,33 @@ Generated server url
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  pet 
 |
- [Dog](#dog) 
-or [Cat](#cat) 
-|
- 
+ **Type:** [Dog](#dog) 
+or [Cat](#cat)
+
+
  
 ||
 
 ||
- oneOf 
+ ...rest 
 |
- [Dog](#dog) 
-|
- Dog class 
+ **oneOf** [Dog](#dog)
+
+Dog class 
 ||
 
 ||
- oneOf 
+ ...rest 
 |
- [Cat](#cat) 
-|
- Cat class 
+ **oneOf** [Cat](#cat)
+
+Cat class 
 |||#
 
 </div>
@@ -527,26 +509,24 @@ Dog class
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  type 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 ||
 
 ||
  baz 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 |||#
 
@@ -561,26 +541,24 @@ Cat class
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  type 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 ||
 
 ||
  foo 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 |||#
 
@@ -617,35 +595,33 @@ Cat class
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  pet 
 |
- [Dog](#dog) 
-or [Cat](#cat) 
-|
- 
+ **Type:** [Dog](#dog) 
+or [Cat](#cat)
+
+
  
 ||
 
 ||
- oneOf 
+ ...rest 
 |
- [Dog](#dog) 
-|
- Dog class 
+ **oneOf** [Dog](#dog)
+
+Dog class 
 ||
 
 ||
- oneOf 
+ ...rest 
 |
- [Cat](#cat) 
-|
- Cat class 
+ **oneOf** [Cat](#cat)
+
+Cat class 
 |||#
 
 </div>

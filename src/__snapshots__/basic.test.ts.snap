@@ -57,26 +57,24 @@ Base 200 response
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  type 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 ||
 
 ||
  foo 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 |||#
 
@@ -111,26 +109,24 @@ Base 200 response
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  type 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 ||
 
 ||
  bar 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 |||#
 

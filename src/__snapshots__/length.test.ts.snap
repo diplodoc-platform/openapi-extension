@@ -65,35 +65,33 @@ Generated server url
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  pet 
 |
- [Cat](#cat) 
-|
- From response
+ **Type:** [Cat](#cat)
+
+From response
  
 ||
 
 ||
  petWithoutDescription 
 |
- [Cat](#cat) 
-|
- Cat class
+ **Type:** [Cat](#cat)
+
+Cat class
  
 ||
 
 ||
  refToSchemaWithDescription 
 |
- [Dog](#dog) 
-|
- Dog class
+ **Type:** [Dog](#dog)
+
+Dog class
  
 |||#
 
@@ -108,26 +106,24 @@ Cat class
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  name 
 |
- string 
-|
- 
+ **Type:** string
+
+
  
 ||
 
 ||
  foo 
 |
- string 
-|
- <span style="color:gray;">Min length</span>: \`3\` 
+ **Type:** string
+
+<span style="color:gray;">Min length</span>: \`3\` 
 |||#
 
 </div>
@@ -141,26 +137,24 @@ Dog class
 #|||
  **Name** 
 |
- **Type** 
-|
  **Description** 
 ||
 
 ||
  name 
 |
- string 
-|
- Pet name
+ **Type:** string
+
+Pet name
 <br><span style="color:gray;">Max length</span>: \`100\` 
 ||
 
 ||
  bar 
 |
- string 
-|
- <span style="color:gray;">Min length</span>: \`1\`<br><span style="color:gray;">Max length</span>: \`99\` 
+ **Type:** string
+
+<span style="color:gray;">Min length</span>: \`1\`<br><span style="color:gray;">Max length</span>: \`99\` 
 |||#
 
 </div>

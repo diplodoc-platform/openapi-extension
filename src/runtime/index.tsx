@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {createPortal} from 'react-dom';
-import {unescape} from 'html-escaper';
 
 import {Sandbox} from './sandbox';
 
@@ -34,7 +33,7 @@ export const Runtime: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        setSandbox(document.querySelector<HTMLElement>('.yfm-sandbox-js'));
+        setSandbox(document.querySelector<HTMLElement>('.yfm-openapi-sandbox-js'));
     });
 
     if (!sandbox || !sandbox.dataset.props) {
@@ -42,7 +41,7 @@ export const Runtime: React.FC = () => {
     }
 
     try {
-        const props = JSON.parse(unescape(sandbox.dataset.props));
+        const props = JSON.parse(decodeURIComponent(sandbox.dataset.props));
 
         return createPortal(<Sandbox {...props} />, sandbox);
     } catch (error) {

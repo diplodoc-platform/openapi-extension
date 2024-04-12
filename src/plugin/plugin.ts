@@ -1,98 +1,33 @@
-import type StateBlock from 'markdown-it/lib/rules_block/state_block';
 import type Token from 'markdown-it/lib/token';
 import type {MarkdownItPluginCb} from '@diplodoc/transform/lib/plugins/typings';
-import {escape} from 'html-escaper';
+import {load} from 'js-yaml';
 
-const startMark = '{% openapi sandbox %}';
-const endMark = '{% end openapi sandbox %}';
+function isSandboxBlock(token: Token) {
+    return token.type === 'fence' && token.info.match(/^\s*openapi-sandbox(\s*|$)/);
+}
 
-function parserOpenAPISandboxBlock(state: StateBlock, start: number, end: number, silent: boolean) {
-    let firstLine,
-        lastLine,
-        next,
-        lastPos,
-        found = false,
-        pos = state.bMarks[start] + state.tShift[start],
-        max = state.eMarks[start];
+function applyTransforms({tokens}: {tokens: Token[]}) {
+    const blocks = tokens.filter(isSandboxBlock);
 
-    if (pos + startMark.length > max) {
-        return false;
+    if (blocks.length) {
+        blocks.forEach((token) => {
+            token.type = 'openapi_sandbox_block';
+            token.tag = 'div';
+            token.attrSet('class', 'yfm-openapi-sandbox-js');
+            token.attrSet('data-props', encodeURIComponent(JSON.stringify(load(token.content))));
+            token.content = '';
+        });
     }
 
-    if (state.src.slice(pos, pos + startMark.length) !== startMark) {
-        return false;
-    }
-
-    pos += startMark.length;
-    firstLine = state.src.slice(pos, max);
-
-    if (silent) {
-        return true;
-    }
-
-    if (firstLine.slice(-endMark.length) === endMark) {
-        firstLine = firstLine.slice(0, -endMark.length);
-        found = true;
-    }
-
-    for (next = start; !found; ) {
-        next++;
-
-        if (next >= end) {
-            break;
-        }
-
-        pos = state.bMarks[next] + state.tShift[next];
-        max = state.eMarks[next];
-
-        if (pos < max && state.tShift[next] < state.blkIndent) {
-            // non-empty line with negative indent should stop the list:
-            break;
-        }
-
-        if (state.src.slice(pos, max).slice(-endMark.length) === endMark) {
-            lastPos = state.src.slice(0, max).lastIndexOf(endMark);
-            lastLine = state.src.slice(pos, lastPos);
-            found = true;
-        }
-    }
-
-    state.line = next + 1;
-
-    const token = state.push('openapi_sandbox_block', 'openapi_sandbox', 0);
-    token.block = true;
-    token.content =
-        (firstLine ? firstLine + '\n' : '') +
-        state.getLines(start + 1, next, state.tShift[start], true) +
-        (lastLine ? lastLine : '');
-    token.map = [start, state.line];
-    token.markup = startMark;
     return true;
 }
 
-const openapiSandboxBlock = (jsonString: string) => {
-    try {
-        const props = escape(jsonString);
-
-        return `<div class="yfm-sandbox-js" data-props="${props}"></div>`;
-    } catch (error) {
-        console.log(error);
-        return jsonString;
-    }
-};
-
-const openapiSandboxRenderer = (tokens: Token[], idx: number) => {
-    return openapiSandboxBlock(tokens[idx].content);
-};
-
 const openapiSandboxPlugin: MarkdownItPluginCb = (md) => {
     try {
-        md.block.ruler.before('meta', 'openapi_sandbox_block', parserOpenAPISandboxBlock);
+        md.core.ruler.after('fence', 'openapi-sandbox', applyTransforms);
     } catch (e) {
-        md.block.ruler.push('openapi_sandbox_block', parserOpenAPISandboxBlock);
+        md.core.ruler.push('openapi-sandbox', applyTransforms);
     }
-
-    md.renderer.rules.openapi_sandbox_block = openapiSandboxRenderer;
 };
 
 export function transform() {

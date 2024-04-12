@@ -1,5 +1,6 @@
 import stringify from 'json-stringify-safe';
 import RefsService from '../services/refs';
+import {dump} from 'js-yaml';
 
 import {
     COOKIES_SECTION_NAME,
@@ -114,7 +115,7 @@ function sandbox({
         bodyStr = JSON.stringify(prepareSampleObject(requestBody?.schema ?? {}), null, 2);
     }
 
-    const props = JSON.stringify({
+    const props = dump({
         pathParams,
         searchParams,
         headers,
@@ -127,7 +128,7 @@ function sandbox({
         host: host ?? '',
     });
 
-    return block(['{% openapi sandbox %}', props, '{% end openapi sandbox %}']);
+    return block(['```openapi-sandbox\n' + props + '\n```']);
 }
 
 function request(data: Endpoint) {

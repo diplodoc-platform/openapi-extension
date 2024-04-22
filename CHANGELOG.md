@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.0](https://github.com/diplodoc-platform/openapi-extension/compare/v2.1.0...v2.2.0) (2024-04-22)
+
+
+### Features
+
+* new design, custom descriptions ([b217056](https://github.com/diplodoc-platform/openapi-extension/commit/b2170567d1f66be336d10630803241ed28cb122e))
+
 ## [2.1.0](https://github.com/diplodoc-platform/openapi-extension/compare/v2.0.0...v2.1.0) (2024-03-04)
 
 

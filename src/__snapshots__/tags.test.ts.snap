@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`tags rendering renders tag and toc: basic 1`] = `
+"# basic
+
+basic tag
+
+## Endpoints
+
+- [tags](tags.md)
+
+<!-- markdownlint-disable-file -->"
+`;
+
+exports[`tags rendering renders tag and toc: toc 1`] = `
+"name: openapi
+items:
+  - name: Overview
+    href: index.md
+  - name: basic
+    items:
+      - name: Overview
+        href: basic/index.md
+      - href: basic/tags.md
+        name: tags
+  - name: Alternate title
+    items:
+      - name: Overview
+        href: navtitle/index.md
+      - href: navtitle/tags.md
+        name: tags
+  - name: Normal title
+    items:
+      - name: Overview
+        href: normal/index.md
+      - href: normal/tags.md
+        name: tags
+  - href: test-parameters.md
+    name: parameters test
+"
+`;
+
+exports[`tags rendering renders tag and toc: weird 1`] = `
+"# Normal title
+
+weird tag with normal slug
+
+## Endpoints
+
+- [tags](tags.md)
+
+<!-- markdownlint-disable-file -->"
+`;

@@ -155,7 +155,7 @@ async function generateToc(params: GenerateTocParams): Promise<void> {
         items: [],
     };
 
-    tags.forEach((tag, id) => {
+    tags.forEach((tag) => {
         // eslint-disable-next-line no-shadow
         const {name, endpoints: endpointsOfTag} = tag;
 
@@ -165,7 +165,7 @@ async function generateToc(params: GenerateTocParams): Promise<void> {
         };
 
         const custom = ArgvService.tag(tag.name);
-        const customId = custom?.alias || id;
+        const customId = custom?.alias || tag.id;
 
         section.items = endpointsOfTag.map((endpoint) => handleEndpointRender(endpoint, customId));
 
@@ -273,11 +273,11 @@ async function generateContent(params: GenerateContentParams): Promise<void> {
         });
     }
 
-    spec.tags.forEach((tag, id) => {
+    spec.tags.forEach((tag) => {
         const {endpoints} = tag;
 
         const custom = ArgvService.tag(tag.name);
-        const customId = custom?.alias || id;
+        const customId = custom?.alias || tag.id;
 
         endpoints.forEach((endpoint) => {
             results.push(handleEndpointIncluder(endpoint, join(writePath, customId), sandbox));

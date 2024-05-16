@@ -159,6 +159,8 @@ export type Tag = {
     name: string;
     description?: string;
     endpoints: Endpoints;
+    'x-navtitle'?: string;
+    'x-slug'?: string;
 };
 
 export type Endpoints = Endpoint[];

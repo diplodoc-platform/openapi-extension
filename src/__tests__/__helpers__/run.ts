@@ -5,6 +5,16 @@ import {dump} from 'js-yaml';
 import {virtualFS} from './virtualFS';
 import nodeFS from 'fs';
 
+declare module 'openapi-types' {
+    // eslint-disable-next-line @typescript-eslint/no-namespace
+    namespace OpenAPIV3 {
+        interface TagObject {
+            'x-navtitle'?: string;
+            'x-slug'?: string;
+        }
+    }
+}
+
 const baseDocument = {
     openapi: '3.0.2',
     info: {
@@ -37,6 +47,7 @@ export class DocumentBuilder {
     private responses: [code: number, response: OpenAPIV3.ResponseObject][] = [];
     private parameters: OpenAPIV3.ParameterObject[] = [];
     private components: Record<string, OpenAPIV3.SchemaObject> = {};
+    private tags: Array<OpenAPIV3.TagObject> = [];
     private requestBody?: OpenAPIV3.RequestBodyObject = undefined;
 
     constructor(id: string) {
@@ -86,6 +97,12 @@ export class DocumentBuilder {
         return this;
     }
 
+    tag(schema: OpenAPIV3.TagObject) {
+        this.tags.push(schema);
+
+        return this;
+    }
+
     build(): string {
         if (!this.responses.length) {
             throw new Error("Test case error: endpoint can't have no responses");
@@ -99,6 +116,7 @@ export class DocumentBuilder {
                         requestBody: this.requestBody,
                         operationId: this.id,
                         responses: Object.fromEntries(this.responses),
+                        tags: this.tags.map((tag) => tag.name),
                     },
                     parameters: this.parameters,
                 },
@@ -106,6 +124,7 @@ export class DocumentBuilder {
             components: {
                 schemas: this.components,
             },
+            tags: this.tags,
         };
 
         return dump(spec);

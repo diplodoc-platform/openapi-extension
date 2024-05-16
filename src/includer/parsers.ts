@@ -110,6 +110,15 @@ function tagsFromSpec(spec: OpenAPISpec): Map<string, Tag> {
         }
     }
 
+    parsed.forEach((tag: Tag) => {
+        if (tag['x-navtitle']) {
+            tag.name = tag['x-navtitle'];
+        }
+        if (tag['x-slug']) {
+            tag.id = tag['x-slug'];
+        }
+    });
+
     return parsed;
 }
 const opid = (path: string, method: string, id?: string) => slugify(id ?? [path, method].join('-'));

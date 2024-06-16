@@ -5,6 +5,8 @@ import {
     SPEC_RENDER_MODE_DEFAULT,
     SPEC_RENDER_MODE_HIDDEN,
     SUPPORTED_ENUM_TYPES,
+    TAG_ID_FIELD,
+    TAG_NAMES_FIELD,
 } from './constants';
 
 export type VarsPreset = 'internal' | 'external';
@@ -128,7 +130,7 @@ export type OpenAPIOperation = {
         content: {[ContentType: string]: {schema: OpenJSONSchema}};
     };
     security?: Array<Record<string, Security>>;
-    'x-navtitle': string[];
+    [TAG_NAMES_FIELD]: string[];
 };
 
 export type Info = {
@@ -159,8 +161,8 @@ export type Tag = {
     name: string;
     description?: string;
     endpoints: Endpoints;
-    'x-navtitle'?: string;
-    'x-slug'?: string;
+    [TAG_NAMES_FIELD]?: string;
+    [TAG_ID_FIELD]?: string;
 };
 
 export type Endpoints = Endpoint[];

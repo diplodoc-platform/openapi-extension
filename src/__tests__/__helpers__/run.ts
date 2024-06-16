@@ -99,8 +99,8 @@ export class DocumentBuilder {
                         requestBody: this.requestBody,
                         operationId: this.id,
                         responses: Object.fromEntries(this.responses),
+                        parameters: this.parameters,
                     },
-                    parameters: this.parameters,
                 },
             },
             components: {

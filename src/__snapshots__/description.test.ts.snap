@@ -120,7 +120,7 @@ Cat class
 ||
 
 ||
- type 
+ foo 
 |
  **Type:** string
 
@@ -129,7 +129,7 @@ Cat class
 ||
 
 ||
- foo 
+ type 
 |
  **Type:** string
 
@@ -152,7 +152,7 @@ Dog class
 ||
 
 ||
- type 
+ bar 
 |
  **Type:** string
 
@@ -161,7 +161,7 @@ Dog class
 ||
 
 ||
- bar 
+ type 
 |
  **Type:** string
 

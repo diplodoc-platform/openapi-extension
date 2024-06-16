@@ -32,7 +32,7 @@ function link(text: string, src: string) {
 }
 
 function title(depth: TitleDepth) {
-    return (content?: string) => content?.length && '#'.repeat(depth) + ` ${content}`;
+    return (content?: string) => (content?.length ? '#'.repeat(depth) + ` ${content}` : '');
 }
 
 function body(text?: string) {

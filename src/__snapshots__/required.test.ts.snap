@@ -28,6 +28,32 @@ Generated server url
 
 </div>
 
+### Query parameters
+
+#|||
+ **Name** 
+|
+ **Description** 
+||
+
+||
+ c<span class="openapi__required">*</span> 
+|
+ **Type:** number 
+||
+
+||
+ a 
+|
+ **Type:** number 
+||
+
+||
+ b 
+|
+ **Type:** number 
+|||#
+
 <div class="openapi-entity">
 
 ### Body
@@ -71,7 +97,7 @@ Generated server url
 ||
 
 ||
- c 
+ d<span class="openapi__required">*</span> 
 |
  **Type:** number
 
@@ -80,7 +106,7 @@ Generated server url
 ||
 
 ||
- d<span class="openapi__required">*</span> 
+ c 
 |
  **Type:** number
 
@@ -132,7 +158,7 @@ Cat class
 ||
 
 ||
- type 
+ foo 
 |
  **Type:** string
 
@@ -141,7 +167,7 @@ Cat class
 ||
 
 ||
- foo 
+ type 
 |
  **Type:** string
 

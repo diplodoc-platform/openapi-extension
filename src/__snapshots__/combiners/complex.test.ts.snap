@@ -57,20 +57,20 @@ Generated server url
 ||
 
 ||
- name 
-|
- **Type:** string
-
-<span class="openapi-description-annotation">Default:</span> \`b\` 
-||
-
-||
  age 
 |
  **Type:** any
 
 
  
+||
+
+||
+ name 
+|
+ **Type:** string
+
+<span class="openapi-description-annotation">Default:</span> \`b\` 
 ||
 
 ||
@@ -104,7 +104,7 @@ Dog class
 ||
 
 ||
- type 
+ bar 
 |
  **Type:** string
 
@@ -113,7 +113,7 @@ Dog class
 ||
 
 ||
- bar 
+ type 
 |
  **Type:** string
 
@@ -136,7 +136,7 @@ Cat class
 ||
 
 ||
- type 
+ foo 
 |
  **Type:** string
 
@@ -145,7 +145,7 @@ Cat class
 ||
 
 ||
- foo 
+ type 
 |
  **Type:** string
 
@@ -192,20 +192,20 @@ Base 200 response
 ||
 
 ||
- name 
-|
- **Type:** string
-
-<span class="openapi-description-annotation">Default:</span> \`b\` 
-||
-
-||
  age 
 |
  **Type:** any
 
 
  
+||
+
+||
+ name 
+|
+ **Type:** string
+
+<span class="openapi-description-annotation">Default:</span> \`b\` 
 ||
 
 ||

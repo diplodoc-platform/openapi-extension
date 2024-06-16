@@ -83,7 +83,7 @@ Dog class
 ||
 
 ||
- type 
+ baz 
 |
  **Type:** string
 
@@ -92,7 +92,7 @@ Dog class
 ||
 
 ||
- baz 
+ type 
 |
  **Type:** string
 
@@ -115,7 +115,7 @@ Cat class
 ||
 
 ||
- type 
+ foo 
 |
  **Type:** string
 
@@ -124,7 +124,7 @@ Cat class
 ||
 
 ||
- foo 
+ type 
 |
  **Type:** string
 
@@ -243,18 +243,18 @@ Generated server url
 ||
 
 ||
- name 
+ age 
 |
- **Type:** string
+ **Type:** number
 
 
  
 ||
 
 ||
- age 
+ name 
 |
- **Type:** number
+ **Type:** string
 
 
  
@@ -291,7 +291,7 @@ Dog class
 ||
 
 ||
- type 
+ baz 
 |
  **Type:** string
 
@@ -300,7 +300,7 @@ Dog class
 ||
 
 ||
- baz 
+ type 
 |
  **Type:** string
 
@@ -323,7 +323,7 @@ Cat class
 ||
 
 ||
- type 
+ foo 
 |
  **Type:** string
 
@@ -332,7 +332,7 @@ Cat class
 ||
 
 ||
- foo 
+ type 
 |
  **Type:** string
 
@@ -375,18 +375,18 @@ Cat class
 ||
 
 ||
- name 
+ age 
 |
- **Type:** string
+ **Type:** number
 
 
  
 ||
 
 ||
- age 
+ name 
 |
- **Type:** number
+ **Type:** string
 
 
  
@@ -513,7 +513,7 @@ Dog class
 ||
 
 ||
- type 
+ baz 
 |
  **Type:** string
 
@@ -522,7 +522,7 @@ Dog class
 ||
 
 ||
- baz 
+ type 
 |
  **Type:** string
 
@@ -545,7 +545,7 @@ Cat class
 ||
 
 ||
- type 
+ foo 
 |
  **Type:** string
 
@@ -554,7 +554,7 @@ Cat class
 ||
 
 ||
- foo 
+ type 
 |
  **Type:** string
 

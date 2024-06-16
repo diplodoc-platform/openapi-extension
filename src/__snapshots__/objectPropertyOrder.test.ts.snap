@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`allOf operator support renders simple allOf 1`] = `
+exports[`Property rows in tables describing object schemas are hoisted to the top of the table if marked as required by the spec 1`] = `
 "<div class="openapi">
 
-# allOf
+# ObjectPropertyOrder
 
 ## Request
 
@@ -37,9 +37,10 @@ Generated server url
 
 \`\`\`json
 {
-    "type": "string",
-    "foo": "string",
-    "name": "string"
+    "id": "c3073b9d-edd0-49f2-a28d-b7ded8ff9a8b",
+    "luminosityClass": "string",
+    "name": "string",
+    "catalogueDesignationCCDM": "string"
 }
 \`\`\`
 
@@ -54,29 +55,38 @@ Generated server url
 ||
 
 ||
- foo 
+ id<span class="openapi__required">*</span> 
 |
- **Type:** string
+ **Type:** string&lt;uuid&gt;
 
-
+Internal ID for this star
  
 ||
 
 ||
- name 
+ luminosityClass<span class="openapi__required">*</span> 
 |
  **Type:** string
 
-
+Morgan-Keenan luminosity class for this star
  
 ||
 
 ||
- type 
+ name<span class="openapi__required">*</span> 
 |
  **Type:** string
 
+Name of this star
+ 
+||
 
+||
+ catalogueDesignationCCDM 
+|
+ **Type:** string
+
+CCDM catalogue designation for this star
  
 |||#
 
@@ -84,11 +94,9 @@ Generated server url
 
 ## Responses
 
-<div class="openapi__response__code__200">
+<div class="openapi__response__code__204">
 
-## 200 OK
-
-Base 200 response
+## 204 No Content
 
 <div class="openapi-entity">
 
@@ -98,47 +106,12 @@ Base 200 response
 
 
 \`\`\`json
-{
-    "type": "string",
-    "baz": "string"
-}
+{}
 \`\`\`
 
 
 {% endcut %}
 
-
-#|||
- **Name** 
-|
- **Description** 
-||
-
-||
- baz 
-|
- **Type:** string
-
-
- 
-||
-
-||
- name 
-|
- **Type:** string
-
-<span class="openapi-description-annotation">Default:</span> \`a\` 
-||
-
-||
- type 
-|
- **Type:** string
-
-
- 
-|||#
 
 </div>
 
@@ -148,10 +121,10 @@ Base 200 response
 </div>"
 `;
 
-exports[`allOf operator support renders single allOf 1`] = `
+exports[`Property rows in tables describing object schemas are ordered lexicographically by default 1`] = `
 "<div class="openapi">
 
-# allOf
+# ObjectPropertyOrder
 
 ## Request
 
@@ -185,10 +158,10 @@ Generated server url
 
 \`\`\`json
 {
-    "pet": {
-        "type": "string",
-        "foo": "string"
-    }
+    "id": "c3073b9d-edd0-49f2-a28d-b7ded8ff9a8b",
+    "luminosityClass": "string",
+    "name": "string",
+    "catalogueDesignationCCDM": "string"
 }
 \`\`\`
 
@@ -203,43 +176,38 @@ Generated server url
 ||
 
 ||
- pet 
-|
- **Type:** [Cat](#cat)
-
-Cat class
- 
-|||#
-
-</div>
-
-<div class="openapi-entity">
-
-### Cat
-
-Cat class
-
-#|||
- **Name** 
-|
- **Description** 
-||
-
-||
- foo 
+ catalogueDesignationCCDM 
 |
  **Type:** string
 
-
+CCDM catalogue designation for this star
  
 ||
 
 ||
- type 
+ id 
+|
+ **Type:** string&lt;uuid&gt;
+
+Internal ID for this star
+ 
+||
+
+||
+ luminosityClass 
 |
  **Type:** string
 
+Morgan-Keenan luminosity class for this star
+ 
+||
 
+||
+ name 
+|
+ **Type:** string
+
+Name of this star
  
 |||#
 
@@ -247,11 +215,9 @@ Cat class
 
 ## Responses
 
-<div class="openapi__response__code__200">
+<div class="openapi__response__code__204">
 
-## 200 OK
-
-Base 200 response
+## 204 No Content
 
 <div class="openapi-entity">
 
@@ -261,32 +227,12 @@ Base 200 response
 
 
 \`\`\`json
-{
-    "pet": {
-        "type": "string",
-        "foo": "string"
-    }
-}
+{}
 \`\`\`
 
 
 {% endcut %}
 
-
-#|||
- **Name** 
-|
- **Description** 
-||
-
-||
- pet 
-|
- **Type:** [Cat](#cat)
-
-Cat class
- 
-|||#
 
 </div>
 

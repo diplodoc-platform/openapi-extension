@@ -3,6 +3,6 @@ module.exports = {
     preset: 'ts-jest',
     testEnvironment: 'node',
     testRegex: '.test.ts$',
-    rootDir: 'src/__tests__',
-    snapshotResolver: '../../jest.snapshots.js',
+    rootDir: '.',
+    snapshotResolver: './jest.snapshots.js',
 };

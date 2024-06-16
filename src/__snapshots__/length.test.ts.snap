@@ -110,20 +110,20 @@ Cat class
 ||
 
 ||
+ foo 
+|
+ **Type:** string
+
+<span class="openapi-description-annotation">Min length:</span> \`3\` 
+||
+
+||
  name 
 |
  **Type:** string
 
 
  
-||
-
-||
- foo 
-|
- **Type:** string
-
-<span class="openapi-description-annotation">Min length:</span> \`3\` 
 |||#
 
 </div>
@@ -141,20 +141,20 @@ Dog class
 ||
 
 ||
+ bar 
+|
+ **Type:** string
+
+<span class="openapi-description-annotation">Min length:</span> \`1\`<br><span class="openapi-description-annotation">Max length:</span> \`99\` 
+||
+
+||
  name 
 |
  **Type:** string
 
 Pet name
 <br><span class="openapi-description-annotation">Max length:</span> \`100\` 
-||
-
-||
- bar 
-|
- **Type:** string
-
-<span class="openapi-description-annotation">Min length:</span> \`1\`<br><span class="openapi-description-annotation">Max length:</span> \`99\` 
 |||#
 
 </div>

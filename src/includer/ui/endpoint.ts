@@ -2,6 +2,8 @@ import stringify from 'json-stringify-safe';
 import RefsService from '../services/refs';
 import {dump} from 'js-yaml';
 
+import groupBy from 'lodash/groupBy';
+
 import {
     COOKIES_SECTION_NAME,
     HEADERS_SECTION_NAME,
@@ -23,6 +25,7 @@ import {
 
 import {
     Endpoint,
+    In,
     OpenJSONSchema,
     Parameter,
     Parameters,
@@ -49,6 +52,7 @@ import {
     tabs,
     title,
 } from './common';
+import {getOrderedParamOrPropList} from './presentationUtils/orderedProps/getOrderedPropList';
 
 function endpoint(data: Endpoint, sandboxPlugin: {host?: string; tabName?: string} | undefined) {
     // try to remember, which tables we are already printed on page
@@ -161,6 +165,18 @@ function request(data: Endpoint) {
     return block(result);
 }
 
+function getParameterSourceTableContents(parameterList: readonly Parameter[]) {
+    const rowsAndRefs = parameterList.map((param) => parameterRow(param));
+
+    const additionalRefs = rowsAndRefs
+        .flatMap(({ref}) => ref)
+        .filter((maybeRef): maybeRef is string => typeof maybeRef !== 'undefined');
+
+    const contentRows = rowsAndRefs.map(({cells}) => cells);
+
+    return {additionalRefs, contentRows};
+}
+
 function parameters(pagePrintedRefs: Set<string>, params?: Parameters) {
     const sections = {
         path: PATH_PARAMETERS_SECTION_NAME,
@@ -168,26 +184,47 @@ function parameters(pagePrintedRefs: Set<string>, params?: Parameters) {
         header: HEADERS_SECTION_NAME,
         cookie: COOKIES_SECTION_NAME,
     };
-    const tables = [];
-    for (const [inValue, heading] of Object.entries(sections)) {
-        const inParams = params?.filter((param: Parameter) => param.in === inValue);
-        if (inParams?.length) {
-            const rows: string[][] = [];
-            const tableRefs: TableRef[] = [];
-            for (const param of inParams) {
-                const {cells, ref} = parameterRow(param);
-                rows.push(cells);
-                if (ref) {
-                    // there may be enums, which should be printed in separate tables
-                    tableRefs.push(...ref);
-                }
-            }
-            tables.push(title(3)(heading));
-            tables.push(table([['Name', 'Description'], ...rows]));
-            tables.push(...printAllTables(pagePrintedRefs, tableRefs));
-        }
-    }
-    return block(tables);
+
+    const partitionedParameters = groupBy(params, (parameterSpec) => parameterSpec.in) as Record<
+        In,
+        Parameter[] | undefined
+    >;
+
+    const content = Object.keys(sections)
+        .map(
+            (parameterSource) =>
+                [
+                    parameterSource as In,
+                    partitionedParameters[parameterSource as In] ?? [],
+                ] as const,
+        )
+        .filter(([, parameterList]) => parameterList.length)
+        .reduce<string[]>((contentAccumulator, [parameterSource, parameterList]) => {
+            const wellOrderedParameters = getOrderedParamOrPropList({
+                propList: parameterList,
+                iteratee: ({name, required}) => ({
+                    paramOrPropName: name,
+                    // required can actually be `undefined` in runtime
+                    isRequired: Boolean(required),
+                }),
+                shouldApplyLexSort: true,
+            });
+
+            const {contentRows, additionalRefs} =
+                getParameterSourceTableContents(wellOrderedParameters);
+
+            const tableHeading = sections[parameterSource];
+
+            contentAccumulator.push(
+                title(3)(tableHeading),
+                table([['Name', 'Description'], ...contentRows]),
+                ...printAllTables(pagePrintedRefs, additionalRefs),
+            );
+
+            return contentAccumulator;
+        }, []);
+
+    return block(content);
 }
 
 function parameterRow(param: Parameter): {cells: string[]; ref?: TableRef[]} {
@@ -220,15 +257,15 @@ function openapiBody(pagePrintedRefs: Set<string>, obj?: Schema) {
     const {type = 'schema', schema} = obj;
     const sectionTitle = title(3)('Body');
 
-    let result: any[] = [sectionTitle];
+    let result: (string | null)[] = [sectionTitle];
 
     if (isPrimitive(schema.type)) {
         result = [
             ...result,
             type,
             `${bold('Type:')} ${schema.type}`,
-            schema.format && `${bold('Format:')} ${schema.format}`,
-            schema.description && `${bold('Description:')} ${schema.description}`,
+            schema.format ? `${bold('Format:')} ${schema.format}` : null,
+            schema.description ? `${bold('Description:')} ${schema.description}` : null,
         ];
 
         return block(result);

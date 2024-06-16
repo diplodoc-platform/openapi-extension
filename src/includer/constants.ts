@@ -5,6 +5,7 @@ export enum LeadingPageMode {
     Leaf = 'leaf',
 }
 export const EOL = '\n';
+export const TAG_ID_FIELD = 'x-slug';
 export const TAG_NAMES_FIELD = 'x-navtitle';
 export const BLOCK = EOL.repeat(2);
 export const INFO_TAB_NAME = 'Info';

@@ -2,7 +2,7 @@
 import slugify from 'slugify';
 import {getStatusText} from 'http-status-codes';
 
-import {TAG_NAMES_FIELD} from './constants';
+import {TAG_ID_FIELD, TAG_NAMES_FIELD} from './constants';
 
 import {
     Endpoint,
@@ -109,6 +109,11 @@ function tagsFromSpec(spec: OpenAPISpec): Map<string, Tag> {
             parsed.set(key, {...parsed.get(key), name: titles[i]});
         }
     }
+
+    parsed.forEach((tag: Tag) => {
+        tag.name = tag[TAG_NAMES_FIELD] || tag.name;
+        tag.id = tag[TAG_ID_FIELD] ?? tag.id;
+    });
 
     return parsed;
 }

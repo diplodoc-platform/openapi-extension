@@ -1,0 +1,219 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`tags rendering renders basic tag: index.md 1`] = `
+"# basic
+
+basic tag
+
+## Endpoints
+
+- [name](name.md)
+
+<!-- markdownlint-disable-file -->"
+`;
+
+exports[`tags rendering renders basic tag: name.md 1`] = `
+"<div class="openapi">
+
+# name
+
+## Request
+
+<div class="openapi__requests">
+
+<div class="openapi__request__wrapper" style="--method: var(--dc-openapi-methods-post);margin-bottom: 12px">
+
+<div class="openapi__request">
+
+POST {.openapi__method} 
+\`\`\`
+http://localhost:8080/test
+\`\`\`
+
+
+
+</div>
+
+Generated server url
+
+</div>
+
+</div>
+
+## Responses
+
+<div class="openapi__response__code__200">
+
+## 200 OK
+
+Base 200 response
+
+<div class="openapi-entity">
+
+### Body
+
+{% cut "application/json" %}
+
+
+\`\`\`json
+{
+    "id": 0,
+    "title": "string"
+}
+\`\`\`
+
+
+{% endcut %}
+
+
+#|||
+ **Name** 
+|
+ **Description** 
+||
+
+||
+ id 
+|
+ **Type:** number
+
+
+ 
+||
+
+||
+ title 
+|
+ **Type:** string
+
+
+ 
+|||#
+
+</div>
+
+</div>
+<!-- markdownlint-disable-file -->
+
+</div>"
+`;
+
+exports[`tags rendering renders basic tag: toc 1`] = `
+"name: openapi
+items:
+  - name: Overview
+    href: index.md
+  - name: basic
+    items:
+      - name: Overview
+        href: basic/index.md
+      - href: basic/name.md
+        name: name
+  - href: test-parameters.md
+    name: parameters test
+"
+`;
+
+exports[`tags rendering uses custom name from tag and title from operation: index.md 1`] = `
+"# Title from x-navtitle in operation
+
+## Endpoints
+
+- [name](name.md)
+
+<!-- markdownlint-disable-file -->"
+`;
+
+exports[`tags rendering uses custom name from tag and title from operation: toc 1`] = `
+"name: openapi
+items:
+  - name: Overview
+    href: index.md
+  - name: Title from x-navtitle in operation
+    items:
+      - name: Overview
+        href: slug/index.md
+      - href: slug/name.md
+        name: name
+  - href: test-parameters.md
+    name: parameters test
+"
+`;
+
+exports[`tags rendering uses custom name from tag: index.md 1`] = `
+"# TagName
+
+## Endpoints
+
+- [name](name.md)
+
+<!-- markdownlint-disable-file -->"
+`;
+
+exports[`tags rendering uses custom name from tag: toc 1`] = `
+"name: openapi
+items:
+  - name: Overview
+    href: index.md
+  - name: TagName
+    items:
+      - name: Overview
+        href: slug/index.md
+      - href: slug/name.md
+        name: name
+  - href: test-parameters.md
+    name: parameters test
+"
+`;
+
+exports[`tags rendering uses custom title from operation: index.md 1`] = `
+"# Title from x-navtitle in operation
+
+## Endpoints
+
+- [name](name.md)
+
+<!-- markdownlint-disable-file -->"
+`;
+
+exports[`tags rendering uses custom title from operation: toc 1`] = `
+"name: openapi
+items:
+  - name: Overview
+    href: index.md
+  - name: Title from x-navtitle in operation
+    items:
+      - name: Overview
+        href: TagName/index.md
+      - href: TagName/name.md
+        name: name
+  - href: test-parameters.md
+    name: parameters test
+"
+`;
+
+exports[`tags rendering uses custom title from tag override title from operation: index.md 1`] = `
+"# Title from tag
+
+## Endpoints
+
+- [name](name.md)
+
+<!-- markdownlint-disable-file -->"
+`;
+
+exports[`tags rendering uses custom title from tag override title from operation: toc 1`] = `
+"name: openapi
+items:
+  - name: Overview
+    href: index.md
+  - name: Title from tag
+    items:
+      - name: Overview
+        href: TagName/index.md
+      - href: TagName/name.md
+        name: name
+  - href: test-parameters.md
+    name: parameters test
+"
+`;

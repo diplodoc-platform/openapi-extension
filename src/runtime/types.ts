@@ -1,3 +1,4 @@
+import { TAG_NAMES_FIELD } from '../includer/constants';
 import {OpenJSONSchema} from '../includer/models';
 
 export interface Field<T = unknown, E = unknown> {
@@ -68,7 +69,7 @@ export type OpenAPIOperation = {
         content: {[ContentType: string]: {schema: OpenJSONSchema}};
     };
     security?: Array<Record<string, Security>>;
-    'x-navtitle': string[];
+    [TAG_NAMES_FIELD]?: string[];
 };
 
 export type Info = {

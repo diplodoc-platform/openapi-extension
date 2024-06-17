@@ -52,7 +52,7 @@ import {
     tabs,
     title,
 } from './common';
-import {getOrderedPropList} from './presentationUtils/orderedProps/getOrderedPropList';
+import {prepareRenderableParameterList} from './presentationUtils/prepareRenderableParameterList';
 
 function endpoint(data: Endpoint, sandboxPlugin: {host?: string; tabName?: string} | undefined) {
     // try to remember, which tables we are already printed on page
@@ -198,19 +198,13 @@ function parameters(pagePrintedRefs: Set<string>, params?: Parameters) {
                     partitionedParameters[parameterSource as In] ?? [],
                 ] as const,
         )
+        .map(
+            ([parameterSource, parameterList]) =>
+                [parameterSource, prepareRenderableParameterList(parameterList)] as const,
+        )
         .filter(([, parameterList]) => parameterList.length)
         .reduce<string[]>((contentAccumulator, [parameterSource, parameterList]) => {
-            const wellOrderedParameters = getOrderedPropList({
-                propList: parameterList,
-                iteratee: ({name, required}) => ({
-                    name,
-                    // required can actually be `undefined` in runtime
-                    isRequired: Boolean(required),
-                }),
-            });
-
-            const {contentRows, additionalRefs} =
-                getParameterSourceTableContents(wellOrderedParameters);
+            const {contentRows, additionalRefs} = getParameterSourceTableContents(parameterList);
 
             const tableHeading = sections[parameterSource];
 

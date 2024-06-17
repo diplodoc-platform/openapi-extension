@@ -220,6 +220,9 @@ export type Parameter = {
     example?: Primitive;
     default?: Primitive;
     schema: OpenJSONSchema;
+
+    // vendor extensions
+    'x-hidden'?: boolean;
 };
 
 export type Responses = Response[];

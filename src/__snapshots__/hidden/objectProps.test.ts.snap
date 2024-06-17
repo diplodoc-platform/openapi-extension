@@ -1,0 +1,102 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Properties in object schemas marked with \`x-hidden\` should not be rendered in the resulting markdown 1`] = `
+"<div class="openapi">
+
+# HiddenObjectProperties
+
+## Request
+
+<div class="openapi__requests">
+
+<div class="openapi__request__wrapper" style="--method: var(--dc-openapi-methods-post);margin-bottom: 12px">
+
+<div class="openapi__request">
+
+POST {.openapi__method} 
+\`\`\`
+http://localhost:8080/test
+\`\`\`
+
+
+
+</div>
+
+Generated server url
+
+</div>
+
+</div>
+
+<div class="openapi-entity">
+
+### Body
+
+{% cut "application/json" %}
+
+
+\`\`\`json
+{
+    "luminosityClass": "string",
+    "name": "string"
+}
+\`\`\`
+
+
+{% endcut %}
+
+
+#|||
+ **Name** 
+|
+ **Description** 
+||
+
+||
+ luminosityClass 
+|
+ **Type:** string
+
+Morgan-Keenan luminosity class for this star
+ 
+||
+
+||
+ name 
+|
+ **Type:** string
+
+Name of this star
+ 
+|||#
+
+</div>
+
+## Responses
+
+<div class="openapi__response__code__204">
+
+## 204 No Content
+
+<div class="openapi-entity">
+
+### Body
+
+{% cut "application/json" %}
+
+
+\`\`\`json
+{}
+\`\`\`
+
+
+{% endcut %}
+
+
+</div>
+
+</div>
+<!-- markdownlint-disable-file -->
+
+</div>"
+`;

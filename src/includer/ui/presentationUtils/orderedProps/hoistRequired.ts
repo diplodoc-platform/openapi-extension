@@ -19,7 +19,7 @@ const makeSortComparator =
  * `propList` to determine whether a property is required or not.
  * @returns {ReadonlyArray<T>} Ordered prop/param list.
  */
-export const hoistRequiredParamsOrProps = <T>(
+export const hoistRequired = <T>(
     propList: readonly T[],
     isRequiredGetter: IsRequiredGetter<T>,
 ): readonly T[] => [...propList].sort(makeSortComparator(isRequiredGetter));

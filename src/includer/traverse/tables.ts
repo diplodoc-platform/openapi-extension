@@ -6,7 +6,7 @@ import {concatNewLine} from '../utils';
 import {OpenJSONSchema, OpenJSONSchemaDefinition} from '../models';
 import {collectRefs, extractOneOfElements, inferType, typeToText} from './types';
 import {prepareComplexDescription} from './description';
-import {getOrderedParamOrPropList} from '../ui/presentationUtils/orderedProps/getOrderedPropList';
+import {getOrderedPropList} from '../ui/presentationUtils/orderedProps/getOrderedPropList';
 
 type TableRow = [string, string];
 
@@ -57,13 +57,12 @@ function prepareObjectSchemaTable(schema: OpenJSONSchema): PrepareObjectSchemaTa
 
     const result: PrepareObjectSchemaTableResult = {rows: [], refs: []};
 
-    const wellOrderedProperties = getOrderedParamOrPropList({
+    const wellOrderedProperties = getOrderedPropList({
         propList: Object.entries(merged.properties || {}),
         iteratee: ([propName]) => ({
-            paramOrPropName: propName,
+            name: propName,
             isRequired: isRequired(propName, merged),
         }),
-        shouldApplyLexSort: true,
     });
 
     wellOrderedProperties.forEach(([key, v]) => {

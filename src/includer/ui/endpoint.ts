@@ -52,7 +52,7 @@ import {
     tabs,
     title,
 } from './common';
-import {getOrderedParamOrPropList} from './presentationUtils/orderedProps/getOrderedPropList';
+import {getOrderedPropList} from './presentationUtils/orderedProps/getOrderedPropList';
 
 function endpoint(data: Endpoint, sandboxPlugin: {host?: string; tabName?: string} | undefined) {
     // try to remember, which tables we are already printed on page
@@ -200,14 +200,13 @@ function parameters(pagePrintedRefs: Set<string>, params?: Parameters) {
         )
         .filter(([, parameterList]) => parameterList.length)
         .reduce<string[]>((contentAccumulator, [parameterSource, parameterList]) => {
-            const wellOrderedParameters = getOrderedParamOrPropList({
+            const wellOrderedParameters = getOrderedPropList({
                 propList: parameterList,
                 iteratee: ({name, required}) => ({
-                    paramOrPropName: name,
+                    name,
                     // required can actually be `undefined` in runtime
                     isRequired: Boolean(required),
                 }),
-                shouldApplyLexSort: true,
             });
 
             const {contentRows, additionalRefs} =

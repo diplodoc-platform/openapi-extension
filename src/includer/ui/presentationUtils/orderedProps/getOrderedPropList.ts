@@ -1,14 +1,14 @@
 import sortBy from 'lodash/sortBy';
-import {hoistRequiredParamsOrProps} from './hoistRequired';
+import {hoistRequired} from './hoistRequired';
 
 type IterateeReturn = {
-    paramOrPropName: string;
+    name: string;
     isRequired: boolean;
 };
 
 type Iteratee<T> = (listElement: T) => IterateeReturn;
 
-type GetOrderedParamOrPropListArguments<T> = {
+type GetOrderedListArguments<T> = {
     /**
      * List of parameters/object schema props to process and order.
      */
@@ -20,26 +20,23 @@ type GetOrderedParamOrPropListArguments<T> = {
     /**
      * Whether or not to apply lexicographic sort before hoisting the required properties.
      */
-    shouldApplyLexSort: boolean;
+    shouldApplyLexSort?: boolean;
 };
 
 /**
  * Get a well-ordered list of parameters/object schema props (i.e., required params/props hoisted to
  * the start of the list, lexicographic sort applied as necessary).
- * @param {GetOrderedParamOrPropListArguments<T>} param0 Arguments for the operation.
+ * @param {GetOrderedListArguments<T>} param0 Arguments for the operation.
  * @returns {ReadonlyArray<T>} The resulting well-ordered list.
  */
-export const getOrderedParamOrPropList = <T>({
+export const getOrderedPropList = <T>({
     propList,
     iteratee,
-    shouldApplyLexSort,
-}: GetOrderedParamOrPropListArguments<T>): readonly T[] => {
+    shouldApplyLexSort = true,
+}: GetOrderedListArguments<T>): readonly T[] => {
     const preprocessed = shouldApplyLexSort
-        ? sortBy(propList, (listElement) => iteratee(listElement).paramOrPropName)
+        ? sortBy(propList, (listElement) => iteratee(listElement).name)
         : propList;
 
-    return hoistRequiredParamsOrProps(
-        preprocessed,
-        (listElement) => iteratee(listElement).isRequired,
-    );
+    return hoistRequired(preprocessed, (listElement) => iteratee(listElement).isRequired);
 };

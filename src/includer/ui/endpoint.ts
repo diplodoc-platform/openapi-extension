@@ -223,7 +223,7 @@ function parameters(pagePrintedRefs: Set<string>, params?: Parameters) {
 function parameterRow(param: Parameter): {cells: string[]; ref?: TableRef[]} {
     const row = prepareTableRowData(param.schema, param.name);
     let description = param.description ?? '';
-    if (!row.ref && row.description.length) {
+    if (!row.ref?.length && row.description.length) {
         // if row.ref present, row.description will be printed in separate table
         description = concatNewLine(description, row.description);
     }

@@ -63,19 +63,13 @@ Base 200 response
 ||
  foo 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 ||
 
 ||
  type 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 |||#
 
 </div>
@@ -115,19 +109,13 @@ Base 200 response
 ||
  bar 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 ||
 
 ||
  type 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 |||#
 
 </div>

@@ -1,4 +1,4 @@
-import {DocumentBuilder, run} from './__helpers__/run';
+import {DocumentBuilder, run} from '../__helpers__/run';
 
 const name = 'length';
 describe('length', () => {

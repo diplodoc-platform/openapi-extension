@@ -59,11 +59,7 @@ Generated server url
 ||
  a 
 |
- **Type:** object[]
-
-
-
- 
+ **Type:** object[] 
 |||#
 
 </div>
@@ -160,11 +156,7 @@ Generated server url
 ||
  a 
 |
- **Type:** any[]
-
-
-
- 
+ **Type:** any[] 
 |||#
 
 </div>
@@ -258,11 +250,7 @@ Generated server url
  a 
 |
  **Type:** (string 
-or integer)[]
-
-
-
- 
+or integer)[] 
 |||#
 
 </div>
@@ -447,10 +435,7 @@ Generated server url
 ||
  name 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 |||#
 
 </div>
@@ -552,10 +537,7 @@ Generated server url
 ||
  name 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 |||#
 
 </div>

@@ -57,8 +57,7 @@ Generated server url
 |
  **Type:** string
 
-Morgan-Keenan luminosity class for this star
- 
+Morgan-Keenan luminosity class for this star 
 ||
 
 ||
@@ -66,8 +65,7 @@ Morgan-Keenan luminosity class for this star
 |
  **Type:** string
 
-Name of this star
- 
+Name of this star 
 |||#
 
 </div>

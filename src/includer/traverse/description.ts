@@ -1,4 +1,3 @@
-import {EOL} from '../constants';
 import {OpenJSONSchema} from '../models';
 import {concatNewLine} from '../utils';
 
@@ -74,10 +73,8 @@ const fields: Fields = [
 ];
 
 function prepareComplexDescription(baseDescription: string, value: OpenJSONSchema): string {
-    const description = baseDescription + EOL;
-
     return fields.reduce((acc, curr) => {
-        const field = typeof curr === 'function' ? curr(value) : curr;
+        const field = typeof curr === 'function' ? curr(value) : curr; //?
 
         if (typeof field === 'undefined' || !value[field.key]) {
             return acc;
@@ -86,7 +83,7 @@ function prepareComplexDescription(baseDescription: string, value: OpenJSONSchem
         const {key, label, computed, notWrapValueIntoCode} = field;
 
         return concatConstraint(acc, computed || value[key], label + ':', notWrapValueIntoCode);
-    }, description);
+    }, baseDescription);
 }
 
 function concatConstraint(

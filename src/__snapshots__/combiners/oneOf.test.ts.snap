@@ -85,19 +85,13 @@ Dog class
 ||
  baz 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 ||
 
 ||
  type 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 |||#
 
 </div>
@@ -117,19 +111,13 @@ Cat class
 ||
  foo 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 ||
 
 ||
  type 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 |||#
 
 </div>
@@ -245,19 +233,13 @@ Generated server url
 ||
  age 
 |
- **Type:** number
-
-
- 
+ **Type:** number 
 ||
 
 ||
  name 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 ||
 
 ||
@@ -293,19 +275,13 @@ Dog class
 ||
  baz 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 ||
 
 ||
  type 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 |||#
 
 </div>
@@ -325,19 +301,13 @@ Cat class
 ||
  foo 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 ||
 
 ||
  type 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 |||#
 
 </div>
@@ -377,19 +347,13 @@ Cat class
 ||
  age 
 |
- **Type:** number
-
-
- 
+ **Type:** number 
 ||
 
 ||
  name 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 ||
 
 ||
@@ -476,10 +440,7 @@ Generated server url
  pet 
 |
  **Type:** [Dog](#dog) 
-or [Cat](#cat)
-
-
- 
+or [Cat](#cat) 
 ||
 
 ||
@@ -515,19 +476,13 @@ Dog class
 ||
  baz 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 ||
 
 ||
  type 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 |||#
 
 </div>
@@ -547,19 +502,13 @@ Cat class
 ||
  foo 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 ||
 
 ||
  type 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 |||#
 
 </div>
@@ -602,10 +551,7 @@ Cat class
  pet 
 |
  **Type:** [Dog](#dog) 
-or [Cat](#cat)
-
-
- 
+or [Cat](#cat) 
 ||
 
 ||

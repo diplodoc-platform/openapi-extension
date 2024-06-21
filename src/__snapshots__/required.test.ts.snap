@@ -81,46 +81,31 @@ Generated server url
 ||
  a<span class="openapi__required">*</span> 
 |
- **Type:** number
-
-
- 
+ **Type:** number 
 ||
 
 ||
  b<span class="openapi__required">*</span> 
 |
- **Type:** number
-
-
- 
+ **Type:** number 
 ||
 
 ||
  d<span class="openapi__required">*</span> 
 |
- **Type:** number
-
-
- 
+ **Type:** number 
 ||
 
 ||
  c 
 |
- **Type:** number
-
-
- 
+ **Type:** number 
 ||
 
 ||
  e 
 |
- **Type:** number
-
-
- 
+ **Type:** number 
 |||#
 
 </div>
@@ -160,19 +145,13 @@ Cat class
 ||
  foo 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 ||
 
 ||
  type 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 |||#
 
 </div>

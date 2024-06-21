@@ -73,8 +73,7 @@ Generated server url
 |
  **Type:** [Cat](#cat)
 
-From response
- 
+From response 
 ||
 
 ||
@@ -82,8 +81,7 @@ From response
 |
  **Type:** [Cat](#cat)
 
-Cat class
- 
+Cat class 
 ||
 
 ||
@@ -91,8 +89,7 @@ Cat class
 |
  **Type:** [Dog](#dog)
 
-Dog class
- 
+Dog class 
 |||#
 
 </div>
@@ -120,10 +117,7 @@ Cat class
 ||
  name 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 |||#
 
 </div>
@@ -153,8 +147,7 @@ Dog class
 |
  **Type:** string
 
-Pet name
-<br><span class="openapi-description-annotation">Max length:</span> \`100\` 
+Pet name<br><span class="openapi-description-annotation">Max length:</span> \`100\` 
 |||#
 
 </div>

@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Property rows in tables describing object schemas are hoisted to the top of the table if marked as required by the spec 1`] = `
+exports[`Default value constraints should process default constraints specified for parameters 1`] = `
 "<div class="openapi">
 
-# ObjectPropertyOrder
+# DefaultValueConstraints
 
 ## Request
 
@@ -28,25 +28,7 @@ Generated server url
 
 </div>
 
-<div class="openapi-entity">
-
-### Body
-
-{% cut "application/json" %}
-
-
-\`\`\`json
-{
-    "id": "c3073b9d-edd0-49f2-a28d-b7ded8ff9a8b",
-    "luminosityClass": "string",
-    "name": "string",
-    "catalogueDesignationCCDM": "string"
-}
-\`\`\`
-
-
-{% endcut %}
-
+### Query parameters
 
 #|||
  **Name** 
@@ -55,38 +37,12 @@ Generated server url
 ||
 
 ||
- id<span class="openapi__required">*</span> 
+ limit 
 |
- **Type:** string&lt;uuid&gt;
+ **Type:** number&lt;int32&gt;
 
-Internal ID for this star 
-||
-
-||
- luminosityClass<span class="openapi__required">*</span> 
-|
- **Type:** string
-
-Morgan-Keenan luminosity class for this star 
-||
-
-||
- name<span class="openapi__required">*</span> 
-|
- **Type:** string
-
-Name of this star 
-||
-
-||
- catalogueDesignationCCDM 
-|
- **Type:** string
-
-CCDM catalogue designation for this star 
+Amount of search results to show<br><span class="openapi-description-annotation">Default:</span> \`10\` 
 |||#
-
-</div>
 
 ## Responses
 
@@ -117,10 +73,10 @@ CCDM catalogue designation for this star
 </div>"
 `;
 
-exports[`Property rows in tables describing object schemas are ordered lexicographically by default 1`] = `
+exports[`Default value constraints should process default constraints specified in schema objects 1`] = `
 "<div class="openapi">
 
-# ObjectPropertyOrder
+# DefaultValueConstraints
 
 ## Request
 
@@ -154,10 +110,12 @@ Generated server url
 
 \`\`\`json
 {
-    "id": "c3073b9d-edd0-49f2-a28d-b7ded8ff9a8b",
-    "luminosityClass": "string",
-    "name": "string",
-    "catalogueDesignationCCDM": "string"
+    "role": "basic",
+    "name": "Anonymous",
+    "tags": [
+        "blah"
+    ],
+    "age": 7
 }
 \`\`\`
 
@@ -172,27 +130,11 @@ Generated server url
 ||
 
 ||
- catalogueDesignationCCDM 
+ age 
 |
- **Type:** string
+ **Type:** number
 
-CCDM catalogue designation for this star 
-||
-
-||
- id 
-|
- **Type:** string&lt;uuid&gt;
-
-Internal ID for this star 
-||
-
-||
- luminosityClass 
-|
- **Type:** string
-
-Morgan-Keenan luminosity class for this star 
+<span class="openapi-description-annotation">Default:</span> \`7\` 
 ||
 
 ||
@@ -200,7 +142,23 @@ Morgan-Keenan luminosity class for this star
 |
  **Type:** string
 
-Name of this star 
+<span class="openapi-description-annotation">Default:</span> \`Anonymous\` 
+||
+
+||
+ role 
+|
+ **Type:** string
+
+Role for the user being created<br><span class="openapi-description-annotation">Default:</span> \`basic\`<br><span class="openapi-description-annotation">Enum:</span> \`basic\`, \`admin\` 
+||
+
+||
+ tags 
+|
+ **Type:** string[]
+
+<span class="openapi-description-annotation">Default:</span> \`blah\` 
 |||#
 
 </div>

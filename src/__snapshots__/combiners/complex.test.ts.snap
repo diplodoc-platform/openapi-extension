@@ -59,10 +59,7 @@ Generated server url
 ||
  age 
 |
- **Type:** any
-
-
- 
+ **Type:** any 
 ||
 
 ||
@@ -106,19 +103,13 @@ Dog class
 ||
  bar 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 ||
 
 ||
  type 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 |||#
 
 </div>
@@ -138,19 +129,13 @@ Cat class
 ||
  foo 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 ||
 
 ||
  type 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 |||#
 
 </div>
@@ -194,10 +179,7 @@ Base 200 response
 ||
  age 
 |
- **Type:** any
-
-
- 
+ **Type:** any 
 ||
 
 ||

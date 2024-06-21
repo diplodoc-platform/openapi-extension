@@ -74,8 +74,7 @@ Generated server url
 |
  **Type:** [Cat](#cat)
 
-From response
- 
+From response 
 ||
 
 ||
@@ -83,8 +82,7 @@ From response
 |
  **Type:** [Cat](#cat)
 
-Cat class
- 
+Cat class 
 ||
 
 ||
@@ -92,8 +90,7 @@ Cat class
 |
  **Type:** [Dog](#dog)
 
-Dog class
- 
+Dog class 
 ||
 
 ||
@@ -101,8 +98,7 @@ Dog class
 |
  **Type:** object
 
-Simple description
- 
+Simple description 
 |||#
 
 </div>
@@ -122,19 +118,13 @@ Cat class
 ||
  foo 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 ||
 
 ||
  type 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 |||#
 
 </div>
@@ -154,19 +144,13 @@ Dog class
 ||
  bar 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 ||
 
 ||
  type 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 |||#
 
 </div>

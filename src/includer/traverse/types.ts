@@ -81,7 +81,7 @@ function extractRefFromType(type: JSONSchemaType): string | undefined {
     return type.ref;
 }
 
-function collectRefs(type: JSONSchemaType): string[] | undefined {
+function collectRefs(type: JSONSchemaType): string[] {
     const result: JSONSchemaType[] = [];
 
     if (isUnionType(type)) {
@@ -90,7 +90,9 @@ function collectRefs(type: JSONSchemaType): string[] | undefined {
         result.push(type);
     }
 
-    return result.map(extractRefFromType).filter(Boolean) as string[] | undefined;
+    return result
+        .map(extractRefFromType)
+        .filter((maybeRef): maybeRef is string => typeof maybeRef !== 'undefined');
 }
 
 function isUnionType(type: JSONSchemaType): type is JSONSchemaUnionType {

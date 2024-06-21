@@ -56,28 +56,19 @@ Generated server url
 ||
  foo 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 ||
 
 ||
  name 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 ||
 
 ||
  type 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 |||#
 
 </div>
@@ -117,10 +108,7 @@ Base 200 response
 ||
  baz 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 ||
 
 ||
@@ -134,10 +122,7 @@ Base 200 response
 ||
  type 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 |||#
 
 </div>
@@ -207,8 +192,7 @@ Generated server url
 |
  **Type:** [Cat](#cat)
 
-Cat class
- 
+Cat class 
 |||#
 
 </div>
@@ -228,19 +212,13 @@ Cat class
 ||
  foo 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 ||
 
 ||
  type 
 |
- **Type:** string
-
-
- 
+ **Type:** string 
 |||#
 
 </div>
@@ -284,8 +262,7 @@ Base 200 response
 |
  **Type:** [Cat](#cat)
 
-Cat class
- 
+Cat class 
 |||#
 
 </div>

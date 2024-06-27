@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.3.0](https://github.com/diplodoc-platform/openapi-extension/compare/v2.2.0...v2.3.0) (2024-06-27)
+
+
+### Features
+
+* omit parameters marked with `x-hidden` from resulting markdown ([1fc2ec1](https://github.com/diplodoc-platform/openapi-extension/commit/1fc2ec1683f7676679164cda62d4d27bec9446e1))
+* sort parameters and object schema props, hoise required ones to the top ([0ce0498](https://github.com/diplodoc-platform/openapi-extension/commit/0ce04980ae4a562c0ceae8bf754bab7f69b3bf35))
+* Use fence for sandbox data ([99c20d5](https://github.com/diplodoc-platform/openapi-extension/commit/99c20d536f9b33dc9d07bf31c535a7464d1b5fc8))
+
+
+### Bug Fixes
+
+* exclude `__tests__` from mainline TS build ([6208987](https://github.com/diplodoc-platform/openapi-extension/commit/6208987e48da3eadc00cbd4c4994172fb7226027))
+* restore functionality to display default values for endpoint parameters ([ab77bea](https://github.com/diplodoc-platform/openapi-extension/commit/ab77bea7f344208fc51fdc7c0bb8cf26c3a017bb))
+* small refactor after code review ([271fdcc](https://github.com/diplodoc-platform/openapi-extension/commit/271fdcc681241164582841ff855b643db786a249))
+
 ## [2.2.0](https://github.com/diplodoc-platform/openapi-extension/compare/v2.1.0...v2.2.0) (2024-04-22)
 
 

@@ -17,6 +17,8 @@ import {
     Specification,
     Tag,
 } from './models';
+import {normalize} from './normalizer/normalize';
+import {OpenAPI} from 'openapi-types';
 
 function info(spec: OpenAPISpec): Info {
     const {
@@ -115,8 +117,12 @@ function tagsFromSpec(spec: OpenAPISpec): Map<string, Tag> {
 const opid = (path: string, method: string, id?: string) => slugify(id ?? [path, method].join('-'));
 
 function pathsFromSpec(spec: OpenAPISpec, tagsByID: Map<string, Tag>): Specification {
+    // This conversion (OAPI.Doc -> OAS (with `any`) -> OAPI.Doc) is crude, but this whole file consists of crude code, so...
+    // (someday this will be a part of normalization routine I guess)
+    const prenormalizedSpec = normalize(spec as OpenAPI.Document);
+
     const endpoints: Endpoints = [];
-    const {paths, servers, components = {}, security: globalSecurity = []} = spec;
+    const {paths, servers, security: globalSecurity = []} = spec;
     const visiter = ({path, method, endpoint}: VisiterParams) => {
         const {
             summary,
@@ -129,16 +135,9 @@ function pathsFromSpec(spec: OpenAPISpec, tagsByID: Map<string, Tag>): Specifica
             security = [],
         } = endpoint;
 
-        const parsedSecurity = [...security, ...globalSecurity].reduce((arr, item) => {
-            arr.push(
-                ...Object.keys(item).reduce((acc, key) => {
-                    // @ts-ignore
-                    acc.push(components.securitySchemes[key]);
-                    return acc;
-                }, []),
-            );
-            return arr;
-        }, []);
+        const parsedSecurity = [...security, ...globalSecurity].flatMap((item) =>
+            Object.keys(item).map((key) => prenormalizedSpec.securityDefinitions[key]),
+        );
 
         const parsedServers = (endpoint.servers || servers || [{url: '/'}]).map(
             (server: Server) => {

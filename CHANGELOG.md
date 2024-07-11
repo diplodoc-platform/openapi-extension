@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.3.1](https://github.com/diplodoc-platform/openapi-extension/compare/v2.3.0...v2.3.1) (2024-07-11)
+
+
+### Bug Fixes
+
+* Fix complex descriptions (with constraints) ([e5eacec](https://github.com/diplodoc-platform/openapi-extension/commit/e5eacecc0509ca4719964ee529b746784bb06772))
+* support windows paths for build includer ([f2490f0](https://github.com/diplodoc-platform/openapi-extension/commit/f2490f065876854bb2e6e2b18b50235f14286a29))
+
 ## [2.3.0](https://github.com/diplodoc-platform/openapi-extension/compare/v2.2.0...v2.3.0) (2024-06-27)
 
 

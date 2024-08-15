@@ -86,7 +86,7 @@
   },
   "dependencies": {
     "@apidevtools/swagger-parser": "^10.1.0",
-    "@diplodoc/transform": "^4.3.0",
+    "@diplodoc/transform": "^4.6.0",
     "bem-cn-lite": "^4.1.0",
     "html-escaper": "^3.0.3",
     "http-status-codes": "^2.2.0",

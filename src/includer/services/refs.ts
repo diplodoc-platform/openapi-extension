@@ -81,7 +81,7 @@ function merge(schema: OpenJSONSchemaDefinition, needToSaveRef = true): OpenJSON
     const combiners = value.oneOf || value.allOf || [];
 
     if (combiners.length === 0) {
-        return value;
+        return {...value};
     }
 
     if (needToSaveRef && combiners.length === 1) {

@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.3.2](https://github.com/diplodoc-platform/openapi-extension/compare/v2.3.1...v2.3.2) (2024-09-17)
+
+
+### Bug Fixes
+
+* ensure new object creation when merging schemas ([fff50ad](https://github.com/diplodoc-platform/openapi-extension/commit/fff50add20ed55743776ee026ddd6549b69f99dd))
+* Fix package main field ([27057ae](https://github.com/diplodoc-platform/openapi-extension/commit/27057ae4a4aca77c9e9413a1b0510dbc58dab4a0))
+
 ## [2.3.1](https://github.com/diplodoc-platform/openapi-extension/compare/v2.3.0...v2.3.1) (2024-07-11)
 
 

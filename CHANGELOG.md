@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.3](https://github.com/diplodoc-platform/openapi-extension/compare/v2.3.2...v2.3.3) (2024-09-24)
+
+
+### Bug Fixes
+
+* Update transform version ([f27023f](https://github.com/diplodoc-platform/openapi-extension/commit/f27023fac344e81f2b5b37d7967520143aa160cd))
+
 ## [2.3.2](https://github.com/diplodoc-platform/openapi-extension/compare/v2.3.1...v2.3.2) (2024-09-17)
 
 

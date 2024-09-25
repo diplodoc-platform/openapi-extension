@@ -302,12 +302,17 @@ function prepareSampleElement(
         return value.default;
     }
 
-    if (!required && callstack.includes(value)) {
+    const wasInCallstack = value._shallowCopyOf
+        ? callstack.includes(value._shallowCopyOf)
+        : callstack.includes(value);
+
+    if (!required && wasInCallstack) {
         // stop recursive cyclic links
         return undefined;
     }
 
-    const downCallstack = callstack.concat(value);
+    const nextCallstackEntry = value._shallowCopyOf ?? value;
+    const downCallstack = callstack.concat(nextCallstackEntry);
     const type = inferType(value);
 
     const schema = findNonNullOneOfElement(value);

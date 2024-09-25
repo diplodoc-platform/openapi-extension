@@ -1,0 +1,288 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Recursive references in schemas resulting in a cycle between two components are able to be handled by the includer 1`] = `
+"<div class="openapi">
+
+# recursiveReferences
+
+## Request
+
+<div class="openapi__requests">
+
+<div class="openapi__request__wrapper" style="--method: var(--dc-openapi-methods-post);margin-bottom: 12px">
+
+<div class="openapi__request">
+
+POST {.openapi__method} 
+\`\`\`
+http://localhost:8080/test
+\`\`\`
+
+
+
+</div>
+
+Generated server url
+
+</div>
+
+</div>
+
+## Responses
+
+<div class="openapi__response__code__200">
+
+## 200 OK
+
+<div class="openapi-entity">
+
+### Body
+
+{% cut "application/json" %}
+
+
+\`\`\`json
+{
+    "A": {
+        "B": {}
+    }
+}
+\`\`\`
+
+
+{% endcut %}
+
+
+#|||
+ **Name** 
+|
+ **Description** 
+||
+
+||
+ A 
+|
+ **Type:** [RecurseMiddle](#recursemiddle) 
+|||#
+
+</div>
+
+<div class="openapi-entity">
+
+### RecurseMiddle
+
+#|||
+ **Name** 
+|
+ **Description** 
+||
+
+||
+ B 
+|
+ **Type:** [RecurseTop](#recursetop) 
+|||#
+
+</div>
+
+<div class="openapi-entity">
+
+### RecurseTop
+
+#|||
+ **Name** 
+|
+ **Description** 
+||
+
+||
+ A 
+|
+ **Type:** [RecurseMiddle](#recursemiddle) 
+|||#
+
+</div>
+
+</div>
+<!-- markdownlint-disable-file -->
+
+</div>"
+`;
+
+exports[`Recursive references in schemas resulting in a trivial self-referential cycle are able to be handled by the includer 1`] = `
+"<div class="openapi">
+
+# recursiveReferences
+
+## Request
+
+<div class="openapi__requests">
+
+<div class="openapi__request__wrapper" style="--method: var(--dc-openapi-methods-post);margin-bottom: 12px">
+
+<div class="openapi__request">
+
+POST {.openapi__method} 
+\`\`\`
+http://localhost:8080/test
+\`\`\`
+
+
+
+</div>
+
+Generated server url
+
+</div>
+
+</div>
+
+## Responses
+
+<div class="openapi__response__code__200">
+
+## 200 OK
+
+<div class="openapi-entity">
+
+### Body
+
+{% cut "application/json" %}
+
+
+\`\`\`json
+{
+    "A": {}
+}
+\`\`\`
+
+
+{% endcut %}
+
+
+#|||
+ **Name** 
+|
+ **Description** 
+||
+
+||
+ A 
+|
+ **Type:** [RecurseTop](#recursetop) 
+|||#
+
+</div>
+
+<div class="openapi-entity">
+
+### RecurseTop
+
+#|||
+ **Name** 
+|
+ **Description** 
+||
+
+||
+ A 
+|
+ **Type:** [RecurseTop](#recursetop) 
+|||#
+
+</div>
+
+</div>
+<!-- markdownlint-disable-file -->
+
+</div>"
+`;
+
+exports[`Recursive references in schemas where the cycle itself is not trivially referenced are able to be handled by the includer 1`] = `
+"<div class="openapi">
+
+# recursiveReferences
+
+## Request
+
+<div class="openapi__requests">
+
+<div class="openapi__request__wrapper" style="--method: var(--dc-openapi-methods-post);margin-bottom: 12px">
+
+<div class="openapi__request">
+
+POST {.openapi__method} 
+\`\`\`
+http://localhost:8080/test
+\`\`\`
+
+
+
+</div>
+
+Generated server url
+
+</div>
+
+</div>
+
+## Responses
+
+<div class="openapi__response__code__200">
+
+## 200 OK
+
+<div class="openapi-entity">
+
+### Body
+
+{% cut "application/json" %}
+
+
+\`\`\`json
+{
+    "A": {}
+}
+\`\`\`
+
+
+{% endcut %}
+
+
+#|||
+ **Name** 
+|
+ **Description** 
+||
+
+||
+ A 
+|
+ **Type:** [RecurseTop](#recursetop) 
+|||#
+
+</div>
+
+<div class="openapi-entity">
+
+### RecurseTop
+
+#|||
+ **Name** 
+|
+ **Description** 
+||
+
+||
+ A 
+|
+ **Type:** [RecurseTop](#recursetop) 
+|||#
+
+</div>
+
+</div>
+<!-- markdownlint-disable-file -->
+
+</div>"
+`;

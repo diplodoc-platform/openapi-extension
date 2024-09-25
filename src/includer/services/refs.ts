@@ -35,6 +35,11 @@ function find(value: OpenJSONSchema): string | undefined {
     return undefined;
 }
 
+const markedShallowCopy = (source: OpenJSONSchema): OpenJSONSchema => ({
+    ...source,
+    _shallowCopyOf: source._shallowCopyOf ?? source,
+});
+
 // unwrapping such samples
 // custom:
 //   additionalProperties:
@@ -81,7 +86,7 @@ function merge(schema: OpenJSONSchemaDefinition, needToSaveRef = true): OpenJSON
     const combiners = value.oneOf || value.allOf || [];
 
     if (combiners.length === 0) {
-        return {...value};
+        return markedShallowCopy(value);
     }
 
     if (needToSaveRef && combiners.length === 1) {

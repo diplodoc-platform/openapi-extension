@@ -312,6 +312,7 @@ export type OpenApiIncluderParams = {
 export type OpenJSONSchema = JSONSchema6 & {
     _runtime?: true;
     _emptyDescription?: true;
+    _shallowCopyOf?: OpenJSONSchema;
     example?: unknown;
     properties?: {
         [key: string]: JSONSchema6Definition & {

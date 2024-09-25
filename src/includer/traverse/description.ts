@@ -73,7 +73,7 @@ const fields: Fields = [
 
 function prepareComplexDescription(baseDescription: string, value: OpenJSONSchema): string {
     return fields.reduce((acc, curr) => {
-        const field = typeof curr === 'function' ? curr(value) : curr; //?
+        const field = typeof curr === 'function' ? curr(value) : curr;
 
         if (typeof field === 'undefined' || !value[field.key]) {
             return acc;

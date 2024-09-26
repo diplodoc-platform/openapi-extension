@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.4](https://github.com/diplodoc-platform/openapi-extension/compare/v2.3.3...v2.3.4) (2024-09-26)
+
+
+### Bug Fixes
+
+* figure out a way to uniquely identify shallow copies produced by `merge` ([65b497d](https://github.com/diplodoc-platform/openapi-extension/commit/65b497d16a70749bd9c07ab3e8ce1451eb001362))
+
 ## [2.3.3](https://github.com/diplodoc-platform/openapi-extension/compare/v2.3.2...v2.3.3) (2024-09-24)
 
 

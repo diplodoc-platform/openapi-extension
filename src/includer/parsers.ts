@@ -126,6 +126,7 @@ function pathsFromSpec(spec: OpenAPISpec, tagsByID: Map<string, V3Tag>): Specifi
             responses,
             requestBody,
             security = [],
+            deprecated,
         } = endpoint;
 
         const parsedSecurity = [...security, ...globalSecurity].reduce((arr, item) => {
@@ -179,6 +180,7 @@ function pathsFromSpec(spec: OpenAPISpec, tagsByID: Map<string, V3Tag>): Specifi
             responses: parsedResponses,
             parameters,
             summary,
+            deprecated,
             description,
             path: trimSlash(path),
             method,

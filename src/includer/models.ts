@@ -120,6 +120,7 @@ export type OpenAPIOperation = {
     summary?: string;
     description?: string;
     operationId?: string;
+    deprecated?: boolean;
     tags?: string[];
     servers?: V3Servers;
     parameters?: V3Parameters;
@@ -314,6 +315,7 @@ export type OpenJSONSchema = JSONSchema6 & {
     _emptyDescription?: true;
     _shallowCopyOf?: OpenJSONSchema;
     example?: unknown;
+    deprecated?: boolean;
     properties?: {
         [key: string]: JSONSchema6Definition & {
             'x-hidden'?: boolean;

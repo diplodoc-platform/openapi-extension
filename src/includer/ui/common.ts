@@ -10,6 +10,8 @@ import {
 } from '../constants';
 import {TitleDepth, V3Server} from '../models';
 
+import {popups} from './popups';
+
 const openapiBlock = bem('openapi');
 
 function meta(content: (string | boolean | undefined)[]) {
@@ -112,8 +114,22 @@ function anchor(ref: string, name?: string) {
     return link(name || ref, `#${slugify(ref).toLowerCase()}`);
 }
 
-function tableParameterName(key: string, required?: boolean) {
-    return required ? `${key}<span class="${openapiBlock('required')}">*</span>` : key;
+type ParameterNameProps = Partial<{
+    required: boolean;
+    deprecated: boolean;
+}>;
+function tableParameterName(key: string, {required, deprecated}: ParameterNameProps) {
+    let tableName = key;
+
+    if (required) {
+        tableName += `<span class="${openapiBlock('required')}">*</span>`;
+    }
+
+    if (deprecated) {
+        tableName += popups.deprecated({compact: true});
+    }
+
+    return tableName;
 }
 
 export {

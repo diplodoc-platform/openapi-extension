@@ -49,6 +49,7 @@ import {
     title,
 } from './common';
 import {prepareRenderableParameterList} from './presentationUtils/prepareRenderableParameterList';
+import {popups} from './popups';
 
 function endpoint(data: V3Endpoint, sandboxPlugin: {host?: string; tabName?: string} | undefined) {
     // try to remember, which tables we are already printed on page
@@ -72,6 +73,7 @@ function endpoint(data: V3Endpoint, sandboxPlugin: {host?: string; tabName?: str
 
     const endpointPage = block([
         title(1)(data.summary ?? data.id),
+        data.deprecated && popups.deprecated(),
         contentWrapper(
             block([
                 data.description?.length && body(data.description),
@@ -88,6 +90,7 @@ function endpoint(data: V3Endpoint, sandboxPlugin: {host?: string; tabName?: str
         `<div class="${openapiBlock()}">`,
         page(endpointPage),
         '</div>',
+        popups.collect(),
     ]).trim();
 }
 
@@ -231,7 +234,7 @@ function parameterRow(param: V3Parameter): {cells: string[]; ref?: TableRef[]} {
     }
     return {
         cells: [
-            tableParameterName(param.name, param.required),
+            tableParameterName(param.name, param),
             block([`${bold('Type:')} ${row.type}`, description]),
         ],
         ref: row.ref,
@@ -342,9 +345,12 @@ function response(visited: Set<string>, resp: V3Response) {
         header += ` ${resp.statusText}`;
     }
 
+    const isAllSchemasDeprecated = resp.schemas?.every(({schema}) => schema.deprecated);
+
     return block([
         `<div class="openapi__response__code__${resp.code}">`,
         title(2)(header),
+        isAllSchemasDeprecated && popups.deprecated(),
         body(resp.description),
         resp.schemas?.length && block(resp.schemas.map((s) => openapiBody(visited, s))),
         '</div>',

@@ -26,6 +26,9 @@ export const SPEC_SECTION_TYPE = 'Open API';
 export const LEADING_PAGE_NAME_DEFAULT = 'Overview';
 export const SPEC_RENDER_MODE_HIDDEN = 'hidden';
 export const SPEC_RENDER_MODE_DEFAULT = 'inline';
+export const DEPRECATED_ANNOTATION = 'Deprecated';
+export const DEPRECATED_POPUP_TEXT =
+    'No longer supported, please use an alternative and newer version.';
 export const SUPPORTED_ENUM_TYPES = ['string', 'number'] as const;
 export const PRIMITIVE_JSON6_SCHEMA_TYPES = new Set<OpenJSONSchema['type']>([
     'string',

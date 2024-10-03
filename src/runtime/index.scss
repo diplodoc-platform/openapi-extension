@@ -9,6 +9,13 @@
     --dc-openapi-status-code-redirect: rgb(52, 139, 220);
     --dc-openapi-status-code-client: rgb(233, 3, 58);
     --dc-openapi-status-code-server: rgb(255, 190, 92);
+    --dc-openapi-deprecated-bg: #fff4ca;
+    --dc-openapi-deprecated-color: #c36819;
+
+    h1,
+    h2 {
+        display: inline-block;
+    }
 
     .openapi-description-annotation {
         font-style: normal;
@@ -17,6 +24,55 @@
 
     &__required {
         color: var(--g-color-text-danger);
+    }
+
+    table td > *:first-child {
+        display: inline-block;
+    }
+
+    & .openapi-deprecated {
+        display: inline-block;
+        background-color: var(--dc-openapi-deprecated-bg);
+        color: var(--dc-openapi-deprecated-color);
+        font-size: 0.9em;
+
+        padding: 4px 5px;
+        border-radius: 5px;
+
+        position: relative;
+        bottom: 3px;
+        left: 6px;
+
+        border-bottom: none;
+        user-select: none;
+
+        &:hover {
+            color: var(--dc-openapi-deprecated-color);
+        }
+
+        &.compact {
+            padding: 1px 2px;
+            border-radius: 2px;
+
+            bottom: -3px;
+            left: 4px;
+            font-size: 1.5em;
+        }
+    }
+
+    @media only screen and (max-width: 768px) {
+        h1 {
+            display: block;
+        }
+
+        h2 {
+            margin-right: 6px;
+        }
+
+        .openapi-deprecated {
+            left: 0;
+            margin-bottom: 10px;
+        }
     }
 
     & #request {

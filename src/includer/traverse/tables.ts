@@ -68,7 +68,10 @@ function prepareObjectSchemaTable(schema: OpenJSONSchema): PrepareObjectSchemaTa
 
     wellOrderedProperties.forEach(([key, v]) => {
         const value = RefsService.merge(v);
-        const name = tableParameterName(key, isRequired(key, merged));
+        const name = tableParameterName(key, {
+            required: isRequired(key, merged),
+            deprecated: value.deprecated,
+        });
         const {type, description, ref, runtimeRef} = prepareTableRowData(value, key, tableRef);
 
         result.rows.push([name, block([`${bold('Type:')} ${type}`, description])]);

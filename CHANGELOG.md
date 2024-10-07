@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.4.0](https://github.com/diplodoc-platform/openapi-extension/compare/v2.3.4...v2.4.0) (2024-10-07)
+
+
+### Features
+
+* support deprecated field ([3fec1a3](https://github.com/diplodoc-platform/openapi-extension/commit/3fec1a34e584773a2bec26dd5ed94fb205efc3e3))
+
+
+### Bug Fixes
+
+* tests update ([865b641](https://github.com/diplodoc-platform/openapi-extension/commit/865b641ca8ce42689da41f25eca60564d1703d3e))
+
 ## [2.3.4](https://github.com/diplodoc-platform/openapi-extension/compare/v2.3.3...v2.3.4) (2024-09-26)
 
 

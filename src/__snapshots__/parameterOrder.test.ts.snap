@@ -86,7 +86,11 @@ Name for the requested star
 </div>
 <!-- markdownlint-disable-file -->
 
-</div>"
+</div>
+
+
+
+[*Deprecated]: No longer supported, please use an alternative and newer version."
 `;
 
 exports[`Endpoint parameters in tables are ordered lexicographically by default 1`] = `
@@ -175,5 +179,9 @@ Name for the requested star
 </div>
 <!-- markdownlint-disable-file -->
 
-</div>"
+</div>
+
+
+
+[*Deprecated]: No longer supported, please use an alternative and newer version."
 `;

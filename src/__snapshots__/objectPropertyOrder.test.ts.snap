@@ -114,7 +114,11 @@ CCDM catalogue designation for this star
 </div>
 <!-- markdownlint-disable-file -->
 
-</div>"
+</div>
+
+
+
+[*Deprecated]: No longer supported, please use an alternative and newer version."
 `;
 
 exports[`Property rows in tables describing object schemas are ordered lexicographically by default 1`] = `
@@ -231,5 +235,9 @@ Name of this star
 </div>
 <!-- markdownlint-disable-file -->
 
-</div>"
+</div>
+
+
+
+[*Deprecated]: No longer supported, please use an alternative and newer version."
 `;

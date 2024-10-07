@@ -173,7 +173,11 @@ Cat class
 </div>
 <!-- markdownlint-disable-file -->
 
-</div>"
+</div>
+
+
+
+[*Deprecated]: No longer supported, please use an alternative and newer version."
 `;
 
 exports[`oneOf operator support renders filled 1`] = `
@@ -377,7 +381,11 @@ Cat class
 </div>
 <!-- markdownlint-disable-file -->
 
-</div>"
+</div>
+
+
+
+[*Deprecated]: No longer supported, please use an alternative and newer version."
 `;
 
 exports[`oneOf operator support renders parameter 1`] = `
@@ -575,5 +583,9 @@ Cat class
 </div>
 <!-- markdownlint-disable-file -->
 
-</div>"
+</div>
+
+
+
+[*Deprecated]: No longer supported, please use an alternative and newer version."
 `;

@@ -92,7 +92,11 @@ Base 200 response
 </div>
 <!-- markdownlint-disable-file -->
 
-</div>"
+</div>
+
+
+
+[*Deprecated]: No longer supported, please use an alternative and newer version."
 `;
 
 exports[`openapi project with examples renders array + oneOf + allOf example 1`] = `
@@ -189,7 +193,11 @@ Base 200 response
 </div>
 <!-- markdownlint-disable-file -->
 
-</div>"
+</div>
+
+
+
+[*Deprecated]: No longer supported, please use an alternative and newer version."
 `;
 
 exports[`openapi project with examples renders array + oneOf example 1`] = `
@@ -283,7 +291,11 @@ Base 200 response
 </div>
 <!-- markdownlint-disable-file -->
 
-</div>"
+</div>
+
+
+
+[*Deprecated]: No longer supported, please use an alternative and newer version."
 `;
 
 exports[`openapi project with examples renders example field 1`] = `
@@ -368,7 +380,11 @@ Base 200 response
 </div>
 <!-- markdownlint-disable-file -->
 
-</div>"
+</div>
+
+
+
+[*Deprecated]: No longer supported, please use an alternative and newer version."
 `;
 
 exports[`openapi project with examples renders infered example 1`] = `
@@ -468,7 +484,11 @@ Base 200 response
 </div>
 <!-- markdownlint-disable-file -->
 
-</div>"
+</div>
+
+
+
+[*Deprecated]: No longer supported, please use an alternative and newer version."
 `;
 
 exports[`openapi project with examples renders nested arrays exmaple 1`] = `
@@ -570,5 +590,9 @@ Base 200 response
 </div>
 <!-- markdownlint-disable-file -->
 
-</div>"
+</div>
+
+
+
+[*Deprecated]: No longer supported, please use an alternative and newer version."
 `;

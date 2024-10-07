@@ -73,7 +73,11 @@ Amount of search results to show<br>
 </div>
 <!-- markdownlint-disable-file -->
 
-</div>"
+</div>
+
+
+
+[*Deprecated]: No longer supported, please use an alternative and newer version."
 `;
 
 exports[`Default value constraints should process default constraints specified in schema objects 1`] = `
@@ -206,5 +210,9 @@ Role for the user being created
 </div>
 <!-- markdownlint-disable-file -->
 
-</div>"
+</div>
+
+
+
+[*Deprecated]: No longer supported, please use an alternative and newer version."
 `;

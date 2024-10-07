@@ -75,7 +75,11 @@ Base 200 response
 </div>
 <!-- markdownlint-disable-file -->
 
-</div>"
+</div>
+
+
+
+[*Deprecated]: No longer supported, please use an alternative and newer version."
 `;
 
 exports[`openapi project with examples renders example from allOf 1`] = `
@@ -165,7 +169,11 @@ Base 200 response
 </div>
 <!-- markdownlint-disable-file -->
 
-</div>"
+</div>
+
+
+
+[*Deprecated]: No longer supported, please use an alternative and newer version."
 `;
 
 exports[`openapi project with examples renders example from oneOf 1`] = `
@@ -273,5 +281,9 @@ Base 200 response
 </div>
 <!-- markdownlint-disable-file -->
 
-</div>"
+</div>
+
+
+
+[*Deprecated]: No longer supported, please use an alternative and newer version."
 `;

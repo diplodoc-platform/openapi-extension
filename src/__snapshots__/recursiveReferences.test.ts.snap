@@ -106,7 +106,11 @@ Generated server url
 </div>
 <!-- markdownlint-disable-file -->
 
-</div>"
+</div>
+
+
+
+[*Deprecated]: No longer supported, please use an alternative and newer version."
 `;
 
 exports[`Recursive references in schemas resulting in a trivial self-referential cycle are able to be handled by the includer 1`] = `
@@ -195,7 +199,11 @@ Generated server url
 </div>
 <!-- markdownlint-disable-file -->
 
-</div>"
+</div>
+
+
+
+[*Deprecated]: No longer supported, please use an alternative and newer version."
 `;
 
 exports[`Recursive references in schemas where the cycle itself is not trivially referenced are able to be handled by the includer 1`] = `
@@ -284,5 +292,9 @@ Generated server url
 </div>
 <!-- markdownlint-disable-file -->
 
-</div>"
+</div>
+
+
+
+[*Deprecated]: No longer supported, please use an alternative and newer version."
 `;

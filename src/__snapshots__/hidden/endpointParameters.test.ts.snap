@@ -70,7 +70,11 @@ Access token
 </div>
 <!-- markdownlint-disable-file -->
 
-</div>"
+</div>
+
+
+
+[*Deprecated]: No longer supported, please use an alternative and newer version."
 `;
 
 exports[`Endpoint parameter tables should not include parameters marked with \`x-hidden\` in the spec 1`] = `
@@ -143,5 +147,9 @@ Name for the requested star
 </div>
 <!-- markdownlint-disable-file -->
 
-</div>"
+</div>
+
+
+
+[*Deprecated]: No longer supported, please use an alternative and newer version."
 `;

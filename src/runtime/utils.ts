@@ -1,6 +1,8 @@
 import type {RefObject} from 'react';
-import type {V3Parameters, V3Security} from '../includer/models';
+import type {V3Security, V3SecurityOAuth2} from '../includer/models';
 import type {Field, FormState} from './types';
+
+import {V3SecurityApiKey} from "../includer/models";
 
 export const merge = <T, R>(items: T[], iterator: (item: T) => Record<string, R> | undefined) => {
     return items.reduce((acc, item) => Object.assign(acc, iterator(item)), {} as Record<string, R>);
@@ -26,37 +28,13 @@ export const prepareBody = ({
     }
 };
 
-export const prepareHeaders = ({
-    headers,
-    security,
-}: {
-    security?: V3Security[];
-    headers?: V3Parameters;
-}) => {
-    const preparedHeaders = headers ? [...headers] : [];
-
-    const hasOAuth2 = security?.find(({type}) => type === 'oauth2');
-    if (hasOAuth2) {
-        preparedHeaders.push({
-            name: 'Authorization',
-            schema: {
-                type: 'string',
-            },
-            in: 'header',
-            required: true,
-            description: '',
-            example: 'Bearer <token>',
-        });
-    }
-
-    return preparedHeaders;
-};
-
 export const prepareRequest = (
     urlTemplate: string,
     {search, headers, path, bodyJson, bodyFormData}: FormState,
     bodyType?: string,
+    security?: V3Security[],
 ) => {
+    const preparedHeaders = {...headers};
     const requestUrl = Object.entries(path).reduce((acc, [key, value]) => {
         return acc.replace(`{${key}}`, encodeURIComponent(value));
     }, urlTemplate);
@@ -66,6 +44,24 @@ export const prepareRequest = (
         searchParams.append(key, value);
     });
 
+
+    if (security) {
+        for(const item of security) {
+            const value = getTempValue(`${item.type}`);
+            if (isV3SecurityApiKey(item) && value) {
+                if (item.in === 'header') {
+                    preparedHeaders[item.name] = value;
+                } else if (item.in === 'query') {
+                    searchParams.set(item.name, value);
+                }
+            }
+
+            if (isV3SecurityOAuth2(item) && value) {
+                preparedHeaders.Authorization = `Bearer ${value}`;
+            }
+        }
+    }
+
     const searchString = searchParams.toString();
     const url = requestUrl + (searchString ? '?' + searchString : '');
 
@@ -74,10 +70,10 @@ export const prepareRequest = (
         headers:
             bodyType === 'application/json'
                 ? {
-                      ...headers,
+                      ...preparedHeaders,
                       'Content-Type': 'application/json',
                   }
-                : headers,
+                : preparedHeaders,
         // TODO: match request types (www-form-url-encoded should be handled too)
         body: prepareBody({bodyFormData, bodyJson, bodyType}),
     };
@@ -127,4 +123,26 @@ export function collectValues<F extends Record<string, RefObject<Field>>>(
         },
         {} as Record<keyof F, unknown>,
     );
+}
+
+const tempMap: Record<string, string> = {};
+
+export function getTempValue(key: string): string | undefined {
+    return tempMap[key];
+}
+
+export function setTempValue(key: string, value: string): void {
+    tempMap[key] = value;
+}
+
+export function deleteTempValue(key: string): void {
+    delete tempMap[key];
+}
+
+export function isV3SecurityApiKey(v3Security: V3Security): v3Security is V3SecurityApiKey {
+    return v3Security.type === 'apiKey'
+}
+
+export function isV3SecurityOAuth2(v3Security: V3Security): v3Security is V3SecurityOAuth2 {
+    return v3Security.type === 'oauth2';
 }

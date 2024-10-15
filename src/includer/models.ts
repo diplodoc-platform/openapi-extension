@@ -115,7 +115,10 @@ export type OpenAPISpec = {
     security?: Array<Record<string, V3Security>>;
 };
 
-export type V3Security = {type: string; description: string};
+export type V3SecurityApiKey = {type: 'apiKey'; description: string; name: string; in: 'query' | 'header' | 'cookie'};
+export type V3SecurityOAuth2 = {type: 'oauth2'; description: string};
+
+export type V3Security = V3SecurityApiKey | V3SecurityOAuth2 | {type: string; description: string};
 
 export type OpenAPIOperation = {
     summary?: string;

@@ -6,3 +6,6 @@ export {ResponsePart} from './Response';
 export {ErrorPart} from './Error';
 export {Loader} from './Loader';
 export {Result} from './Result';
+export {Security} from './Security';
+export {SecurityApiKey} from "./SecurityApiKey";
+export {SecurityOAuth} from "./SecurityOAuth";

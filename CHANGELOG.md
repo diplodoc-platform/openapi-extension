@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.2](https://github.com/diplodoc-platform/openapi-extension/compare/v2.4.1...v2.4.2) (2024-10-23)
+
+
+### Bug Fixes
+
+* inline request ([e22357d](https://github.com/diplodoc-platform/openapi-extension/commit/e22357da51bb9badee2b9a90689f8251ea9f0de0))
+
 ## [2.4.1](https://github.com/diplodoc-platform/openapi-extension/compare/v2.4.0...v2.4.1) (2024-10-21)
 
 

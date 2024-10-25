@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.3](https://github.com/diplodoc-platform/openapi-extension/compare/v2.4.2...v2.4.3) (2024-10-25)
+
+
+### Bug Fixes
+
+* styles ([4e39346](https://github.com/diplodoc-platform/openapi-extension/commit/4e393462500d1ed82382a6c5957beeb3aec9c758))
+
 ## [2.4.2](https://github.com/diplodoc-platform/openapi-extension/compare/v2.4.1...v2.4.2) (2024-10-23)
 
 

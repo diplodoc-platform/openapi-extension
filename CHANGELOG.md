@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.4](https://github.com/diplodoc-platform/openapi-extension/compare/v2.4.3...v2.4.4) (2024-11-13)
+
+
+### Bug Fixes
+
+* deprecated with empty schemas ([496f54f](https://github.com/diplodoc-platform/openapi-extension/commit/496f54f2371647bb36892a820d1fa881a3e138b7))
+
 ## [2.4.3](https://github.com/diplodoc-platform/openapi-extension/compare/v2.4.2...v2.4.3) (2024-10-25)
 
 

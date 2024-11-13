@@ -345,7 +345,8 @@ function response(visited: Set<string>, resp: V3Response) {
         header += ` ${resp.statusText}`;
     }
 
-    const isAllSchemasDeprecated = resp.schemas?.every(({schema}) => schema.deprecated);
+    const isAllSchemasDeprecated =
+        resp.schemas?.length && resp.schemas?.every(({schema}) => schema.deprecated);
 
     return block([
         `<div class="openapi__response__code__${resp.code}">`,

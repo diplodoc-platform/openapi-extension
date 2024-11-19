@@ -322,6 +322,7 @@ function handleEndpointRender(endpoint: V3Endpoint, pathPrefix?: string): YfmToc
         href: path,
         name: sectionName(endpoint),
         hidden: endpoint.hidden,
+        deprecated: endpoint.deprecated,
     } as YfmToc;
 }
 

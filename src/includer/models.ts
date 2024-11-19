@@ -41,6 +41,7 @@ export interface YfmToc extends Filter {
     id?: string;
     singlePage?: boolean;
     hidden?: boolean;
+    deprecated?: boolean;
 }
 
 export interface YfmTocItem extends Filter {

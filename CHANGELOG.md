@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.0](https://github.com/diplodoc-platform/openapi-extension/compare/v2.4.4...v2.5.0) (2024-11-19)
+
+
+### Features
+
+* add deprecated option in toc item ([05bc1eb](https://github.com/diplodoc-platform/openapi-extension/commit/05bc1eb68eb52fbfe7e9d864db247fb0dd961aba))
+
 ## [2.4.4](https://github.com/diplodoc-platform/openapi-extension/compare/v2.4.3...v2.4.4) (2024-11-13)
 
 

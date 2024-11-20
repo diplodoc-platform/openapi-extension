@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.1](https://github.com/diplodoc-platform/openapi-extension/compare/v2.5.0...v2.5.1) (2024-11-20)
+
+
+### Bug Fixes
+
+* resize titles ([e12f54e](https://github.com/diplodoc-platform/openapi-extension/commit/e12f54e4e9229ccbedb8cf2fba8a2a0df4d5222c))
+
 ## [2.5.0](https://github.com/diplodoc-platform/openapi-extension/compare/v2.4.4...v2.5.0) (2024-11-19)
 
 

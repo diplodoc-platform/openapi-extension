@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.0](https://github.com/diplodoc-platform/openapi-extension/compare/v2.5.1...v2.6.0) (2024-11-21)
+
+
+### Features
+
+* add deprecated in Overview ([392b3fe](https://github.com/diplodoc-platform/openapi-extension/commit/392b3fe90ec22fa837398ffe04a5c256dbba3c25))
+
 ## [2.5.1](https://github.com/diplodoc-platform/openapi-extension/compare/v2.5.0...v2.5.1) (2024-11-20)
 
 

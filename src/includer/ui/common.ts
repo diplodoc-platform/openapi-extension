@@ -28,8 +28,14 @@ function list(items: string[]) {
     return items.map((item) => `- ${item}`).join(EOL) + EOL;
 }
 
-function link(text: string, src: string) {
-    return `[${text}](${src})`;
+function link(text: string, src: string, className?: string) {
+    let md = `[${text}](${src})`;
+
+    if (className) {
+        md += `{.${className}}`;
+    }
+
+    return md;
 }
 
 function title(depth: TitleDepth) {

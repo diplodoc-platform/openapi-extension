@@ -189,3 +189,11 @@
 [class^='openapi__response__code__'] > :last-child {
     margin-bottom: 15px;
 }
+
+a.openapi-deprecated-link {
+    text-decoration: line-through;
+
+    & + svg {
+        opacity: 0.6;
+    }
+}

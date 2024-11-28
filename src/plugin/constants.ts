@@ -4,9 +4,9 @@ import block from 'bem-cn-lite';
 export const Text = {
     BUTTON_SUBMIT: 'Send',
 
-    HEADER_PARAMS_SECTION_TITLE: 'Header params',
-    QUERY_PARAMS_SECTION_TITLE: 'Query params',
-    PATH_PARAMS_SECTION_TITLE: 'Path params',
+    HEADER_PARAMS_SECTION_TITLE: 'Header parameters',
+    QUERY_PARAMS_SECTION_TITLE: 'Query parameters',
+    PATH_PARAMS_SECTION_TITLE: 'Path parameters',
 
     BODY_INPUT_LABEL: 'Body',
 

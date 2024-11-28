@@ -28,12 +28,12 @@ const fields: Fields = [
         label: 'Max length',
     },
     {
-        key: 'maxItems',
-        label: 'Max items',
-    },
-    {
         key: 'minItems',
         label: 'Min items',
+    },
+    {
+        key: 'maxItems',
+        label: 'Max items',
     },
     {
         key: 'pattern',

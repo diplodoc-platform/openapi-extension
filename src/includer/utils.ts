@@ -1,6 +1,6 @@
 import {evalExp} from '@diplodoc/transform/lib/liquid/evaluation';
 
-import {OpenApiIncluderParams, Specification, V3Endpoint, V3Tag} from './models';
+import {OpenApiIncluderParams, Specification, V3Endpoint, V3Tag, YfmPreset} from './models';
 
 export function concatNewLine(prefix: string, suffix: string) {
     return prefix.trim().length ? `${prefix}<br>${suffix}` : suffix;
@@ -44,5 +44,37 @@ export function matchFilter(
                 }
             }
         }
+    };
+}
+
+export function filterUsefullContent(
+    filter: OpenApiIncluderParams['filter'] | undefined,
+    vars: YfmPreset,
+) {
+    if (!filter) {
+        return (spec: Specification) => spec;
+    }
+
+    return (spec: Specification): Specification => {
+        const endpointsByTag = new Map();
+        const tags = new Map();
+
+        matchFilter(filter, vars, (endpoint, tag) => {
+            const tagId = tag?.id ?? null;
+            const collection = endpointsByTag.get(tagId) || [];
+
+            collection.push(endpoint);
+            endpointsByTag.set(tagId, collection);
+
+            if (tagId !== null) {
+                tags.set(tagId, {...tag, endpoints: collection});
+            }
+        })(spec);
+
+        return {
+            ...spec,
+            tags,
+            endpoints: endpointsByTag.get(null) || [],
+        };
     };
 }

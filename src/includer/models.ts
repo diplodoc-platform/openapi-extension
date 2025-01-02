@@ -294,7 +294,6 @@ export type CustomTag = {
 };
 
 export type OpenApiIncluderParams = {
-    allowAnonymousObjects?: boolean;
     input: string;
     leadingPage?: LeadingPageParams;
     filter?: OpenApiFilter;
@@ -335,3 +334,10 @@ export type JSONSchemaUnionType = {
     unionOf: JSONSchemaType[];
 };
 export type JSONSchemaType = BaseJSONSchemaType | JSONSchemaUnionType | FoundRefType;
+
+export type Run = {
+    input: string;
+    vars: {
+        load(path: string): Promise<YfmPreset>;
+    };
+};

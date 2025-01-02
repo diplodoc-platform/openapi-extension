@@ -5,7 +5,7 @@ import {readFileSync} from 'fs';
 import {dump} from 'js-yaml';
 import SwaggerParser from '@apidevtools/swagger-parser';
 
-import {matchFilter} from './utils';
+import {filterUsefullContent, matchFilter} from './utils';
 import parsers from './parsers';
 import generators from './ui';
 import {RefsService} from './services/refs';
@@ -21,6 +21,7 @@ import {
     OpenAPISpec,
     OpenApiIncluderParams,
     OpenJSONSchema,
+    Run,
     V3Endpoint,
     V3Info,
     YfmPreset,
@@ -45,6 +46,59 @@ export type Context = {
     tag(id: string): {alias?: string; hidden?: boolean; path?: string; name?: string} | undefined;
     refs: RefsService;
 };
+
+export async function includer(run: Run, params: OpenApiIncluderParams, tocPath: string) {
+    const {input, leadingPage = {}, filter, noindex, hidden, sandbox, tags = {}} = params;
+
+    const ctx: Context = {
+        tag(id: string) {
+            return tags[id];
+        },
+        refs: new RefsService(),
+    };
+    const vars = await run.vars.load(tocPath);
+
+    const contentPath = join(run.input, input);
+
+    const parser = new SwaggerParser();
+
+    try {
+        const data = (await parser.validate(contentPath, {validate: {spec: true}})) as OpenAPISpec;
+
+        for (const file of Object.values(parser.$refs.values())) {
+            const schemas = Object.entries(file.components?.schemas || {}).concat(
+                Object.entries(file),
+            );
+            for (const [refName, schema] of schemas) {
+                ctx.refs.add(refName, schema as OpenJSONSchema);
+            }
+        }
+
+        const toc = await generateToc({data, leadingPage, filter, vars}, ctx);
+        const files = await generateContent(
+            {
+                data,
+                leadingPage,
+                contentPath,
+                filter,
+                noindex,
+                vars,
+                hidden,
+                sandbox,
+            },
+            ctx,
+        );
+
+        return {toc, files};
+    } catch (error) {
+        if (error && !(error instanceof OpenApiIncluderError)) {
+            // eslint-disable-next-line no-ex-assign
+            error = new OpenApiIncluderError(error.toString(), tocPath);
+        }
+
+        throw error;
+    }
+}
 
 async function includerFunction(params: IncluderFunctionParams<OpenApiIncluderParams>) {
     const {
@@ -331,38 +385,6 @@ function handleEndpointRender(endpoint: V3Endpoint, pathPrefix?: string): YfmToc
         hidden: endpoint.hidden,
         deprecated: endpoint.deprecated,
     } as YfmToc;
-}
-
-function filterUsefullContent(
-    filter: OpenApiIncluderParams['filter'] | undefined,
-    vars: YfmPreset,
-) {
-    if (!filter) {
-        return (spec: Specification) => spec;
-    }
-
-    return (spec: Specification): Specification => {
-        const endpointsByTag = new Map();
-        const tags = new Map();
-
-        matchFilter(filter, vars, (endpoint, tag) => {
-            const tagId = tag?.id ?? null;
-            const collection = endpointsByTag.get(tagId) || [];
-
-            collection.push(endpoint);
-            endpointsByTag.set(tagId, collection);
-
-            if (tagId !== null) {
-                tags.set(tagId, {...tag, endpoints: collection});
-            }
-        })(spec);
-
-        return {
-            ...spec,
-            tags,
-            endpoints: endpointsByTag.get(null) || [],
-        };
-    };
 }
 
 export function sectionName(e: V3Endpoint): string {

@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.7.0](https://github.com/diplodoc-platform/openapi-extension/compare/v2.6.0...v2.7.0) (2025-01-02)
+
+
+### Features
+
+* Drop global services ([dcde7bd](https://github.com/diplodoc-platform/openapi-extension/commit/dcde7bdc02cc16890db4418f19c856cbec14efcb))
+* Implement `includer` export compatible with next cli ([03e50ec](https://github.com/diplodoc-platform/openapi-extension/commit/03e50ec59f5c28b31df8d9f0256b77076487f939))
+
+
+### Bug Fixes
+
+* change order constraints for consistency ([a9c0ea2](https://github.com/diplodoc-platform/openapi-extension/commit/a9c0ea27f8419c4f94009ade8243620725ea12a9))
+* Update peer deps ([cba8044](https://github.com/diplodoc-platform/openapi-extension/commit/cba8044de0284ec5c79aea606aec75c3ce08f5f8))
+
 ## [2.6.0](https://github.com/diplodoc-platform/openapi-extension/compare/v2.5.1...v2.6.0) (2024-11-21)
 
 

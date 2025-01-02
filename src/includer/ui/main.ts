@@ -1,7 +1,8 @@
+import type {Context} from '../index';
+
 import stringify from 'json-stringify-safe';
 import {join} from 'path';
 
-import ArgvService from '../services/argv';
 import {
     CONTACTS_SECTION_NAME,
     ENDPOINTS_SECTION_NAME,
@@ -29,7 +30,7 @@ export type MainParams = {
     leadingPageSpecRenderMode: LeadingPageSpecRenderMode;
 };
 
-function main(params: MainParams) {
+function main(params: MainParams, ctx: Context) {
     const {data, info, spec, leadingPageSpecRenderMode} = params;
 
     const license = info.license?.url ? link : body;
@@ -41,7 +42,7 @@ function main(params: MainParams) {
         info.license && license(info.license.name, info.license.url as string),
         description(info.description),
         contact(info.contact),
-        sections(spec),
+        sections(spec, ctx),
         specification(data, leadingPageSpecRenderMode),
     ];
 
@@ -64,12 +65,12 @@ function description(text?: string) {
     return text?.length && body(text);
 }
 
-function sections({tags, endpoints}: Specification) {
+function sections({tags, endpoints}: Specification, ctx: Context) {
     const content = [];
 
     const taggedLinks = Array.from(tags)
         .map(([_, {name, id}]: [unknown, V3Tag]) => {
-            const custom = ArgvService.tag(name);
+            const custom = ctx.tag(name);
 
             if (custom?.hidden) {
                 return undefined;

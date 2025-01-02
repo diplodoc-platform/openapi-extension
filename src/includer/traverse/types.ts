@@ -1,7 +1,8 @@
+import type {Context} from '../index';
+
 import stringify from 'json-stringify-safe';
 
-import RefsService from '../services/refs';
-import {EOL, SUPPORTED_ENUM_TYPES} from '../constants';
+import {SUPPORTED_ENUM_TYPES} from '../constants';
 import {
     JSONSchemaType,
     JSONSchemaUnionType,
@@ -11,21 +12,21 @@ import {
 } from '../models';
 import {anchor} from '../ui';
 
-function inferType(value: OpenJSONSchema): JSONSchemaType {
+function inferType(value: OpenJSONSchema, ctx: Context): JSONSchemaType {
     if (value === null) {
         return 'null';
     }
 
-    const ref = RefsService.find(value);
+    const ref = ctx.refs.find(value);
 
     if (value.oneOf?.length) {
         const unionOf = (value.oneOf.filter(Boolean) as OpenJSONSchema[]).map((el) => {
-            const foundRef = RefsService.find(el);
+            const foundRef = ctx.refs.find(el);
 
             if (foundRef) {
                 return {ref: foundRef};
             }
-            const type = inferType(el);
+            const type = inferType(el, ctx);
 
             return type;
         });
@@ -139,35 +140,6 @@ function extractOneOfElements(from: OpenJSONSchema): OpenJSONSchema[] {
     return elements;
 }
 
-function anchorToSchema(item: OpenJSONSchema): string | undefined {
-    const ref = RefsService.find(item);
-
-    return ref ? anchor(ref) : undefined;
-}
-
-function descriptionForOneOfElement(target: OpenJSONSchema, withTypes?: boolean): string {
-    let description = target.description || '';
-
-    const elements = extractOneOfElements(target);
-
-    if (elements.length === 0) {
-        return description;
-    }
-
-    if (withTypes) {
-        if (description.length) {
-            description += EOL;
-        }
-
-        description += extractOneOfElements(target)
-            .map(anchorToSchema)
-            .filter(Boolean)
-            .join(' \nor ');
-    }
-
-    return description;
-}
-
 export {
     inferType,
     typeToText,
@@ -175,5 +147,4 @@ export {
     extractOneOfElements,
     extractRefFromType,
     collectRefs,
-    descriptionForOneOfElement,
 };

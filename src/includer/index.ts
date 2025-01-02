@@ -8,8 +8,7 @@ import SwaggerParser from '@apidevtools/swagger-parser';
 import {matchFilter} from './utils';
 import parsers from './parsers';
 import generators from './ui';
-import ArgvService from './services/argv';
-import RefsService from './services/refs';
+import {RefsService} from './services/refs';
 import {
     LEADING_PAGE_MODES,
     LEADING_PAGE_NAME_DEFAULT,
@@ -22,8 +21,6 @@ import {
     OpenAPISpec,
     OpenApiIncluderParams,
     OpenJSONSchema,
-    Refs,
-    Specification,
     V3Endpoint,
     V3Info,
     YfmPreset,
@@ -44,6 +41,11 @@ class OpenApiIncluderError extends Error {
     }
 }
 
+export type Context = {
+    tag(id: string): {alias?: string; hidden?: boolean; path?: string; name?: string} | undefined;
+    refs: RefsService;
+};
+
 async function includerFunction(params: IncluderFunctionParams<OpenApiIncluderParams>) {
     const {
         readBasePath,
@@ -54,8 +56,12 @@ async function includerFunction(params: IncluderFunctionParams<OpenApiIncluderPa
         index,
     } = params;
 
-    ArgvService.init(tags);
-
+    const ctx: Context = {
+        tag(id: string) {
+            return tags[id];
+        },
+        refs: new RefsService(),
+    };
     const tocDirPath = dirname(tocPath);
 
     const contentPath =
@@ -68,35 +74,41 @@ async function includerFunction(params: IncluderFunctionParams<OpenApiIncluderPa
     try {
         const data = (await parser.validate(contentPath, {validate: {spec: true}})) as OpenAPISpec;
 
-        const allRefs: Refs = {};
         for (const file of Object.values(parser.$refs.values())) {
             const schemas = Object.entries(file.components?.schemas || {}).concat(
                 Object.entries(file),
             );
             for (const [refName, schema] of schemas) {
-                allRefs[refName] = schema as OpenJSONSchema;
+                ctx.refs.add(refName, schema as OpenJSONSchema);
             }
         }
-
-        RefsService.init(allRefs);
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const writePath = join(writeBasePath, tocDirPath, params.item.include!.path);
 
         await mkdir(writePath, {recursive: true});
-        await generateToc({data, writePath, leadingPage, filter, vars});
-        await generateContent({
-            data,
-            writePath,
-            leadingPage,
-            contentPath,
-            filter,
-            noindex,
-            vars,
-            hidden,
-            allRefs,
-            sandbox,
-        });
+        const toc = await generateToc({data, leadingPage, filter, vars}, ctx);
+        const files = await generateContent(
+            {
+                data,
+                leadingPage,
+                contentPath,
+                filter,
+                noindex,
+                vars,
+                hidden,
+                sandbox,
+            },
+            ctx,
+        );
+
+        await mkdir(dirname(writePath), {recursive: true});
+        await writeFile(join(writePath, 'toc.yaml'), dump(toc));
+
+        for (const {path, content} of files) {
+            await mkdir(dirname(join(writePath, path)), {recursive: true});
+            await writeFile(join(writePath, path), content);
+        }
     } catch (error) {
         if (error && !(error instanceof OpenApiIncluderError)) {
             // eslint-disable-next-line no-ex-assign
@@ -130,13 +142,12 @@ function assertLeadingPageMode(mode: string) {
 export type GenerateTocParams = {
     data: OpenAPISpec;
     vars: YfmPreset;
-    writePath: string;
     leadingPage: OpenApiIncluderParams['leadingPage'];
     filter: OpenApiIncluderParams['filter'];
 };
 
-async function generateToc(params: GenerateTocParams): Promise<void> {
-    const {data, writePath, leadingPage, filter, vars} = params;
+async function generateToc(params: GenerateTocParams, ctx: Context): Promise<YfmToc> {
+    const {data, leadingPage, filter, vars} = params;
     const leadingPageName = leadingPage?.name ?? LEADING_PAGE_NAME_DEFAULT;
     const leadingPageMode = leadingPage?.mode ?? LeadingPageMode.Leaf;
 
@@ -159,7 +170,7 @@ async function generateToc(params: GenerateTocParams): Promise<void> {
             items: [],
         };
 
-        const custom = ArgvService.tag(tag.name);
+        const custom = ctx.tag(tag.name);
         const customId = custom?.alias || id;
 
         section.items = endpointsOfTag.map((endpoint) => handleEndpointRender(endpoint, customId));
@@ -182,15 +193,14 @@ async function generateToc(params: GenerateTocParams): Promise<void> {
         toc.items.push(handleEndpointRender(endpoint));
     }
 
-    const root = ArgvService.tag('__root__');
+    const root = ctx.tag('__root__');
     const rootLadingPageName = root?.name || leadingPageName;
 
     if (!root?.hidden) {
         addLeadingPage(toc, leadingPageMode, rootLadingPageName, 'index.md');
     }
 
-    await mkdir(dirname(writePath), {recursive: true});
-    await writeFile(join(writePath, 'toc.yaml'), dump(toc));
+    return toc as YfmToc;
 }
 
 function addLeadingPage(section: YfmTocItem, mode: LeadingPageMode, name: string, href: string) {
@@ -207,8 +217,6 @@ function addLeadingPage(section: YfmTocItem, mode: LeadingPageMode, name: string
 export type GenerateContentParams = {
     data: OpenAPISpec;
     vars: YfmPreset;
-    writePath: string;
-    allRefs: Refs;
     contentPath: string;
     leadingPage: OpenApiIncluderParams['leadingPage'];
     filter?: OpenApiIncluderParams['filter'];
@@ -222,10 +230,11 @@ type EndpointRoute = {
     content: string;
 };
 
-async function generateContent(params: GenerateContentParams): Promise<void> {
-    const {data, writePath, leadingPage, filter, noindex, hidden, vars, sandbox, contentPath} =
-        params;
-
+async function generateContent(
+    params: GenerateContentParams,
+    ctx: Context,
+): Promise<EndpointRoute[]> {
+    const {data, leadingPage, filter, noindex, hidden, vars, sandbox, contentPath} = params;
     const customLeadingPageDir = dirname(contentPath);
 
     const filterContent = filterUsefullContent(filter, vars);
@@ -255,15 +264,15 @@ async function generateContent(params: GenerateContentParams): Promise<void> {
 
     spec = filterContent(spec);
 
-    const root = ArgvService.tag('__root__');
+    const root = ctx.tag('__root__');
 
     if (!root?.hidden) {
         const mainContent = root?.path
             ? readFileSync(join(customLeadingPageDir, root.path)).toString()
-            : generators.main({data, info, spec, leadingPageSpecRenderMode});
+            : generators.main({data, info, spec, leadingPageSpecRenderMode}, ctx);
 
         results.push({
-            path: join(writePath, 'index.md'),
+            path: 'index.md',
             content: mainContent,
         });
     }
@@ -271,11 +280,11 @@ async function generateContent(params: GenerateContentParams): Promise<void> {
     spec.tags.forEach((tag, id) => {
         const {endpoints} = tag;
 
-        const custom = ArgvService.tag(tag.name);
+        const custom = ctx.tag(tag.name);
         const customId = custom?.alias || id;
 
         endpoints.forEach((endpoint) => {
-            results.push(handleEndpointIncluder(endpoint, join(writePath, customId), sandbox));
+            results.push(handleEndpointIncluder(endpoint, customId, sandbox, ctx));
         });
 
         if (custom?.hidden) {
@@ -287,28 +296,26 @@ async function generateContent(params: GenerateContentParams): Promise<void> {
             : generators.section(tag);
 
         results.push({
-            path: join(writePath, customId, 'index.md'),
+            path: join(customId, 'index.md'),
             content,
         });
     });
 
     for (const endpoint of spec.endpoints) {
-        results.push(handleEndpointIncluder(endpoint, join(writePath), sandbox));
+        results.push(handleEndpointIncluder(endpoint, '.', sandbox, ctx));
     }
 
-    for (const {path, content} of results) {
-        await mkdir(dirname(path), {recursive: true});
-        await writeFile(path, content);
-    }
+    return results;
 }
 
 function handleEndpointIncluder(
     endpoint: V3Endpoint,
     pathPrefix: string,
-    sandbox?: {host?: string},
+    sandbox: {host?: string} | undefined,
+    ctx: Context,
 ) {
     const path = join(pathPrefix, mdPath(endpoint));
-    const content = generators.endpoint(endpoint, sandbox);
+    const content = generators.endpoint(endpoint, sandbox, ctx);
 
     return {path, content};
 }

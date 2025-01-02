@@ -1,8 +1,9 @@
+import type {Context} from '../index';
+
 import stringify from 'json-stringify-safe';
 import {dump} from 'js-yaml';
 import groupBy from 'lodash/groupBy';
 
-import RefsService from '../services/refs';
 import {
     COOKIES_SECTION_NAME,
     HEADERS_SECTION_NAME,
@@ -51,7 +52,11 @@ import {
 import {prepareRenderableParameterList} from './presentationUtils/prepareRenderableParameterList';
 import {popups} from './popups';
 
-function endpoint(data: V3Endpoint, sandboxPlugin: {host?: string; tabName?: string} | undefined) {
+function endpoint(
+    data: V3Endpoint,
+    sandboxPlugin: {host?: string; tabName?: string} | undefined,
+    ctx: Context,
+) {
     // try to remember, which tables we are already printed on page
     const pagePrintedRefs = new Set<string>();
 
@@ -59,14 +64,17 @@ function endpoint(data: V3Endpoint, sandboxPlugin: {host?: string; tabName?: str
         return sandboxPlugin
             ? tabs({
                   [INFO_TAB_NAME]: content,
-                  [sandboxPlugin?.tabName ?? SANDBOX_TAB_NAME]: sandbox({
-                      params: data.parameters,
-                      host: sandboxPlugin?.host,
-                      path: data.path,
-                      security: data.security,
-                      requestBody: data.requestBody,
-                      method: data.method,
-                  }),
+                  [sandboxPlugin?.tabName ?? SANDBOX_TAB_NAME]: sandbox(
+                      {
+                          params: data.parameters,
+                          host: sandboxPlugin?.host,
+                          path: data.path,
+                          security: data.security,
+                          requestBody: data.requestBody,
+                          method: data.method,
+                      },
+                      ctx,
+                  ),
               })
             : content;
     };
@@ -78,9 +86,9 @@ function endpoint(data: V3Endpoint, sandboxPlugin: {host?: string; tabName?: str
             block([
                 data.description?.length && body(data.description),
                 request(data),
-                parameters(pagePrintedRefs, data.parameters),
-                openapiBody(pagePrintedRefs, data.requestBody),
-                responses(pagePrintedRefs, data.responses),
+                parameters(pagePrintedRefs, data.parameters, ctx),
+                openapiBody(pagePrintedRefs, data.requestBody, ctx),
+                responses(pagePrintedRefs, data.responses, ctx),
             ]),
         ),
     ]);
@@ -94,28 +102,31 @@ function endpoint(data: V3Endpoint, sandboxPlugin: {host?: string; tabName?: str
     ]).trim();
 }
 
-function sandbox({
-    params,
-    host,
-    path,
-    security,
-    requestBody,
-    method,
-}: {
-    params?: V3Parameters;
-    host?: string;
-    path: string;
-    security: V3Security[];
-    requestBody?: V3Schema;
-    method: string;
-}) {
+function sandbox(
+    {
+        params,
+        host,
+        path,
+        security,
+        requestBody,
+        method,
+    }: {
+        params?: V3Parameters;
+        host?: string;
+        path: string;
+        security: V3Security[];
+        requestBody?: V3Schema;
+        method: string;
+    },
+    ctx: Context,
+) {
     const pathParams = params?.filter((param: V3Parameter) => param.in === 'path');
     const searchParams = params?.filter((param: V3Parameter) => param.in === 'query');
     const headers = params?.filter((param: V3Parameter) => param.in === 'header');
     let bodyStr: null | string = null;
 
     if (requestBody?.type === 'application/json' || requestBody?.type === 'multipart/form-data') {
-        bodyStr = JSON.stringify(prepareSampleObject(requestBody?.schema ?? {}), null, 2);
+        bodyStr = JSON.stringify(prepareSampleObject(requestBody?.schema ?? {}, [], ctx), null, 2);
     }
 
     const props = dump({
@@ -164,8 +175,8 @@ function request(data: V3Endpoint) {
     return block(result);
 }
 
-function getParameterSourceTableContents(parameterList: readonly V3Parameter[]) {
-    const rowsAndRefs = parameterList.map((param) => parameterRow(param));
+function getParameterSourceTableContents(parameterList: readonly V3Parameter[], ctx: Context) {
+    const rowsAndRefs = parameterList.map((param) => parameterRow(param, ctx));
 
     const additionalRefs = rowsAndRefs
         .flatMap(({ref}) => ref)
@@ -176,7 +187,7 @@ function getParameterSourceTableContents(parameterList: readonly V3Parameter[]) 
     return {additionalRefs, contentRows};
 }
 
-function parameters(pagePrintedRefs: Set<string>, params?: V3Parameters) {
+function parameters(pagePrintedRefs: Set<string>, params: V3Parameters | undefined, ctx: Context) {
     const sections = {
         path: PATH_PARAMETERS_SECTION_NAME,
         query: QUERY_PARAMETERS_SECTION_NAME,
@@ -203,14 +214,17 @@ function parameters(pagePrintedRefs: Set<string>, params?: V3Parameters) {
         )
         .filter(([, parameterList]) => parameterList.length)
         .reduce<string[]>((contentAccumulator, [parameterSource, parameterList]) => {
-            const {contentRows, additionalRefs} = getParameterSourceTableContents(parameterList);
+            const {contentRows, additionalRefs} = getParameterSourceTableContents(
+                parameterList,
+                ctx,
+            );
 
             const tableHeading = sections[parameterSource];
 
             contentAccumulator.push(
                 title(3)(tableHeading),
                 table([['Name', 'Description'], ...contentRows]),
-                ...printAllTables(pagePrintedRefs, additionalRefs),
+                ...printAllTables(pagePrintedRefs, additionalRefs, ctx),
             );
 
             return contentAccumulator;
@@ -219,8 +233,8 @@ function parameters(pagePrintedRefs: Set<string>, params?: V3Parameters) {
     return block(content);
 }
 
-function parameterRow(param: V3Parameter): {cells: string[]; ref?: TableRef[]} {
-    const row = prepareTableRowData(param.schema, param.name);
+function parameterRow(param: V3Parameter, ctx: Context): {cells: string[]; ref?: TableRef[]} {
+    const row = prepareTableRowData({value: param.schema, key: param.name}, ctx);
     let description = param.description ?? '';
     if (!row.ref?.length && row.description.length) {
         // if row.ref present, row.description will be printed in separate table
@@ -241,7 +255,7 @@ function parameterRow(param: V3Parameter): {cells: string[]; ref?: TableRef[]} {
     };
 }
 
-function openapiBody(pagePrintedRefs: Set<string>, obj?: V3Schema) {
+function openapiBody(pagePrintedRefs: Set<string>, obj: V3Schema | undefined, ctx: Context) {
     if (!obj) {
         return '';
     }
@@ -263,8 +277,8 @@ function openapiBody(pagePrintedRefs: Set<string>, obj?: V3Schema) {
         return block(result);
     }
 
-    const {content, tableRefs} = tableFromSchema(schema);
-    const parsedSchema = prepareSampleObject(schema);
+    const {content, tableRefs} = tableFromSchema(schema, ctx);
+    const parsedSchema = prepareSampleObject(schema, [], ctx);
 
     result = [
         '<div class="openapi-entity">',
@@ -274,7 +288,7 @@ function openapiBody(pagePrintedRefs: Set<string>, obj?: V3Schema) {
         '</div>',
     ];
 
-    result.push(...printAllTables(pagePrintedRefs, tableRefs));
+    result.push(...printAllTables(pagePrintedRefs, tableRefs, ctx));
 
     return block(result);
 }
@@ -283,8 +297,8 @@ function isPrimitive(type: OpenJSONSchema['type']) {
     return PRIMITIVE_JSON6_SCHEMA_TYPES.has(type);
 }
 
-function entity(ref: string, schema: OpenJSONSchema) {
-    const schemaTable = tableFromSchema(schema);
+function entity(ref: string, schema: OpenJSONSchema, ctx: Context) {
+    const schemaTable = tableFromSchema(schema, ctx);
     const titleLevel = schema._runtime ? 4 : 3;
 
     const markup = block([
@@ -298,7 +312,11 @@ function entity(ref: string, schema: OpenJSONSchema) {
     return {markup, refs: schemaTable.tableRefs};
 }
 
-function printAllTables(pagePrintedRefs: Set<string>, tableRefs: TableRef[]): string[] {
+function printAllTables(
+    pagePrintedRefs: Set<string>,
+    tableRefs: TableRef[],
+    ctx: Context,
+): string[] {
     const result = [];
 
     while (tableRefs.length > 0) {
@@ -312,7 +330,7 @@ function printAllTables(pagePrintedRefs: Set<string>, tableRefs: TableRef[]): st
             continue;
         }
 
-        const schema = RefsService.get(tableRef);
+        const schema = ctx.refs.get(tableRef);
 
         if (!schema) {
             continue;
@@ -320,7 +338,7 @@ function printAllTables(pagePrintedRefs: Set<string>, tableRefs: TableRef[]): st
 
         pagePrintedRefs.add(tableRef);
 
-        const {refs, markup} = entity(tableRef, schema);
+        const {refs, markup} = entity(tableRef, schema, ctx);
 
         result.push(markup);
         tableRefs.push(...refs);
@@ -328,17 +346,17 @@ function printAllTables(pagePrintedRefs: Set<string>, tableRefs: TableRef[]): st
     return result;
 }
 
-function responses(visited: Set<string>, resps?: V3Responses) {
+function responses(visited: Set<string>, resps: V3Responses | undefined, ctx: Context) {
     return (
         resps?.length &&
         block([
             title(2)(RESPONSES_SECTION_NAME),
-            block(resps.map((resp) => response(visited, resp))),
+            block(resps.map((resp) => response(visited, resp, ctx))),
         ])
     );
 }
 
-function response(visited: Set<string>, resp: V3Response) {
+function response(visited: Set<string>, resp: V3Response, ctx: Context) {
     let header = resp.code;
 
     if (resp.statusText.length) {
@@ -353,7 +371,7 @@ function response(visited: Set<string>, resp: V3Response) {
         title(2)(header),
         isAllSchemasDeprecated && popups.deprecated(),
         body(resp.description),
-        resp.schemas?.length && block(resp.schemas.map((s) => openapiBody(visited, s))),
+        resp.schemas?.length && block(resp.schemas.map((s) => openapiBody(visited, s, ctx))),
         '</div>',
     ]);
 }

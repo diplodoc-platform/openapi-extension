@@ -1,6 +1,7 @@
+import type {Context} from '../index';
+
 import stringify from 'json-stringify-safe';
 
-import RefsService from '../services/refs';
 import {anchor, block, bold, table, tableParameterName} from '../ui';
 import {concatNewLine} from '../utils';
 import {OpenJSONSchema, OpenJSONSchemaDefinition} from '../models';
@@ -18,11 +19,11 @@ type TableFromSchemaResult = {
     tableRefs: TableRef[];
 };
 
-export function tableFromSchema(schema: OpenJSONSchema): TableFromSchemaResult {
+export function tableFromSchema(schema: OpenJSONSchema, ctx: Context): TableFromSchemaResult {
     if (schema.enum) {
         // enum description will be in table description
         const description = prepareComplexDescription('', schema);
-        const type = inferType(schema);
+        const type = inferType(schema, ctx);
 
         const content = table([
             ['Type', 'Description'],
@@ -33,7 +34,7 @@ export function tableFromSchema(schema: OpenJSONSchema): TableFromSchemaResult {
     }
 
     if (schema.type === 'array') {
-        const {type, ref} = prepareTableRowData(schema);
+        const {type, ref} = prepareTableRowData({value: schema}, ctx);
 
         return {
             content: type,
@@ -41,7 +42,7 @@ export function tableFromSchema(schema: OpenJSONSchema): TableFromSchemaResult {
         };
     }
 
-    const {rows, refs} = prepareObjectSchemaTable(schema);
+    const {rows, refs} = prepareObjectSchemaTable(schema, ctx);
     const content = rows.length ? table([['Name', 'Description'], ...rows]) : '';
 
     return {content, tableRefs: refs};
@@ -52,9 +53,12 @@ type PrepareObjectSchemaTableResult = {
     refs: TableRef[];
 };
 
-function prepareObjectSchemaTable(schema: OpenJSONSchema): PrepareObjectSchemaTableResult {
-    const tableRef = RefsService.find(schema);
-    const merged = RefsService.merge(schema, false);
+function prepareObjectSchemaTable(
+    schema: OpenJSONSchema,
+    ctx: Context,
+): PrepareObjectSchemaTableResult {
+    const tableRef = ctx.refs.find(schema);
+    const merged = ctx.refs.merge(schema, false);
 
     const result: PrepareObjectSchemaTableResult = {rows: [], refs: []};
 
@@ -67,12 +71,15 @@ function prepareObjectSchemaTable(schema: OpenJSONSchema): PrepareObjectSchemaTa
     });
 
     wellOrderedProperties.forEach(([key, v]) => {
-        const value = RefsService.merge(v);
+        const value = ctx.refs.merge(v);
         const name = tableParameterName(key, {
             required: isRequired(key, merged),
             deprecated: value.deprecated,
         });
-        const {type, description, ref, runtimeRef} = prepareTableRowData(value, key, tableRef);
+        const {type, description, ref} = prepareTableRowData(
+            {value, key, parentRef: tableRef},
+            ctx,
+        );
 
         result.rows.push([name, block([`${bold('Type:')} ${type}`, description])]);
 
@@ -80,22 +87,12 @@ function prepareObjectSchemaTable(schema: OpenJSONSchema): PrepareObjectSchemaTa
             result.refs.push(...ref);
         }
 
-        if (runtimeRef) {
-            result.refs.push(runtimeRef);
-        }
-
         for (const element of value.oneOf || []) {
-            const mergedInner = RefsService.merge(element);
-            const {ref: innerRef} = prepareTableRowData(mergedInner);
+            const mergedInner = ctx.refs.merge(element);
+            const {ref: innerRef} = prepareTableRowData({value: mergedInner}, ctx);
 
             if (innerRef) {
                 result.refs.push(...innerRef);
-
-                continue;
-            }
-
-            if (runtimeRef) {
-                result.refs.push(runtimeRef);
             }
         }
     });
@@ -104,7 +101,7 @@ function prepareObjectSchemaTable(schema: OpenJSONSchema): PrepareObjectSchemaTa
         const oneOfElements = extractOneOfElements(schema);
         const oneOfElementsRefs = oneOfElements.map(
             (value) =>
-                [value, value && RefsService.find(value)] as [OpenJSONSchema, string | undefined],
+                [value, value && ctx.refs.find(value)] as [OpenJSONSchema, string | undefined],
         );
 
         oneOfElementsRefs.forEach(([value, ref]) => {
@@ -128,42 +125,33 @@ type PrepareRowResult = {
     type: string;
     description: string;
     ref?: TableRef[];
-    /*
-     * if object has no ref in RefsService
-     * then we will create runtime ref and render it later
-     */
-    runtimeRef?: string;
 };
 
 export function prepareTableRowData(
-    value: OpenJSONSchema,
-    key?: string,
-    parentRef?: string,
+    {
+        value,
+        key,
+        parentRef,
+    }: {
+        value: OpenJSONSchema;
+        key?: string;
+        parentRef?: string;
+    },
+    ctx: Context,
 ): PrepareRowResult {
     const description = value.description || '';
-    const propertyRef = parentRef && key && `${parentRef}-${key}`;
 
-    const type = inferType(value);
+    const type = inferType(value, ctx);
 
     if (type === 'array') {
         if (!value.items || value.items === true || Array.isArray(value.items)) {
             throw Error(`Unsupported array items for ${key}`);
         }
 
-        const inner = prepareTableRowData(value.items, key, parentRef);
+        const inner = prepareTableRowData({value: value.items, key, parentRef}, ctx);
         const innerDescription = inner.ref
             ? concatNewLine(description, inner.description)
             : description;
-
-        if (RefsService.isRuntimeAllowed() && inner.runtimeRef) {
-            RefsService.runtime(inner.runtimeRef, value.items);
-
-            return {
-                type: `${anchor(inner.runtimeRef, key)}[]`,
-                runtimeRef: inner.runtimeRef,
-                description: prepareComplexDescription(innerDescription, value),
-            };
-        }
 
         const isUnionType = (inner.ref?.length || inner.type.split('\n').length || 0) > 1;
         const returnType = isUnionType ? `(${inner.type})[]` : `${inner.type}[]`;
@@ -176,16 +164,6 @@ export function prepareTableRowData(
         };
     }
 
-    if (RefsService.isRuntimeAllowed() && propertyRef && type === 'object') {
-        RefsService.runtime(propertyRef, value);
-
-        return {
-            type: anchor(propertyRef, key),
-            runtimeRef: propertyRef,
-            description: prepareComplexDescription(description, value),
-        };
-    }
-
     const format = value.format === undefined ? '' : `&lt;${value.format}&gt;`;
 
     return {
@@ -195,13 +173,13 @@ export function prepareTableRowData(
     };
 }
 
-function findNonNullOneOfElement(schema: OpenJSONSchema): OpenJSONSchema {
+function findNonNullOneOfElement(schema: OpenJSONSchema, ctx: Context): OpenJSONSchema {
     const isValid = (v: OpenJSONSchema) => {
-        if (typeof inferType(v) === 'string') {
+        if (typeof inferType(v, ctx) === 'string') {
             return v;
         }
 
-        const merged = RefsService.merge(v);
+        const merged = ctx.refs.merge(v);
 
         if (Object.keys(merged.properties || {}).length) {
             if (v.oneOf?.length) {
@@ -250,7 +228,8 @@ function findNonNullOneOfElement(schema: OpenJSONSchema): OpenJSONSchema {
 
 export function prepareSampleObject(
     schema: OpenJSONSchema,
-    callstack: OpenJSONSchema[] = [],
+    callstack: OpenJSONSchema[],
+    ctx: Context,
 ): Object | Array<Object> {
     const result: {[key: string]: unknown} = {};
 
@@ -268,14 +247,14 @@ export function prepareSampleObject(
                 )}.\n You can pass only one scheme to items`,
             );
         }
-        return [prepareSampleObject(schema.items)];
+        return [prepareSampleObject(schema.items, [], ctx)];
     }
 
-    const merged = findNonNullOneOfElement(RefsService.merge(schema));
+    const merged = findNonNullOneOfElement(ctx.refs.merge(schema), ctx);
 
     Object.entries(merged.properties || {}).forEach(([key, value]) => {
         const required = isRequired(key, merged);
-        const possibleValue = prepareSampleElement(key, value, required, callstack);
+        const possibleValue = prepareSampleElement(key, value, required, callstack, ctx);
 
         if (possibleValue !== undefined) {
             result[key] = possibleValue;
@@ -291,8 +270,9 @@ function prepareSampleElement(
     v: OpenJSONSchemaDefinition,
     required: boolean,
     callstack: OpenJSONSchema[],
+    ctx: Context,
 ): unknown {
-    const value = RefsService.merge(v);
+    const value = ctx.refs.merge(v);
     if (value.example) {
         return value.example;
     }
@@ -316,17 +296,17 @@ function prepareSampleElement(
 
     const nextCallstackEntry = value._shallowCopyOf ?? value;
     const downCallstack = callstack.concat(nextCallstackEntry);
-    const type = inferType(value);
+    const type = inferType(value, ctx);
 
-    const schema = findNonNullOneOfElement(value);
+    const schema = findNonNullOneOfElement(value, ctx);
 
     if (value.oneOf?.length) {
-        return prepareSampleElement(key, schema, isRequired(key, value), downCallstack);
+        return prepareSampleElement(key, schema, isRequired(key, value), downCallstack, ctx);
     }
 
     switch (type) {
         case 'object':
-            return prepareSampleObject(schema, downCallstack);
+            return prepareSampleObject(schema, downCallstack, ctx);
         case 'array':
             if (!schema.items || schema.items === true || Array.isArray(schema.items)) {
                 throw new Error(
@@ -339,11 +319,17 @@ function prepareSampleElement(
             }
             if (schema.items.oneOf) {
                 return schema.items.oneOf.map((item) =>
-                    prepareSampleElement(key, item, isRequired(key, schema), downCallstack),
+                    prepareSampleElement(key, item, isRequired(key, schema), downCallstack, ctx),
                 );
             }
             return [
-                prepareSampleElement(key, schema.items, isRequired(key, schema), downCallstack),
+                prepareSampleElement(
+                    key,
+                    schema.items,
+                    isRequired(key, schema),
+                    downCallstack,
+                    ctx,
+                ),
             ];
         case 'string':
             switch (schema.format) {
@@ -365,7 +351,7 @@ function prepareSampleElement(
 
     if (schema.properties) {
         // if no "type" specified
-        return prepareSampleObject(schema, downCallstack);
+        return prepareSampleObject(schema, downCallstack, ctx);
     }
 
     return undefined;

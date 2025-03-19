@@ -1,27 +1,39 @@
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {Box, Button, Dialog, RadioButton, Text} from '@gravity-ui/uikit';
+import {CircleCheck} from '@gravity-ui/icons';
 
-import React, {useCallback, useEffect, useState} from 'react';
-import {Box, Button, Dialog, Tabs, Text} from '@gravity-ui/uikit';
-import {Lock, LockOpen} from '@gravity-ui/icons';
+import {V3Security} from '../../includer/models';
+import {
+    getSelectedAuth,
+    isV3SecurityApiKey,
+    isV3SecurityOAuthImplicit,
+    isV3SecurityOAuthInline,
+} from '../utils';
 
-import {V3Security} from "../../includer/models";
-import {getTempValue, isV3SecurityApiKey, isV3SecurityOAuth2} from "../utils";
-
-import {Column, SecurityApiKey, SecurityOAuth} from '.';
+import {Column, SecurityApiKey, SecurityOAuthImplicit, SecurityOAuthInline} from '.';
 
 export const Security: React.FC<{
     security: V3Security[];
-}> = ({security}) => {
+    projectName: string;
+}> = ({security, projectName}) => {
     const [isOpen, setOpen] = useState(false);
-    const [activeTab, setActiveTab] = useState<`${number}`>('0');
-    const [hasAnyAuthorization, setHasAnyAuthorization] = useState(security.some(({type}) => getTempValue(type)));
-    const activeSecurityTab = security[activeTab];
+    const [activeType, setActiveType] = useState(
+        getSelectedAuth(projectName).type ?? security[0].type,
+    );
+    const [hasAnyAuthorization, setHasAnyAuthorization] = useState(
+        Boolean(getSelectedAuth(projectName).value),
+    );
+    const activeSecurityTab = useMemo(
+        () => security.find(({type}) => activeType === type),
+        [activeType],
+    );
+    if (!activeSecurityTab) {
+        throw new Error();
+    }
 
     useEffect(() => {
-        if (isOpen) {
-            setActiveTab('0');
-        } else {
-            setHasAnyAuthorization(security.some(({type}) => getTempValue(type)));
-        }
+        setActiveType(getSelectedAuth(projectName).type ?? security[0].type);
+        setHasAnyAuthorization(Boolean(getSelectedAuth(projectName).value));
     }, [isOpen]);
 
     const close = useCallback(() => {
@@ -34,23 +46,32 @@ export const Security: React.FC<{
 
     return (
         <Column gap={10}>
-            <Button size="l" width="auto" style={{marginLeft: 'auto'}} view="outlined-info" onClick={open}>Authorization {hasAnyAuthorization ? <Lock /> : <LockOpen />}</Button>
-            <Dialog  open={isOpen} onClose={close} hasCloseButton>
+            <Button size="m" width="auto" style={{marginLeft: 'auto'}} view="normal" onClick={open}>
+                {hasAnyAuthorization && <CircleCheck color="#3AB935" />} Authorization
+            </Button>
+            <Dialog open={isOpen} onClose={close} hasCloseButton>
                 <Dialog.Header caption="Available authorizations" />
                 <Dialog.Body>
                     <Column gap={0} minWidth={400}>
-                        <Tabs activeTab={activeTab}>
-                                {security.map((item, index) => {
-                                    return <Tabs.Item
-                                        id={String(index)}
-                                        key={index}
-                                        onClick={() => setActiveTab(`${index}`)}
-                                        title={<Text variant="subheader-2">{item.type}</Text>}
-                                    />
-                                })}
-                        </Tabs>
+                        <Box>
+                            <RadioButton
+                                onChange={(event) => {
+                                    setActiveType(event.currentTarget.value);
+                                }}
+                                value={activeType}
+                                options={security.map((item) => ({
+                                    value: item.type,
+                                    content: item.type,
+                                }))}
+                                size="s"
+                            />
+                        </Box>
                         <Box spacing={{pt: '4'}}>
-                            <SecurityTab security={activeSecurityTab} onClose={close} />
+                            <SecurityTab
+                                projectName={projectName}
+                                close={close}
+                                security={activeSecurityTab}
+                            />
                         </Box>
                     </Column>
                 </Dialog.Body>
@@ -59,16 +80,28 @@ export const Security: React.FC<{
     );
 };
 
-function SecurityTab({security, onClose}: {security: V3Security; onClose: () => void}) {
+function SecurityTab({
+    security,
+    close,
+    projectName,
+}: {
+    security: V3Security;
+    close: () => void;
+    projectName: string;
+}) {
     if (isV3SecurityApiKey(security)) {
-            return <SecurityApiKey {...security} onClose={onClose} />
+        return <SecurityApiKey {...security} close={close} projectName={projectName} />;
     }
 
-    if (isV3SecurityOAuth2(security)) {
-        return  <SecurityOAuth {...security} onClose={onClose} />
+    if (isV3SecurityOAuthInline(security)) {
+        return <SecurityOAuthInline {...security} close={close} projectName={projectName} />;
     }
 
-    return <SecurityUnsupported type={security.type} />
+    if (isV3SecurityOAuthImplicit(security)) {
+        return <SecurityOAuthImplicit {...security} close={close} projectName={projectName} />;
+    }
+
+    return <SecurityUnsupported type={security.type} />;
 }
 
 function SecurityUnsupported({type}: {type: string}) {

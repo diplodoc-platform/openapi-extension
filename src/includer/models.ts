@@ -107,6 +107,7 @@ export type SandboxProps = {
     bodyType?: string;
     schema?: OpenJSONSchema;
     security?: V3Security[];
+    projectName: string;
 };
 
 export type OpenAPISpec = {
@@ -115,8 +116,31 @@ export type OpenAPISpec = {
     security?: Array<Record<string, V3Security>>;
 };
 
-export type V3SecurityApiKey = {type: 'apiKey'; description: string; name: string; in: 'query' | 'header' | 'cookie'};
-export type V3SecurityOAuth2 = {type: 'oauth2'; description: string};
+export type V3SecurityApiKey = {
+    type: 'apiKey';
+    description: string;
+    name: string;
+    in: 'query' | 'header';
+};
+
+export type V3SecurityOAuthImplicit = {
+    type: 'oauth2';
+    description: string;
+    flows: {
+        implicit: {
+            authorizationUrl: string;
+            scopes: Record<string, string>;
+        };
+    };
+};
+
+export type V3SecurityOAuthInline = {
+    type: 'oauth2';
+    description: string;
+    'x-inline'?: boolean;
+};
+
+export type V3SecurityOAuth2 = V3SecurityOAuthImplicit | V3SecurityOAuthInline;
 
 export type V3Security = V3SecurityApiKey | V3SecurityOAuth2 | {type: string; description: string};
 

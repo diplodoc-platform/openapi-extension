@@ -2,7 +2,7 @@ import type {RefObject} from 'react';
 import type {V3Security, V3SecurityOAuth2} from '../includer/models';
 import type {Field, FormState} from './types';
 
-import {V3SecurityApiKey} from "../includer/models";
+import {V3SecurityApiKey, V3SecurityOAuthImplicit, V3SecurityOAuthInline} from '../includer/models';
 
 export const merge = <T, R>(items: T[], iterator: (item: T) => Record<string, R> | undefined) => {
     return items.reduce((acc, item) => Object.assign(acc, iterator(item)), {} as Record<string, R>);
@@ -31,6 +31,7 @@ export const prepareBody = ({
 export const prepareRequest = (
     urlTemplate: string,
     {search, headers, path, bodyJson, bodyFormData}: FormState,
+    projectName: string,
     bodyType?: string,
     security?: V3Security[],
 ) => {
@@ -44,10 +45,9 @@ export const prepareRequest = (
         searchParams.append(key, value);
     });
 
-
     if (security) {
-        for(const item of security) {
-            const value = getTempValue(`${item.type}`);
+        for (const item of security) {
+            const value = getAuthByType(projectName, item.type).value;
             if (isV3SecurityApiKey(item) && value) {
                 if (item.in === 'header') {
                     preparedHeaders[item.name] = value;
@@ -125,24 +125,52 @@ export function collectValues<F extends Record<string, RefObject<Field>>>(
     );
 }
 
-const tempMap: Record<string, string> = {};
+export function getSelectedAuth(prefix: string): {type: string | null; value: string | null} {
+    const type = sessionStorage.getItem(`${prefix}_type`);
+    return {
+        type,
+        value: sessionStorage.getItem(`${prefix}_value`),
+    };
+}
+export function getAuthByType(
+    prefix: string,
+    type: string,
+): {type: string | null; value: string | null} {
+    const typeFromStorage = sessionStorage.getItem(`${prefix}_type`);
 
-export function getTempValue(key: string): string | undefined {
-    return tempMap[key];
+    return {
+        type: typeFromStorage,
+        value: type === typeFromStorage ? sessionStorage.getItem(`${prefix}_value`) : null,
+    };
 }
 
-export function setTempValue(key: string, value: string): void {
-    tempMap[key] = value;
-}
-
-export function deleteTempValue(key: string): void {
-    delete tempMap[key];
+export function setAuth(prefix: string, {type, value}: {type: string; value: string}) {
+    sessionStorage.setItem(`${prefix}_type`, type);
+    sessionStorage.setItem(`${prefix}_value`, value);
 }
 
 export function isV3SecurityApiKey(v3Security: V3Security): v3Security is V3SecurityApiKey {
-    return v3Security.type === 'apiKey'
+    return v3Security.type === 'apiKey';
 }
 
 export function isV3SecurityOAuth2(v3Security: V3Security): v3Security is V3SecurityOAuth2 {
     return v3Security.type === 'oauth2';
+}
+
+export function isV3SecurityOAuthInline(
+    v3Security: V3Security,
+): v3Security is V3SecurityOAuthInline {
+    return (
+        isV3SecurityOAuth2(v3Security) &&
+        Boolean('x-inline' in v3Security && v3Security['x-inline'])
+    );
+}
+
+export function isV3SecurityOAuthImplicit(
+    v3Security: V3Security,
+): v3Security is V3SecurityOAuthImplicit {
+    return (
+        isV3SecurityOAuth2(v3Security) &&
+        Boolean('flows' in v3Security && 'implicit' in v3Security.flows)
+    );
 }

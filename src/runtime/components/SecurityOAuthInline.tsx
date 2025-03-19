@@ -1,22 +1,24 @@
 import React from 'react';
 import {Button, Col, Flex, Row, Text, TextArea} from '@gravity-ui/uikit';
 
-import {V3SecurityApiKey} from '../../includer/models';
+import {V3SecurityOAuthInline} from '../../includer/models';
 import {getAuthByType, setAuth} from '../utils';
-import {MapperNames} from '../../plugin/constants';
 
-type SecurityApiKeyProps = V3SecurityApiKey & {
+type SecurityOAuthInlineProps = V3SecurityOAuthInline & {
     close: () => void;
     projectName: string;
 };
 
-export class SecurityApiKey extends React.Component<SecurityApiKeyProps, {value: string}> {
+export class SecurityOAuthInline extends React.Component<
+    SecurityOAuthInlineProps,
+    {value: string}
+> {
     setValue: (value: string) => void;
 
-    constructor(props: SecurityApiKeyProps) {
+    constructor(props: SecurityOAuthInlineProps) {
         super(props);
 
-        const {value} = getAuthByType(this.props.projectName, 'apiKey');
+        const {value} = getAuthByType(this.props.projectName, 'oauth2');
         if (value) {
             this.state = {
                 value:
@@ -34,7 +36,6 @@ export class SecurityApiKey extends React.Component<SecurityApiKeyProps, {value:
     }
 
     render() {
-        const {in: inFromProps, name, projectName} = this.props;
         const {value} = this.state;
         return (
             <Flex direction="column" width="100%" gap={4}>
@@ -44,22 +45,20 @@ export class SecurityApiKey extends React.Component<SecurityApiKeyProps, {value:
                             <Text variant="subheader-1">In</Text>
                         </Col>
                         <Col s={10}>
-                            <Text variant="body-1">{MapperNames[inFromProps] ?? inFromProps}</Text>
+                            <Text variant="body-1">Header</Text>
                         </Col>
                     </Row>
-
                     <Row space={1}>
                         <Col s={2}>
                             <Text variant="subheader-1">Name</Text>
                         </Col>
                         <Col s={10}>
-                            <Text variant="body-1">{name}</Text>
+                            <Text variant="body-1">Authorization</Text>
                         </Col>
                     </Row>
-
                     <Row space={1}>
                         <Col s={2}>
-                            <Text variant="subheader-1">Key</Text>
+                            <Text variant="subheader-1">Value</Text>
                         </Col>
                         <Col s={10}>
                             <TextArea
@@ -81,7 +80,7 @@ export class SecurityApiKey extends React.Component<SecurityApiKeyProps, {value:
                         size="l"
                         view="action"
                         onClick={() => {
-                            setAuth(projectName, {type: 'apiKey', value});
+                            setAuth(this.props.projectName, {type: 'oauth2', value});
                             this.props.close();
                         }}
                     >

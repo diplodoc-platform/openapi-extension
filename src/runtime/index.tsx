@@ -16,9 +16,10 @@ export const Runtime: React.FC = () => {
     }
 
     try {
+        const projectName = 'unknown_project';
         const props = JSON.parse(decodeURIComponent(sandbox.dataset.props));
 
-        return createPortal(<Sandbox {...props} />, sandbox);
+        return createPortal(<Sandbox {...{...props, projectName}} />, sandbox);
     } catch (error) {
         // eslint-disable-next-line no-console
         console.log(error);

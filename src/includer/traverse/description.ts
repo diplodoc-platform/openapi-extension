@@ -103,9 +103,6 @@ function concatConstraint(
 }
 
 function prepareConstraintValue(value: unknown, notWrapValueIntoCode: boolean) {
-    if (typeof value === 'boolean') {
-        return '';
-    }
     return notWrapValueIntoCode ? value : `\`${value}\``;
 }
 

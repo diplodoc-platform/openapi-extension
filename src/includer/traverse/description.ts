@@ -82,6 +82,15 @@ function prepareComplexDescription(baseDescription: string, value: OpenJSONSchem
 
         const {key, label, computed, notWrapValueIntoCode} = field;
 
+        if (key === 'uniqueItems') {
+            return concatConstraint(
+                acc,
+                value[key] === true ? '&nbsp;' : computed,
+                label,
+                value[key] === true,
+            );
+        }
+
         return concatConstraint(acc, computed || value[key], label + ':', notWrapValueIntoCode);
     }, baseDescription);
 }

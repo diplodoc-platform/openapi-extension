@@ -16,7 +16,9 @@ export const Runtime: React.FC = () => {
     }
 
     try {
-        const projectName = 'unknown_project';
+        const projectName =
+            window.__DATA__?.props?.pageProps?.data?.viewerConfigParams?.['project-name'] ??
+            'unknown-project';
         const props = JSON.parse(decodeURIComponent(sandbox.dataset.props));
 
         return createPortal(<Sandbox {...{...props, projectName}} />, sandbox);

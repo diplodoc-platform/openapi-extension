@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.7.1](https://github.com/diplodoc-platform/openapi-extension/compare/v2.7.0...v2.7.1) (2025-04-03)
+
+
+### Bug Fixes
+
+* Fix default (boolean) field ([a930301](https://github.com/diplodoc-platform/openapi-extension/commit/a9303016f009430611c1e03f0ad53944d8216ba4))
+* Made custom attribute "uniqueItems" without value ([65dcc4a](https://github.com/diplodoc-platform/openapi-extension/commit/65dcc4a0501e7a6a41f6aa8e63191ece12b0d1ed))
+
 ## [2.7.0](https://github.com/diplodoc-platform/openapi-extension/compare/v2.6.0...v2.7.0) (2025-01-02)
 
 

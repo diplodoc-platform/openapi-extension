@@ -1,13 +1,13 @@
 import type {SandboxProps} from '../includer/models';
 import type {FormState} from './types';
 
-import React, {useLayoutEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {Button} from '@gravity-ui/uikit';
 
 import {Text, yfmSandbox} from '../plugin/constants';
 
 import {BodyFormData, BodyJson, Column, Params, Result, Security} from './components';
-import {collectErrors, collectValues, prepareRequest, setAuth} from './utils';
+import {collectErrors, collectValues, prepareRequest} from './utils';
 import './sandbox.scss';
 
 export const Sandbox: React.FC<SandboxProps> = (props) => {
@@ -19,24 +19,6 @@ export const Sandbox: React.FC<SandboxProps> = (props) => {
         bodyFormData: useRef(null),
     };
     const [request, setRequest] = useState<Promise<Response> | null>(null);
-
-    useLayoutEffect(() => {
-        const hash = window.location.hash;
-        if (hash.includes('access_token=')) {
-            const searchParams = new URLSearchParams(hash.slice(1));
-            const tokenValue = searchParams.get('access_token');
-            if (tokenValue) {
-                document
-                    .querySelector('.openapi')
-                    ?.querySelector<HTMLDivElement>('.yfm-tab:nth-child(2)')
-                    ?.click();
-                const newUrl = new URL(window.location.toString());
-                newUrl.hash = '';
-                window.history.replaceState(null, document.title, newUrl);
-                setAuth(props.projectName, {type: 'oauth2', value: tokenValue});
-            }
-        }
-    }, []);
 
     const onSubmit = async (event: React.FormEvent) => {
         event.preventDefault();

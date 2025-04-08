@@ -2,15 +2,15 @@ import React, {useState} from 'react';
 import {Button, Col, Flex, Row, Text, TextArea} from '@gravity-ui/uikit';
 
 import {V3SecurityOAuthInline} from '../../includer/models';
-import {getAuthByType, setAuth} from '../utils';
 
 type SecurityOAuthInlineProps = V3SecurityOAuthInline & {
     close: () => void;
-    projectName: string;
+    initialValue: string;
+    setAuth: (params: {type: 'oauth2'; value: string}) => void;
 };
 
-export const SecurityOAuthInline = ({close, projectName}: SecurityOAuthInlineProps) => {
-    const [value, setValue] = useState(getInitialValue(projectName));
+export const SecurityOAuthInline = ({close, initialValue, setAuth}: SecurityOAuthInlineProps) => {
+    const [value, setValue] = useState(calcInitialValue(initialValue));
     return (
         <Flex direction="column" width="100%" gap={4}>
             <Flex direction="column" width="100%" gap={4}>
@@ -54,7 +54,7 @@ export const SecurityOAuthInline = ({close, projectName}: SecurityOAuthInlinePro
                     size="l"
                     view="action"
                     onClick={() => {
-                        setAuth(projectName, {type: 'oauth2', value});
+                        setAuth({type: 'oauth2', value});
                         close();
                     }}
                 >
@@ -65,8 +65,7 @@ export const SecurityOAuthInline = ({close, projectName}: SecurityOAuthInlinePro
     );
 };
 
-function getInitialValue(projectName: string) {
-    const {value} = getAuthByType(projectName, 'oauth2');
+function calcInitialValue(value: string) {
     if (value) {
         return value.length > 6
             ? `${value.slice(0, 3)}${'*'.repeat(value.length - 6)}${value.slice(-3)}`

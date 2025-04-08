@@ -2,16 +2,22 @@ import React, {useState} from 'react';
 import {Button, Col, Flex, Row, Text, TextArea} from '@gravity-ui/uikit';
 
 import {V3SecurityApiKey} from '../../includer/models';
-import {getAuthByType, setAuth} from '../utils';
 import {MapperNames} from '../../plugin/constants';
 
 type SecurityApiKeyProps = V3SecurityApiKey & {
     close: () => void;
-    projectName: string;
+    initialValue: string;
+    setAuth: (params: {type: 'apiKey'; value: string}) => void;
 };
 
-export function SecurityApiKey({in: inFromProps, name, projectName, close}: SecurityApiKeyProps) {
-    const [value, setValue] = useState<string>(getInitialValue(projectName));
+export function SecurityApiKey({
+    in: inFromProps,
+    name,
+    close,
+    initialValue,
+    setAuth,
+}: SecurityApiKeyProps) {
+    const [value, setValue] = useState<string>(calcInitialValue(initialValue));
 
     return (
         <Flex direction="column" width="100%" gap={4}>
@@ -58,7 +64,7 @@ export function SecurityApiKey({in: inFromProps, name, projectName, close}: Secu
                     size="l"
                     view="action"
                     onClick={() => {
-                        setAuth(projectName, {type: 'apiKey', value});
+                        setAuth({type: 'apiKey', value});
                         close();
                     }}
                 >
@@ -69,8 +75,7 @@ export function SecurityApiKey({in: inFromProps, name, projectName, close}: Secu
     );
 }
 
-function getInitialValue(projectName: string) {
-    const {value} = getAuthByType(projectName, 'apiKey');
+function calcInitialValue(value: string) {
     if (value) {
         return value.length > 6
             ? `${value.slice(0, 3)}${'*'.repeat(value.length - 6)}${value.slice(-3)}`

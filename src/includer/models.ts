@@ -144,6 +144,8 @@ export type V3SecurityOAuth2 = V3SecurityOAuthImplicit | V3SecurityOAuthInline;
 
 export type V3Security = V3SecurityApiKey | V3SecurityOAuth2 | {type: string; description: string};
 
+export type V3SecurityType = V3Security['type'];
+
 export type OpenAPIOperation = {
     summary?: string;
     description?: string;

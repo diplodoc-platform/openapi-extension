@@ -1,48 +1,37 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {Box, Button, Dialog, RadioButton, Text} from '@gravity-ui/uikit';
 import {CircleCheck} from '@gravity-ui/icons';
 
 import {V3Security} from '../../includer/models';
-import {
-    getSelectedAuth,
-    isV3SecurityApiKey,
-    isV3SecurityOAuthImplicit,
-    isV3SecurityOAuthInline,
-} from '../utils';
+import {isV3SecurityApiKey, isV3SecurityOAuthImplicit, isV3SecurityOAuthInline} from '../utils';
+import {useAuthSessionStorage} from '../hooks/useAuthSessionStorage';
 
 import {Column, SecurityApiKey, SecurityOAuthImplicit, SecurityOAuthInline} from '.';
 
-export const Security: React.FC<{
+type SecurityProps = {
     security: V3Security[];
     projectName: string;
-}> = ({security, projectName}) => {
-    const [isOpen, setOpen] = useState(false);
-    const [activeType, setActiveType] = useState(
-        getSelectedAuth(projectName).type ?? security[0].type,
-    );
-    const [hasAnyAuthorization, setHasAnyAuthorization] = useState(
-        Boolean(getSelectedAuth(projectName).value),
-    );
-    const activeSecurityTab = useMemo(
-        () => security.find(({type}) => activeType === type),
-        [activeType],
-    );
+};
+
+export const Security: React.FC<SecurityProps> = (props) => {
+    const {security} = props;
+    const {
+        isOpen,
+        close,
+        open,
+
+        activeSecurityTab,
+        activeType,
+        setActiveType,
+
+        auth,
+        setAuth,
+        hasAnyAuthorization,
+    } = useEnhance(props);
+
     if (!activeSecurityTab) {
         throw new Error();
     }
-
-    useEffect(() => {
-        setActiveType(getSelectedAuth(projectName).type ?? security[0].type);
-        setHasAnyAuthorization(Boolean(getSelectedAuth(projectName).value));
-    }, [isOpen]);
-
-    const close = useCallback(() => {
-        setOpen(false);
-    }, [setOpen]);
-
-    const open = useCallback(() => {
-        setOpen(true);
-    }, [setOpen]);
 
     return (
         <Column gap={10}>
@@ -68,9 +57,10 @@ export const Security: React.FC<{
                         </Box>
                         <Box spacing={{pt: '4'}}>
                             <SecurityTab
-                                projectName={projectName}
                                 close={close}
                                 security={activeSecurityTab}
+                                initialValue={auth.type === activeType ? auth.value : ''}
+                                setAuth={setAuth}
                             />
                         </Box>
                     </Column>
@@ -80,25 +70,85 @@ export const Security: React.FC<{
     );
 };
 
+function useEnhance({projectName, security}: SecurityProps) {
+    const [isOpen, setOpen] = useState(false);
+    const [auth, setAuth] = useAuthSessionStorage({
+        projectName,
+        initialType: security[0].type,
+    });
+    const hasAnyAuthorization = Boolean(auth.value);
+    const [activeType, setActiveType] = useState(auth.type);
+    const activeSecurityTab = useMemo(
+        () => security.find(({type}) => activeType === type),
+        [activeType],
+    );
+
+    const close = useCallback(() => {
+        setOpen(false);
+    }, [setOpen]);
+
+    const open = useCallback(() => {
+        setActiveType(auth.type || security[0].type);
+        setOpen(true);
+    }, [setOpen]);
+
+    return {
+        isOpen,
+        close,
+        open,
+
+        activeSecurityTab,
+        activeType,
+        setActiveType,
+
+        auth,
+        setAuth,
+        hasAnyAuthorization,
+    };
+}
+
 function SecurityTab({
     security,
     close,
-    projectName,
+    initialValue,
+    setAuth,
 }: {
     security: V3Security;
     close: () => void;
-    projectName: string;
+    initialValue: string;
+    setAuth: (params: {type: V3Security['type']; value: string}) => void;
 }) {
     if (isV3SecurityApiKey(security)) {
-        return <SecurityApiKey {...security} close={close} projectName={projectName} />;
+        return (
+            <SecurityApiKey
+                {...security}
+                close={close}
+                initialValue={initialValue}
+                setAuth={setAuth}
+            />
+        );
     }
 
     if (isV3SecurityOAuthInline(security)) {
-        return <SecurityOAuthInline {...security} close={close} projectName={projectName} />;
+        return (
+            <SecurityOAuthInline
+                {...security}
+                close={close}
+                initialValue={initialValue}
+                setAuth={setAuth}
+            />
+        );
     }
 
     if (isV3SecurityOAuthImplicit(security)) {
-        return <SecurityOAuthImplicit {...security} close={close} projectName={projectName} />;
+        return (
+            <SecurityOAuthImplicit
+                {...security}
+                close={close}
+                initialValue={initialValue}
+                setAuth={setAuth}
+            />
+        );
     }
 
     return <SecurityUnsupported type={security.type} />;

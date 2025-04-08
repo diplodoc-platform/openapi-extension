@@ -2,23 +2,23 @@ import React, {useState} from 'react';
 import {Button, Checkbox, Col, Flex, Row, Text, TextArea} from '@gravity-ui/uikit';
 
 import {V3SecurityOAuthImplicit} from '../../includer/models';
-import {getAuthByType, setAuth} from '../utils';
 
 type SecurityOAuthImplicitProps = V3SecurityOAuthImplicit & {
     close: () => void;
-    projectName: string;
+    initialValue: string;
+    setAuth: (params: {value: string; type: 'oauth2'}) => void;
 };
 
 export function SecurityOAuthImplicit({
     flows: {
         implicit: {scopes, authorizationUrl},
     },
-    projectName,
+    initialValue,
     close,
+    setAuth,
 }: SecurityOAuthImplicitProps) {
-    const {value} = getAuthByType(projectName, 'oauth2');
     const [clientId, setClientId] = useState<string>('');
-    const [token, setToken] = useState<string>(value ?? '');
+    const [token, setToken] = useState<string>(initialValue);
     const [selectedScopes, setSelectedScopes] = useState<Record<string, boolean>>({});
     const [error, setError] = useState<undefined | string>(undefined);
 
@@ -52,7 +52,7 @@ export function SecurityOAuthImplicit({
         setError(undefined);
         setSelectedScopes({});
         setToken('');
-        setAuth(projectName, {value: '', type: 'oauth2'});
+        setAuth({value: '', type: 'oauth2'});
     };
     return (
         <Flex direction="column" width="100%" gap={4}>

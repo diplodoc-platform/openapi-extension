@@ -6,10 +6,12 @@ export const Column: React.FC<
     PropsWithChildren & {
         className?: string;
         gap?: number;
+        minWidth?: number;
     }
-> = ({className, gap = 20, children}) => {
+> = ({className, gap = 20, children, minWidth}) => {
     const style = {
         gap: gap + 'px',
+        minWidth,
     };
 
     return (

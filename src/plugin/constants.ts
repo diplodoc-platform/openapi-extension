@@ -20,6 +20,11 @@ export const Text = {
     RESPONSE_FILE_LABEL: 'File from response',
 };
 
+export const MapperNames = {
+    header: 'Header',
+    query: 'Query',
+} as const;
+
 export const yfmSandbox = block('yfm-sandbox');
 
 export const possibleReasonsFailToFetch = [

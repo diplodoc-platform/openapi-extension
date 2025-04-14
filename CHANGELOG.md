@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.8.0](https://github.com/diplodoc-platform/openapi-extension/compare/v2.7.1...v2.8.0) (2025-04-14)
+
+
+### Features
+
+* add multi security types ([5422d16](https://github.com/diplodoc-platform/openapi-extension/commit/5422d167d1ff73ac70d67d6dd4cdf4305814791b))
+* Add security support ([a9a696a](https://github.com/diplodoc-platform/openapi-extension/commit/a9a696a2d69d4ae038327c4df39068d2d1f59791))
+
+
+### Bug Fixes
+
+* refactor useEffect to only state ([24251eb](https://github.com/diplodoc-platform/openapi-extension/commit/24251eb0a16989df72eda00aeb1c0ba5e6a6f693))
+* set real projectName ([387ff5a](https://github.com/diplodoc-platform/openapi-extension/commit/387ff5af838f7dadeb831cab3a33ddcef913a707))
+
 ## [2.7.1](https://github.com/diplodoc-platform/openapi-extension/compare/v2.7.0...v2.7.1) (2025-04-03)
 
 

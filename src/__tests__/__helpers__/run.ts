@@ -116,9 +116,9 @@ export async function run(spec: string) {
     const id = Date.now().toString();
     const fs = virtualFS();
 
-    when(jest.spyOn(nodeFS, 'readFile')).mockImplementation((_, callback) => {
-        callback(null, Buffer.from(spec, 'utf-8'));
-    });
+    const tempFilePath = `/tmp/openapi-test-${id}.yaml`;
+
+    nodeFS.writeFileSync(tempFilePath, spec);
 
     when(jest.spyOn(nodeFS.promises, 'writeFile')).mockImplementation(async (file, content) => {
         fs.writeFile(file.toString(), content);
@@ -126,25 +126,34 @@ export async function run(spec: string) {
 
     when(jest.spyOn(nodeFS.promises, 'mkdir')).mockImplementation(async () => undefined);
 
-    await includerFunction({
-        index: 0,
-        readBasePath: '',
-        writeBasePath: '',
-        vars: {},
-        passedParams: {
-            input: id,
-        },
-        tocPath: 'toc',
-        item: {
-            name: id,
-            href: '',
-            include: {
-                path: 'openapi',
-                repo: '__tests__',
+    try {
+        await includerFunction({
+            index: 0,
+            readBasePath: '',
+            writeBasePath: '',
+            vars: {},
+            passedParams: {
+                input: tempFilePath,
             },
-            items: [],
-        },
-    });
+            tocPath: 'toc',
+            item: {
+                name: id,
+                href: '',
+                include: {
+                    path: 'openapi',
+                    repo: '__tests__',
+                },
+                items: [],
+            },
+        });
+
+        nodeFS.unlinkSync(tempFilePath);
+    } catch (error) {
+        try {
+            nodeFS.unlinkSync(tempFilePath);
+        } catch (e) {}
+        throw error;
+    }
 
     jest.clearAllMocks();
 

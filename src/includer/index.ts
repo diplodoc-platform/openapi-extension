@@ -1,3 +1,16 @@
+import type {
+    IncluderFunctionParams,
+    OpenAPISpec,
+    OpenApiIncluderParams,
+    OpenJSONSchema,
+    Run,
+    V3Endpoint,
+    V3Info,
+    YfmPreset,
+    YfmToc,
+    YfmTocItem,
+} from './models';
+
 import assert from 'assert';
 import {dirname, join, resolve} from 'path';
 import {mkdir, writeFile} from 'fs/promises';
@@ -16,18 +29,6 @@ import {
     SPEC_RENDER_MODES,
     SPEC_RENDER_MODE_DEFAULT,
 } from './constants';
-import {
-    IncluderFunctionParams,
-    OpenAPISpec,
-    OpenApiIncluderParams,
-    OpenJSONSchema,
-    Run,
-    V3Endpoint,
-    V3Info,
-    YfmPreset,
-    YfmToc,
-    YfmTocItem,
-} from './models';
 
 const INCLUDER_NAME = 'openapi';
 
@@ -56,8 +57,7 @@ export async function includer(run: Run, params: OpenApiIncluderParams, tocPath:
         },
         refs: new RefsService(),
     };
-    const vars = await run.vars.load(tocPath);
-
+    const vars = run.vars.for(tocPath);
     const contentPath = join(run.input, input);
 
     const parser = new SwaggerParser();

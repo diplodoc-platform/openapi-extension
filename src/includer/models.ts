@@ -1,6 +1,5 @@
-import {JSONSchema6, JSONSchema6Definition} from 'json-schema';
-
-import {
+import type {JSONSchema6, JSONSchema6Definition} from 'json-schema';
+import type {
     LeadingPageMode,
     SPEC_RENDER_MODE_DEFAULT,
     SPEC_RENDER_MODE_HIDDEN,
@@ -367,6 +366,6 @@ export type JSONSchemaType = BaseJSONSchemaType | JSONSchemaUnionType | FoundRef
 export type Run = {
     input: string;
     vars: {
-        load(path: string): Promise<YfmPreset>;
+        for(path: string): YfmPreset;
     };
 };

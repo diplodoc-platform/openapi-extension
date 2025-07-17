@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.1](https://github.com/diplodoc-platform/openapi-extension/compare/v2.8.0...v2.8.1) (2025-07-17)
+
+
+### Bug Fixes
+
+* update test helper, read from tmp file ([fa82447](https://github.com/diplodoc-platform/openapi-extension/commit/fa82447e7c02dd833b20dc04aea4c751f6fa7805))
+
 ## [2.8.0](https://github.com/diplodoc-platform/openapi-extension/compare/v2.7.1...v2.8.0) (2025-04-14)
 
 

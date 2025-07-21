@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.8.1](https://github.com/diplodoc-platform/openapi-extension/compare/v2.8.0...v2.8.1) (2025-07-21)
+
+
+### Bug Fixes
+
+* update test helper, read from tmp file ([fa82447](https://github.com/diplodoc-platform/openapi-extension/commit/fa82447e7c02dd833b20dc04aea4c751f6fa7805))
+* Use vars.for instead of private vars.load ([6012b89](https://github.com/diplodoc-platform/openapi-extension/commit/6012b89cfe9f323a7c3001a9e3b3b9c5bb1a2244))
+
 ## [2.8.0](https://github.com/diplodoc-platform/openapi-extension/compare/v2.7.1...v2.8.0) (2025-04-14)
 
 

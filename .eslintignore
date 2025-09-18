@@ -3,6 +3,7 @@
 .history
 .env
 .DS_Store
+.eslintrc.js
 node_modules
 /lib
 /dist
@@ -12,5 +13,6 @@ node_modules
 
 /src/__tests__
 /jest.snapshots.js
+/jest.config.js
 
 /external

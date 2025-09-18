@@ -1,3 +1,5 @@
+import type {TitleDepth, V3Server} from '../models';
+
 import slugify from 'slugify';
 import bem from 'bem-cn-lite';
 
@@ -8,7 +10,6 @@ import {
     HTML_COMMENTS_CLOSE_DIRECTIVE,
     HTML_COMMENTS_OPEN_DIRECTIVE,
 } from '../constants';
-import {TitleDepth, V3Server} from '../models';
 
 import {popups} from './popups';
 

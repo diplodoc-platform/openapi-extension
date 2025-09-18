@@ -1,9 +1,5 @@
 /* eslint-disable no-shadow */
-import slugify from 'slugify';
-import {getStatusText} from 'http-status-codes';
-
-import {TAG_NAMES_FIELD} from './constants';
-import {
+import type {
     Method,
     OpenAPIOperation,
     OpenAPISpec,
@@ -16,6 +12,11 @@ import {
     V3Server,
     V3Tag,
 } from './models';
+
+import slugify from 'slugify';
+import {getStatusText} from 'http-status-codes';
+
+import {TAG_NAMES_FIELD} from './constants';
 
 function info(spec: OpenAPISpec): V3Info {
     const {

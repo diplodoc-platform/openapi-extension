@@ -1,5 +1,6 @@
+import type {OpenJSONSchema, OpenJSONSchemaDefinition, Refs} from '../models';
+
 import {extractOneOfElements} from '../traverse/types';
-import {OpenJSONSchema, OpenJSONSchemaDefinition, Refs} from '../models';
 import {concatNewLine} from '../utils';
 import {anchor} from '../ui';
 

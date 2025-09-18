@@ -1,4 +1,4 @@
-import {OpenJSONSchema} from './models';
+import type {OpenJSONSchema} from './models';
 
 export enum LeadingPageMode {
     Section = 'section',

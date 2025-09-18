@@ -1,7 +1,8 @@
+import type {V3SecurityApiKey} from '../../includer/models';
+
 import React, {useState} from 'react';
 import {Button, Col, Flex, Row, Text, TextArea} from '@gravity-ui/uikit';
 
-import {V3SecurityApiKey} from '../../includer/models';
 import {MapperNames} from '../../plugin/constants';
 
 type SecurityApiKeyProps = V3SecurityApiKey & {

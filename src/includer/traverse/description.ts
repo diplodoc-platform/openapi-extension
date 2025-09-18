@@ -1,4 +1,4 @@
-import {OpenJSONSchema} from '../models';
+import type {OpenJSONSchema} from '../models';
 
 type Field = {
     key: keyof OpenJSONSchema;

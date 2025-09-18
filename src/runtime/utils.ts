@@ -1,8 +1,12 @@
 import type {RefObject} from 'react';
-import type {V3Security, V3SecurityOAuth2} from '../includer/models';
+import type {
+    V3Security,
+    V3SecurityApiKey,
+    V3SecurityOAuth2,
+    V3SecurityOAuthImplicit,
+    V3SecurityOAuthInline,
+} from '../includer/models';
 import type {Field, FormState} from './types';
-
-import {V3SecurityApiKey, V3SecurityOAuthImplicit, V3SecurityOAuthInline} from '../includer/models';
 
 export const merge = <T, R>(items: T[], iterator: (item: T) => Record<string, R> | undefined) => {
     return items.reduce((acc, item) => Object.assign(acc, iterator(item)), {} as Record<string, R>);

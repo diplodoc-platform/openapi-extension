@@ -1,4 +1,16 @@
 import type {Context} from '../index';
+import type {TableRef} from '../traverse/tables';
+import type {
+    In,
+    OpenJSONSchema,
+    V3Endpoint,
+    V3Parameter,
+    V3Parameters,
+    V3Response,
+    V3Responses,
+    V3Schema,
+    V3Security,
+} from '../models';
 
 import stringify from 'json-stringify-safe';
 import {dump} from 'js-yaml';
@@ -15,23 +27,7 @@ import {
     RESPONSES_SECTION_NAME,
     SANDBOX_TAB_NAME,
 } from '../constants';
-import {
-    TableRef,
-    prepareSampleObject,
-    prepareTableRowData,
-    tableFromSchema,
-} from '../traverse/tables';
-import {
-    In,
-    OpenJSONSchema,
-    V3Endpoint,
-    V3Parameter,
-    V3Parameters,
-    V3Response,
-    V3Responses,
-    V3Schema,
-    V3Security,
-} from '../models';
+import {prepareSampleObject, prepareTableRowData, tableFromSchema} from '../traverse/tables';
 import {concatNewLine} from '../utils';
 
 import {

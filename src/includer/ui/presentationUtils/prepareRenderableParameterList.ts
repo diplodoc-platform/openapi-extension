@@ -1,4 +1,4 @@
-import {V3Parameter} from '../../models';
+import type {V3Parameter} from '../../models';
 
 import {getOrderedPropList} from './orderedProps/getOrderedPropList';
 

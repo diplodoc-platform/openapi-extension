@@ -1,15 +1,15 @@
 import type {Context} from '../index';
-
-import stringify from 'json-stringify-safe';
-
-import {SUPPORTED_ENUM_TYPES} from '../constants';
-import {
+import type {
     JSONSchemaType,
     JSONSchemaUnionType,
     JsType,
     OpenJSONSchema,
     SupportedEnumType,
 } from '../models';
+
+import stringify from 'json-stringify-safe';
+
+import {SUPPORTED_ENUM_TYPES} from '../constants';
 import {anchor} from '../ui';
 
 function inferType(value: OpenJSONSchema, ctx: Context): JSONSchemaType {

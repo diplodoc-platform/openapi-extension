@@ -1,7 +1,8 @@
+import type {V3SecurityType} from '../../includer/models';
+
 import {useCallback, useState} from 'react';
 
 import {getSelectedAuth, setAuth as setAuthFromUtils} from '../utils';
-import {V3SecurityType} from '../../includer/models';
 
 type UseAuthSessionStorageProps = {
     initialType: V3SecurityType;

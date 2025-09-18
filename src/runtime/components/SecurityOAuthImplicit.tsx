@@ -1,7 +1,7 @@
+import type {V3SecurityOAuthImplicit} from '../../includer/models';
+
 import React, {useState} from 'react';
 import {Button, Checkbox, Col, Flex, Row, Text, TextArea} from '@gravity-ui/uikit';
-
-import {V3SecurityOAuthImplicit} from '../../includer/models';
 
 type SecurityOAuthImplicitProps = V3SecurityOAuthImplicit & {
     close: () => void;

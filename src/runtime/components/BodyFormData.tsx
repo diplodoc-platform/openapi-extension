@@ -1,11 +1,11 @@
 import type {Field, Nullable} from '../types';
+import type {JSONSchema6Definition} from 'json-schema';
+import type {OpenJSONSchema} from '../../includer/models';
 
 import React from 'react';
 import {Text, TextArea} from '@gravity-ui/uikit';
-import {JSONSchema6Definition} from 'json-schema';
 
 import {Text as TextEnum} from '../../plugin/constants';
-import {OpenJSONSchema} from '../../includer/models';
 
 import {Column} from './Column';
 import {FileInputArray} from './FileInputArray';

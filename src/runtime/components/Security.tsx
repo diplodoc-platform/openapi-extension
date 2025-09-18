@@ -1,8 +1,9 @@
+import type {V3Security} from '../../includer/models';
+
 import React, {useCallback, useMemo, useState} from 'react';
 import {Box, Button, Dialog, RadioButton, Text} from '@gravity-ui/uikit';
 import {CircleCheck} from '@gravity-ui/icons';
 
-import {V3Security} from '../../includer/models';
 import {isV3SecurityApiKey, isV3SecurityOAuthImplicit, isV3SecurityOAuthInline} from '../utils';
 import {useAuthSessionStorage} from '../hooks/useAuthSessionStorage';
 

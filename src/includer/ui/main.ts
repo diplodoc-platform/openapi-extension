@@ -1,4 +1,12 @@
 import type {Context} from '../index';
+import type {
+    ContactSource,
+    LeadingPageSpecRenderMode,
+    Specification,
+    V3Contact,
+    V3Info,
+    V3Tag,
+} from '../models';
 
 import stringify from 'json-stringify-safe';
 import {join} from 'path';
@@ -11,14 +19,6 @@ import {
     SPEC_SECTION_TYPE,
     TAGS_SECTION_NAME,
 } from '../constants';
-import {
-    ContactSource,
-    LeadingPageSpecRenderMode,
-    Specification,
-    V3Contact,
-    V3Info,
-    V3Tag,
-} from '../models';
 import {mdPath, sectionName} from '../index';
 
 import {block, body, code, cut, link, list, mono, page, title} from '.';

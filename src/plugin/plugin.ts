@@ -1,5 +1,5 @@
+import type MarkdownIt from 'markdown-it';
 import type Token from 'markdown-it/lib/token';
-import type {MarkdownItPluginCb} from '@diplodoc/transform/lib/plugins/typings';
 
 import {load} from 'js-yaml';
 
@@ -23,7 +23,7 @@ function applyTransforms({tokens}: {tokens: Token[]}) {
     return true;
 }
 
-const openapiSandboxPlugin: MarkdownItPluginCb = (md) => {
+const openapiSandboxPlugin = (md: MarkdownIt) => {
     try {
         md.core.ruler.after('fence', 'openapi-sandbox', applyTransforms);
     } catch (e) {

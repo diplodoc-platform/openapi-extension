@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.2](https://github.com/diplodoc-platform/openapi-extension/compare/v2.8.1...v2.8.2) (2025-09-19)
+
+
+### Bug Fixes
+
+* update version actions, node 22 ([5098a6a](https://github.com/diplodoc-platform/openapi-extension/commit/5098a6a8bd00a97a17970a1516a832d7464cb908))
+
 ## [2.8.1](https://github.com/diplodoc-platform/openapi-extension/compare/v2.8.0...v2.8.1) (2025-07-21)
 
 

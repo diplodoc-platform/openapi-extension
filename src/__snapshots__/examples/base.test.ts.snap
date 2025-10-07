@@ -287,3 +287,114 @@ Base 200 response
 
 [*Deprecated]: No longer supported, please use an alternative and newer version."
 `;
+
+exports[`openapi project with examples renders example from ref 1`] = `
+"<div class="openapi">
+
+# example
+
+## Request
+
+<div class="openapi__requests">
+
+<div class="openapi__request__wrapper" style="--method: var(--dc-openapi-methods-post);margin-bottom: 12px">
+
+<div class="openapi__request">
+
+POST {.openapi__method} 
+\`\`\`text translate=no
+http://localhost:8080/test
+\`\`\`
+
+
+
+</div>
+
+Generated server url
+
+</div>
+
+</div>
+
+## Responses
+
+<div class="openapi__response__code__200">
+
+## 200 OK
+
+Base 200 response
+
+<div class="openapi-entity">
+
+### Body
+
+{% cut "application/json" %}
+
+
+\`\`\`json translate=no
+{
+    "title": {
+        "en_US": "Nestle milk chocolate-caramel",
+        "ru_RU": "Nestle молочный шоколад-карамель",
+        "es_ES": "Nestlé chocolate con leche y caramelo"
+    }
+}
+\`\`\`
+
+
+{% endcut %}
+
+
+#|||
+ **Name** 
+|
+ **Description** 
+||
+
+||
+ title {.openapi-table-parameter-name} 
+|
+ **Type:** [Cat](#cat)
+
+Test description
+
+*Example:*{.openapi-description-annotation} 
+\`\`\`
+{
+  "en_US": "Nestle milk chocolate-caramel",
+  "ru_RU": "Nestle молочный шоколад-карамель",
+  "es_ES": "Nestlé chocolate con leche y caramelo"
+}
+\`\`\`
+ 
+|||#
+
+</div>
+
+<div class="openapi-entity">
+
+### Cat
+
+#|||
+ **Name** 
+|
+ **Description** 
+||
+
+||
+ ...rest {.openapi-table-parameter-name} 
+|
+ **Type:** string 
+|||#
+
+</div>
+
+</div>
+<!-- markdownlint-disable-file -->
+
+</div>
+
+
+
+[*Deprecated]: No longer supported, please use an alternative and newer version."
+`;

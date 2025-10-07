@@ -111,8 +111,20 @@ function concatConstraint(
     return `${description}\n\n*${constraintLabel}*{.openapi-description-annotation} ${constraint}\n`;
 }
 
+function isPrimitive(value: unknown) {
+    return !value || ['boolean', 'string', 'number'].includes(typeof value);
+}
+
 function prepareConstraintValue(value: unknown, notWrapValueIntoCode: boolean) {
-    return notWrapValueIntoCode ? value : `\`${value}\``;
+    if (notWrapValueIntoCode) {
+        return value;
+    }
+
+    if (isPrimitive(value)) {
+        return '`' + value + '`';
+    }
+
+    return '\n' + ['```', JSON.stringify(value, null, 2), '```'].join('\n');
 }
 
 export {fields, prepareComplexDescription};

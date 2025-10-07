@@ -70,6 +70,10 @@ function prepareObjectSchemaTable(
         }),
     });
 
+    if (merged.additionalProperties && typeof merged.additionalProperties === 'object') {
+        wellOrderedProperties.push(['...rest', merged.additionalProperties]);
+    }
+
     wellOrderedProperties.forEach(([key, v]) => {
         const value = ctx.refs.merge(v);
         const name = tableParameterName(key, {

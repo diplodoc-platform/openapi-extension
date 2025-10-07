@@ -34,7 +34,7 @@ export const getOrderedPropList = <T>({
     propList,
     iteratee,
     shouldApplyLexSort = true,
-}: GetOrderedListArguments<T>): readonly T[] => {
+}: GetOrderedListArguments<T>): T[] => {
     const preprocessed = shouldApplyLexSort
         ? sortBy(propList, (listElement) => iteratee(listElement).name)
         : propList;

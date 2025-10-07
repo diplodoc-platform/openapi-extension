@@ -22,4 +22,4 @@ const makeSortComparator =
 export const hoistRequired = <T>(
     propList: readonly T[],
     isRequiredGetter: IsRequiredGetter<T>,
-): readonly T[] => [...propList].sort(makeSortComparator(isRequiredGetter));
+): T[] => [...propList].sort(makeSortComparator(isRequiredGetter));

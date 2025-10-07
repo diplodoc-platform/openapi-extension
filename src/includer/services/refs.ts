@@ -45,17 +45,16 @@ export class RefsService {
         for (const [k, v] of Object.entries(this._refs)) {
             // @apidevtools/swagger-parser guaranties, that in refs list there will be the same objects
             // but same objects can have different descriptions
-            if (v.properties && v.properties === value.properties) {
-                return k;
-            }
-            if (v.allOf && v.allOf === value.allOf) {
-                return k;
-            }
-            if (v.oneOf && v.oneOf === value.oneOf) {
-                return k;
-            }
-            if (v.enum && v.enum === value.enum) {
-                return k;
+            for (const field of [
+                'properties',
+                'additionalProperties',
+                'allOf',
+                'oneOf',
+                'enum',
+            ] as const) {
+                if (v[field] && v[field] === value[field]) {
+                    return k;
+                }
             }
         }
         return undefined;
@@ -79,14 +78,6 @@ export class RefsService {
     merge(schema: OpenJSONSchemaDefinition, needToSaveRef = true): OpenJSONSchema {
         if (typeof schema === 'boolean') {
             throw Error("Boolean value isn't supported");
-        }
-
-        if (schema.additionalProperties && typeof schema.additionalProperties === 'object') {
-            const result = schema.additionalProperties;
-
-            result.description = schema.description;
-
-            return this.merge(result);
         }
 
         if (schema.items) {

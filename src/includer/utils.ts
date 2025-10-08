@@ -2,6 +2,18 @@ import type {OpenApiIncluderParams, Specification, V3Endpoint, V3Tag, YfmPreset}
 
 import {evaluate} from '@diplodoc/liquid';
 
+const ShallowCopy = Symbol('ShallowCopy');
+
+export type {ShallowCopy};
+
+export function source<T extends {[ShallowCopy]?: T} & object>(object: T) {
+    return (object && object[ShallowCopy]) || object;
+}
+
+export function copy<T extends {[ShallowCopy]?: T} & object>(object: T): T & {[ShallowCopy]: T} {
+    return {...object, [ShallowCopy]: source(object)};
+}
+
 export function concatNewLine(prefix: string, suffix: string) {
     return prefix.trim().length ? `${prefix}<br>${suffix}` : suffix;
 }

@@ -4,7 +4,7 @@ import type {OpenJSONSchema, OpenJSONSchemaDefinition} from '../models';
 import stringify from 'json-stringify-safe';
 
 import {anchor, block, bold, table, tableParameterName} from '../ui';
-import {concatNewLine} from '../utils';
+import {concatNewLine, source} from '../utils';
 import {getOrderedPropList} from '../ui/presentationUtils/orderedProps/getOrderedPropList';
 
 import {collectRefs, extractOneOfElements, inferType, typeToText} from './types';
@@ -289,16 +289,14 @@ function prepareSampleElement(
         return value.default;
     }
 
-    const wasInCallstack = value._shallowCopyOf
-        ? callstack.includes(value._shallowCopyOf)
-        : callstack.includes(value);
+    const wasInCallstack = callstack.includes(source(value));
 
     if (!required && wasInCallstack) {
         // stop recursive cyclic links
         return undefined;
     }
 
-    const nextCallstackEntry = value._shallowCopyOf ?? value;
+    const nextCallstackEntry = source(value);
     const downCallstack = callstack.concat(nextCallstackEntry);
     const type = inferType(value, ctx);
 

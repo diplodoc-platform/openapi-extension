@@ -254,6 +254,8 @@ export type V3Parameter = {
     default?: Primitive;
     schema: OpenJSONSchema;
 
+    readOnly?: boolean;
+    writeOnly?: boolean;
     // vendor extensions
     'x-hidden'?: boolean;
 };
@@ -341,7 +343,6 @@ export type OpenApiIncluderParams = {
 export type OpenJSONSchema = JSONSchema6 & {
     _runtime?: true;
     _emptyDescription?: true;
-    _shallowCopyOf?: OpenJSONSchema;
     example?: unknown;
     deprecated?: boolean;
     properties?: {

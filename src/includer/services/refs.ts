@@ -1,24 +1,19 @@
 import type {OpenJSONSchema, OpenJSONSchemaDefinition, Refs} from '../models';
 
 import {extractOneOfElements} from '../traverse/types';
-import {concatNewLine} from '../utils';
+import {concatNewLine, copy, source} from '../utils';
 import {anchor} from '../ui';
 
-const markedShallowCopy = (source: OpenJSONSchema): OpenJSONSchema => ({
-    ...source,
-    _shallowCopyOf: source._shallowCopyOf ?? source,
-});
-
 function removeInternalProperty(schema: OpenJSONSchema): OpenJSONSchema {
-    const internalPropertyTag = 'x-hidden';
+    const properties = copy(schema.properties || {});
 
-    Object.keys(schema.properties || {}).forEach((key) => {
-        if (schema.properties?.[key][internalPropertyTag]) {
-            delete schema.properties[key];
+    Object.keys(properties).forEach((key) => {
+        if (properties[key]['x-hidden']) {
+            delete properties[key];
         }
     });
 
-    return schema;
+    return {...copy(schema), properties};
 }
 
 export class RefsService {
@@ -52,7 +47,8 @@ export class RefsService {
                 'oneOf',
                 'enum',
             ] as const) {
-                if (v[field] && v[field] === value[field]) {
+                // @ts-ignore
+                if (v[field] && v[field] === source(value[field])) {
                     return k;
                 }
             }
@@ -98,7 +94,7 @@ export class RefsService {
         const combiners = value.oneOf || value.allOf || [];
 
         if (combiners.length === 0) {
-            return markedShallowCopy(value);
+            return copy(value);
         }
 
         if (needToSaveRef && combiners.length === 1) {

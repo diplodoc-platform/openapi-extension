@@ -325,7 +325,6 @@ export type CustomTag = {
 
 export type OpenApiIncluderParams = {
     input: string;
-    positionedXHidden?: boolean;
     leadingPage?: LeadingPageParams;
     filter?: OpenApiFilter;
     noindex?: OpenApiFilter;

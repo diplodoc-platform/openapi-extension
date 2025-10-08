@@ -1,6 +1,7 @@
+import type {OpenApiIncluderParams, Run} from '../../includer/models';
+
 import {OpenAPIV3} from 'openapi-types';
-import {includerFunction} from '../../includer';
-import {when} from 'jest-when';
+import {includer} from '../../includer';
 import {dump} from 'js-yaml';
 import {virtualFS} from './virtualFS';
 import nodeFS from 'fs';
@@ -112,40 +113,31 @@ export class DocumentBuilder {
     }
 }
 
-export async function run(spec: string) {
-    const id = Date.now().toString();
+export async function run(spec: string, options: Partial<OpenApiIncluderParams> = {}) {
+    const id = Math.ceil(Math.random() * 10000000);
+    const params = {
+        input: `openapi-test-${id}.yaml`,
+        ...options,
+    };
+    const run = {
+        input: '/tmp',
+        vars: {
+            for: jest.fn(),
+        },
+    } as Run;
+
     const fs = virtualFS();
 
     const tempFilePath = `/tmp/openapi-test-${id}.yaml`;
 
     nodeFS.writeFileSync(tempFilePath, spec);
 
-    when(jest.spyOn(nodeFS.promises, 'writeFile')).mockImplementation(async (file, content) => {
-        fs.writeFile(file.toString(), content);
-    });
-
-    when(jest.spyOn(nodeFS.promises, 'mkdir')).mockImplementation(async () => undefined);
-
     try {
-        await includerFunction({
-            index: 0,
-            readBasePath: '',
-            writeBasePath: '',
-            vars: {},
-            passedParams: {
-                input: tempFilePath,
-            },
-            tocPath: 'toc',
-            item: {
-                name: id,
-                href: '',
-                include: {
-                    path: 'openapi',
-                    repo: '__tests__',
-                },
-                items: [],
-            },
-        });
+        const {files} = await includer(run, params, '/tmp/toc.yaml');
+
+        for (const {path, content} of files) {
+            await fs.writeFile(path, content);
+        }
 
         nodeFS.unlinkSync(tempFilePath);
     } catch (error) {
@@ -154,8 +146,6 @@ export async function run(spec: string) {
         } catch (e) {}
         throw error;
     }
-
-    jest.clearAllMocks();
 
     return fs;
 }

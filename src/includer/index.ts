@@ -1,5 +1,4 @@
 import type {
-    IncluderFunctionParams,
     OpenAPISpec,
     OpenApiIncluderParams,
     OpenJSONSchema,
@@ -12,10 +11,8 @@ import type {
 } from './models';
 
 import assert from 'assert';
-import {dirname, join, resolve} from 'path';
-import {mkdir, writeFile} from 'fs/promises';
+import {dirname, join} from 'path';
 import {readFileSync} from 'fs';
-import {dump} from 'js-yaml';
 import SwaggerParser from '@apidevtools/swagger-parser';
 
 import {filterUsefullContent, matchFilter} from './utils';
@@ -44,20 +41,26 @@ class OpenApiIncluderError extends Error {
 }
 
 export type Context = {
+    vars: Readonly<YfmPreset>;
+    params: Readonly<OpenApiIncluderParams>;
     tag(id: string): {alias?: string; hidden?: boolean; path?: string; name?: string} | undefined;
     refs: RefsService;
+    relative: (path: string) => string;
 };
 
 export async function includer(run: Run, params: OpenApiIncluderParams, tocPath: string) {
-    const {input, leadingPage = {}, filter, noindex, hidden, sandbox, tags = {}} = params;
+    const {input, tags = {}} = params;
 
+    const vars = run.vars.for(tocPath);
     const ctx: Context = {
+        params,
+        vars,
+        relative: (path: string) => join(run.input, path),
         tag(id: string) {
             return tags[id];
         },
         refs: new RefsService(),
     };
-    const vars = run.vars.for(tocPath);
     const contentPath = join(run.input, input);
 
     const parser = new SwaggerParser();
@@ -74,95 +77,10 @@ export async function includer(run: Run, params: OpenApiIncluderParams, tocPath:
             }
         }
 
-        const toc = await generateToc({data, leadingPage, filter, vars}, ctx);
-        const files = await generateContent(
-            {
-                data,
-                leadingPage,
-                contentPath,
-                filter,
-                noindex,
-                vars,
-                hidden,
-                sandbox,
-            },
-            ctx,
-        );
+        const toc = await generateToc(data, ctx);
+        const files = await generateContent(data, ctx);
 
         return {toc, files};
-    } catch (error) {
-        if (error && !(error instanceof OpenApiIncluderError)) {
-            // eslint-disable-next-line no-ex-assign
-            error = new OpenApiIncluderError(error.toString(), tocPath);
-        }
-
-        throw error;
-    }
-}
-
-async function includerFunction(params: IncluderFunctionParams<OpenApiIncluderParams>) {
-    const {
-        readBasePath,
-        writeBasePath,
-        tocPath,
-        vars,
-        passedParams: {input, leadingPage = {}, filter, noindex, hidden, sandbox, tags = {}},
-        index,
-    } = params;
-
-    const ctx: Context = {
-        tag(id: string) {
-            return tags[id];
-        },
-        refs: new RefsService(),
-    };
-    const tocDirPath = dirname(tocPath);
-
-    const contentPath =
-        index === 0
-            ? resolve(process.cwd(), writeBasePath, input)
-            : resolve(process.cwd(), readBasePath, input);
-
-    const parser = new SwaggerParser();
-
-    try {
-        const data = (await parser.validate(contentPath, {validate: {spec: true}})) as OpenAPISpec;
-
-        for (const file of Object.values(parser.$refs.values())) {
-            const schemas = Object.entries(file.components?.schemas || {}).concat(
-                Object.entries(file),
-            );
-            for (const [refName, schema] of schemas) {
-                ctx.refs.add(refName, schema as OpenJSONSchema);
-            }
-        }
-
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const writePath = join(writeBasePath, tocDirPath, params.item.include!.path);
-
-        await mkdir(writePath, {recursive: true});
-        const toc = await generateToc({data, leadingPage, filter, vars}, ctx);
-        const files = await generateContent(
-            {
-                data,
-                leadingPage,
-                contentPath,
-                filter,
-                noindex,
-                vars,
-                hidden,
-                sandbox,
-            },
-            ctx,
-        );
-
-        await mkdir(dirname(writePath), {recursive: true});
-        await writeFile(join(writePath, 'toc.yaml'), dump(toc));
-
-        for (const {path, content} of files) {
-            await mkdir(dirname(join(writePath, path)), {recursive: true});
-            await writeFile(join(writePath, path), content);
-        }
     } catch (error) {
         if (error && !(error instanceof OpenApiIncluderError)) {
             // eslint-disable-next-line no-ex-assign
@@ -193,15 +111,9 @@ function assertLeadingPageMode(mode: string) {
     );
 }
 
-export type GenerateTocParams = {
-    data: OpenAPISpec;
-    vars: YfmPreset;
-    leadingPage: OpenApiIncluderParams['leadingPage'];
-    filter: OpenApiIncluderParams['filter'];
-};
-
-async function generateToc(params: GenerateTocParams, ctx: Context): Promise<YfmToc> {
-    const {data, leadingPage, filter, vars} = params;
+async function generateToc(data: OpenAPISpec, ctx: Context): Promise<YfmToc> {
+    const {vars, params} = ctx;
+    const {leadingPage, filter} = params;
     const leadingPageName = leadingPage?.name ?? LEADING_PAGE_NAME_DEFAULT;
     const leadingPageMode = leadingPage?.mode ?? LeadingPageMode.Leaf;
 
@@ -268,27 +180,15 @@ function addLeadingPage(section: YfmTocItem, mode: LeadingPageMode, name: string
     }
 }
 
-export type GenerateContentParams = {
-    data: OpenAPISpec;
-    vars: YfmPreset;
-    contentPath: string;
-    leadingPage: OpenApiIncluderParams['leadingPage'];
-    filter?: OpenApiIncluderParams['filter'];
-    noindex?: OpenApiIncluderParams['noindex'];
-    sandbox?: OpenApiIncluderParams['sandbox'];
-    hidden?: OpenApiIncluderParams['filter'];
-};
-
 type EndpointRoute = {
     path: string;
     content: string;
 };
 
-async function generateContent(
-    params: GenerateContentParams,
-    ctx: Context,
-): Promise<EndpointRoute[]> {
-    const {data, leadingPage, filter, noindex, hidden, vars, sandbox, contentPath} = params;
+async function generateContent(data: OpenAPISpec, ctx: Context): Promise<EndpointRoute[]> {
+    const {vars, params} = ctx;
+    const {input, leadingPage, filter, noindex, hidden, sandbox} = params;
+    const contentPath = ctx.relative(input);
     const customLeadingPageDir = dirname(contentPath);
 
     const filterContent = filterUsefullContent(filter, vars);
@@ -394,7 +294,3 @@ export function sectionName(e: V3Endpoint): string {
 export function mdPath(e: V3Endpoint): string {
     return `${e.id}.md`;
 }
-
-export {INCLUDER_NAME as name, includerFunction};
-
-export default {name: INCLUDER_NAME, includerFunction};

@@ -75,6 +75,13 @@ function endpoint(
             : content;
     };
 
+    ctx.refs.mode('write');
+    const requestParams = parameters(pagePrintedRefs, data.parameters, ctx);
+    const requestBody = openapiBody(pagePrintedRefs, data.requestBody, ctx);
+
+    ctx.refs.mode('read');
+    const response = responses(pagePrintedRefs, data.responses, ctx);
+
     const endpointPage = block([
         title(1)(data.summary ?? data.id),
         data.deprecated && popups.deprecated(),
@@ -82,9 +89,9 @@ function endpoint(
             block([
                 data.description?.length && body(data.description),
                 request(data),
-                parameters(pagePrintedRefs, data.parameters, ctx),
-                openapiBody(pagePrintedRefs, data.requestBody, ctx),
-                responses(pagePrintedRefs, data.responses, ctx),
+                requestParams,
+                requestBody,
+                response,
             ]),
         ),
     ]);

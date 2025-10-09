@@ -49,7 +49,7 @@ export type Context = {
 };
 
 export async function includer(run: Run, params: OpenApiIncluderParams, tocPath: string) {
-    const {input, tags = {}} = params;
+    const {input, tags = {}, positionedXHidden = false} = params;
 
     const vars = run.vars.for(tocPath);
     const ctx: Context = {
@@ -59,7 +59,7 @@ export async function includer(run: Run, params: OpenApiIncluderParams, tocPath:
         tag(id: string) {
             return tags[id];
         },
-        refs: new RefsService(),
+        refs: new RefsService({positionedXHidden}),
     };
     const contentPath = join(run.input, input);
 

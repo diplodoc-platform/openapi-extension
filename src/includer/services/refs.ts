@@ -4,11 +4,24 @@ import {extractOneOfElements} from '../traverse/types';
 import {concatNewLine, copy, source} from '../utils';
 import {anchor} from '../ui';
 
-function removeInternalProperty(schema: OpenJSONSchema): OpenJSONSchema {
+function removeInternalProperty(
+    schema: OpenJSONSchema,
+    mode: 'readOnly' | 'writeOnly' | undefined,
+): OpenJSONSchema {
     const properties = copy(schema.properties || {});
 
     Object.keys(properties).forEach((key) => {
         if (properties[key]['x-hidden']) {
+            delete properties[key];
+        }
+
+        const {readOnly, writeOnly} = properties[key] || {};
+
+        if (readOnly && mode !== 'readOnly') {
+            delete properties[key];
+        }
+
+        if (writeOnly && mode !== 'writeOnly') {
             delete properties[key];
         }
     });
@@ -19,8 +32,14 @@ function removeInternalProperty(schema: OpenJSONSchema): OpenJSONSchema {
 export class RefsService {
     private _refs: Refs = {};
 
+    private _mode: 'read' | 'write' = 'read';
+
     get refs() {
         return this._refs;
+    }
+
+    mode(mode: 'read' | 'write') {
+        this._mode = mode;
     }
 
     add(key: string, value: OpenJSONSchema) {
@@ -85,7 +104,8 @@ export class RefsService {
             return {...schema, items: this.merge(result)};
         }
 
-        const value = removeInternalProperty(schema);
+        const mode = `${this._mode}Only` as const;
+        const value = removeInternalProperty(schema, mode);
 
         if (value.oneOf?.length && value.allOf?.length) {
             throw Error("Object can't have both allOf and oneOf");

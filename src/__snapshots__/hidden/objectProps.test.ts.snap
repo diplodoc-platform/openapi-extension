@@ -102,3 +102,131 @@ Name of this star
 
 [*Deprecated]: No longer supported, please use an alternative and newer version."
 `;
+
+exports[`Properties in object schemas marked with readOnly/writeOnly should be filtered in request/response 1`] = `
+"<div class="openapi">
+
+# HiddenObjectProperties
+
+## Request
+
+<div class="openapi__requests">
+
+<div class="openapi__request__wrapper" style="--method: var(--dc-openapi-methods-post);margin-bottom: 12px">
+
+<div class="openapi__request">
+
+POST {.openapi__method} 
+\`\`\`text translate=no
+http://localhost:8080/test
+\`\`\`
+
+
+
+</div>
+
+Generated server url
+
+</div>
+
+</div>
+
+<div class="openapi-entity">
+
+### Body
+
+{% cut "application/json" %}
+
+
+\`\`\`json translate=no
+{
+    "visibleField": "string",
+    "requestField": "string"
+}
+\`\`\`
+
+
+{% endcut %}
+
+
+#|||
+ **Name** 
+|
+ **Description** 
+||
+
+||
+ requestField {.openapi-table-parameter-name} 
+|
+ **Type:** string
+
+Field visible only for request 
+||
+
+||
+ visibleField {.openapi-table-parameter-name} 
+|
+ **Type:** string
+
+Always visible field 
+|||#
+
+</div>
+
+## Responses
+
+<div class="openapi__response__code__204">
+
+## 204 No Content
+
+<div class="openapi-entity">
+
+### Body
+
+{% cut "application/json" %}
+
+
+\`\`\`json translate=no
+{
+    "visibleField": "string",
+    "responseField": "string"
+}
+\`\`\`
+
+
+{% endcut %}
+
+
+#|||
+ **Name** 
+|
+ **Description** 
+||
+
+||
+ responseField {.openapi-table-parameter-name} 
+|
+ **Type:** string
+
+Field visible only for response 
+||
+
+||
+ visibleField {.openapi-table-parameter-name} 
+|
+ **Type:** string
+
+Always visible field 
+|||#
+
+</div>
+
+</div>
+<!-- markdownlint-disable-file -->
+
+</div>
+
+
+
+[*Deprecated]: No longer supported, please use an alternative and newer version."
+`;

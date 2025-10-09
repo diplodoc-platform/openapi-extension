@@ -347,6 +347,8 @@ export type OpenJSONSchema = JSONSchema6 & {
     deprecated?: boolean;
     properties?: {
         [key: string]: JSONSchema6Definition & {
+            readOnly?: boolean;
+            writeOnly?: boolean;
             'x-hidden'?: boolean;
         };
     };

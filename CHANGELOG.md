@@ -1,5 +1,24 @@
 # Changelog
 
+## [3.0.0](https://github.com/diplodoc-platform/openapi-extension/compare/v2.8.1...v3.0.0) (2025-10-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* Remove old includer interface
+
+### Features
+
+* Add `positionedXHidden` option ([2579025](https://github.com/diplodoc-platform/openapi-extension/commit/2579025f62f262c2a48c6e33007af990a3d209d0))
+* Remove old includer interface ([6f529a9](https://github.com/diplodoc-platform/openapi-extension/commit/6f529a9c44ec44c20222c57e35b969c480c0b27f))
+
+
+### Bug Fixes
+
+* Fix additionalProps render ([9694680](https://github.com/diplodoc-platform/openapi-extension/commit/96946806e9dd1d3adbd59bb26631bc9feb8c29ec))
+* Fix descrition complex examples render ([38cb222](https://github.com/diplodoc-platform/openapi-extension/commit/38cb222b6dc774e5af6813b04328e5da66a38f2c))
+* update version actions, node 22 ([5098a6a](https://github.com/diplodoc-platform/openapi-extension/commit/5098a6a8bd00a97a17970a1516a832d7464cb908))
+
 ## [2.8.1](https://github.com/diplodoc-platform/openapi-extension/compare/v2.8.0...v2.8.1) (2025-07-21)
 
 

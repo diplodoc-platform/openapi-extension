@@ -1,5 +1,24 @@
 # Changelog
 
+## [3.0.0](https://github.com/diplodoc-platform/openapi-extension/compare/v2.8.1...v3.0.0) (2025-10-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* Remove old includer interface
+
+### Features
+
+* Filter readOnly/writeOnly props ([4b6fe82](https://github.com/diplodoc-platform/openapi-extension/commit/4b6fe82ca5997ebfd204ef4f496792ff5f688243))
+* Remove old includer interface ([457ad7c](https://github.com/diplodoc-platform/openapi-extension/commit/457ad7cf52dc7c3d207c3eff87688ab95e438a85))
+
+
+### Bug Fixes
+
+* Fix additionalProps render ([9694680](https://github.com/diplodoc-platform/openapi-extension/commit/96946806e9dd1d3adbd59bb26631bc9feb8c29ec))
+* Fix descrition complex examples render ([38cb222](https://github.com/diplodoc-platform/openapi-extension/commit/38cb222b6dc774e5af6813b04328e5da66a38f2c))
+* update version actions, node 22 ([5098a6a](https://github.com/diplodoc-platform/openapi-extension/commit/5098a6a8bd00a97a17970a1516a832d7464cb908))
+
 ## [2.8.1](https://github.com/diplodoc-platform/openapi-extension/compare/v2.8.0...v2.8.1) (2025-07-21)
 
 

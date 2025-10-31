@@ -84,7 +84,7 @@ Name of this star
  **Type:** string
 
 CCDM catalogue designation for this star 
-|||#
+|||#{.openapi-table}
 
 </div>
 
@@ -205,7 +205,7 @@ Morgan-Keenan luminosity class for this star
  **Type:** string
 
 Name of this star 
-|||#
+|||#{.openapi-table}
 
 </div>
 

@@ -3,7 +3,7 @@ import type {OpenJSONSchema, OpenJSONSchemaDefinition} from '../models';
 
 import stringify from 'json-stringify-safe';
 
-import {anchor, block, bold, table, tableParameterName} from '../ui';
+import {anchor, block, bold, cut, table, tableParameterName} from '../ui';
 import {concatNewLine, source} from '../utils';
 import {getOrderedPropList} from '../ui/presentationUtils/orderedProps/getOrderedPropList';
 
@@ -19,31 +19,38 @@ type TableFromSchemaResult = {
     tableRefs: TableRef[];
 };
 
-export function tableFromSchema(schema: OpenJSONSchema, ctx: Context): TableFromSchemaResult {
+type TableFromSchemaOptions = {
+    noHeadings?: boolean;
+};
+
+export function tableFromSchema(
+    schema: OpenJSONSchema,
+    ctx: Context,
+    options: TableFromSchemaOptions = {},
+): TableFromSchemaResult {
     if (schema.enum) {
         // enum description will be in table description
         const description = prepareComplexDescription('', schema);
         const type = inferType(schema, ctx);
+        const headings = options.noHeadings ? [] : [['**Type**', '**Description**']];
 
-        const content = table([
-            ['Type', 'Description'],
-            [typeToText(type), description],
-        ]);
+        const content = table(headings.concat([[typeToText(type), description]]));
 
         return {content, tableRefs: []};
     }
 
     if (schema.type === 'array') {
-        const {type, ref} = prepareTableRowData({value: schema}, ctx);
+        const {rawType, ref} = prepareTableRowData({value: schema}, ctx);
 
         return {
-            content: type,
+            content: rawType,
             tableRefs: ref || [],
         };
     }
 
     const {rows, refs} = prepareObjectSchemaTable(schema, ctx);
-    const content = rows.length ? table([['Name', 'Description'], ...rows]) : '';
+    const headings = options.noHeadings ? [] : [['**Name**', '**Description**']];
+    const content = rows.length ? table(headings.concat(rows)) : '';
 
     return {content, tableRefs: refs};
 }
@@ -71,7 +78,7 @@ function prepareObjectSchemaTable(
     });
 
     if (merged.additionalProperties && typeof merged.additionalProperties === 'object') {
-        wellOrderedProperties.push(['...rest', merged.additionalProperties]);
+        wellOrderedProperties.push(['_[additional]_', merged.additionalProperties]);
     }
 
     wellOrderedProperties.forEach(([key, v]) => {
@@ -85,7 +92,7 @@ function prepareObjectSchemaTable(
             ctx,
         );
 
-        result.rows.push([name, block([`${bold('Type:')} ${type}`, description])]);
+        result.rows.push([name, block([type, description])]);
 
         if (ref) {
             result.refs.push(...ref);
@@ -126,6 +133,7 @@ function prepareObjectSchemaTable(
 }
 
 type PrepareRowResult = {
+    rawType: string;
     type: string;
     description: string;
     ref?: TableRef[];
@@ -157,24 +165,75 @@ export function prepareTableRowData(
             ? concatNewLine(description, inner.description)
             : description;
 
-        const isUnionType = (inner.ref?.length || inner.type.split('\n').length || 0) > 1;
-        const returnType = isUnionType ? `(${inner.type})[]` : `${inner.type}[]`;
+        const isUnionType = (inner.ref?.length || inner.rawType.split('\n').length || 0) > 1;
+        const returnType = isUnionType ? `(${inner.rawType})[]` : `${inner.rawType}[]`;
 
         return {
-            type: returnType,
+            rawType: returnType,
+            type: `${bold('Type:')} ${returnType}`,
             // if inner.ref present, inner description will be in separate table
             ref: inner.ref,
             description: prepareComplexDescription(innerDescription, value),
         };
     }
 
+    if (type === 'object' && !isEmptySchema(value)) {
+        const type = valueToInline(value, ctx);
+
+        return {
+            rawType: type.rawType,
+            type: type.content,
+            description: prepareComplexDescription(description, value),
+            ref: type.ref,
+        };
+    }
+
     const format = value.format === undefined ? '' : `&lt;${value.format}&gt;`;
 
     return {
-        type: typeToText(type) + format,
+        rawType: typeToText(type),
+        type: `${bold('Type:')} ${typeToText(type) + format}`,
         description: prepareComplexDescription(description, value),
         ref: collectRefs(type),
     };
+}
+
+function valueToInline(value: OpenJSONSchema, ctx: Context) {
+    const table = tableFromSchema(value, ctx, {noHeadings: true});
+
+    return {
+        rawType: value.type as string,
+        content: cut(
+            table.content,
+            `${bold('Type:')} ${value.type as string}`,
+            '.openapi-table-parameter-inline-type',
+        ),
+        ref: table.tableRefs,
+    };
+}
+
+function isEmptySchema(schema: OpenJSONSchema) {
+    if (schema.properties && Object.keys(schema.properties).length) {
+        return false;
+    }
+
+    if (schema.additionalProperties && typeof schema.additionalProperties !== 'boolean') {
+        return false;
+    }
+
+    if (schema.oneOf && schema.oneOf.length) {
+        return false;
+    }
+
+    if (schema.anyOf && schema.anyOf.length) {
+        return false;
+    }
+
+    if (schema.allOf && schema.allOf.length) {
+        return false;
+    }
+
+    return true;
 }
 
 function findNonNullOneOfElement(schema: OpenJSONSchema, ctx: Context): OpenJSONSchema {

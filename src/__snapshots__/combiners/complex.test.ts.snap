@@ -87,7 +87,7 @@ Dog class
  **oneOf** [Cat](#cat)
 
 Cat class 
-|||#
+|||#{.openapi-table}
 
 </div>
 
@@ -113,7 +113,7 @@ Dog class
  type {.openapi-table-parameter-name} 
 |
  **Type:** string 
-|||#
+|||#{.openapi-table}
 
 </div>
 
@@ -139,7 +139,7 @@ Cat class
  type {.openapi-table-parameter-name} 
 |
  **Type:** string 
-|||#
+|||#{.openapi-table}
 
 </div>
 
@@ -210,7 +210,7 @@ Dog class
  **oneOf** [Cat](#cat)
 
 Cat class 
-|||#
+|||#{.openapi-table}
 
 </div>
 

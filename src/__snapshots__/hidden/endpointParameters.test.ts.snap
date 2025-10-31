@@ -42,7 +42,7 @@ Generated server url
  **Type:** string
 
 Access token 
-|||#
+|||#{.openapi-table}
 
 ## Responses
 
@@ -119,7 +119,7 @@ Generated server url
  **Type:** string
 
 Name for the requested star 
-|||#
+|||#{.openapi-table}
 
 ## Responses
 

@@ -31,12 +31,37 @@
         color: var(--g-color-text-danger);
     }
 
-    table td > *:first-child {
+    .openapi-table td > *:first-child {
         display: inline-block;
+    }
+
+    .openapi-table .openapi-table {
+        width: 100%;
+        margin-bottom: 0;
+
+        tr {
+            // stylelint-disable-next-line
+            background-color: unset !important;
+        }
+
+        td:last-child {
+            width: 100%;
+        }
     }
 
     .openapi-table-parameter-name {
         white-space: nowrap;
+    }
+
+    .openapi-table-parameter-inline-type {
+        margin-left: -30px;
+        // stylelint-disable-next-line
+        margin-top: -6px !important;
+        width: calc(100% + 30px);
+
+        & > summary:before {
+            left: 10px;
+        }
     }
 
     & .openapi-deprecated {

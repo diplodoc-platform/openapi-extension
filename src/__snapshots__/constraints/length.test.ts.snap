@@ -90,7 +90,7 @@ Cat class
  **Type:** [Dog](#dog)
 
 Dog class 
-|||#
+|||#{.openapi-table}
 
 </div>
 
@@ -121,7 +121,7 @@ Cat class
  name {.openapi-table-parameter-name} 
 |
  **Type:** string 
-|||#
+|||#{.openapi-table}
 
 </div>
 
@@ -159,7 +159,7 @@ Pet name
 
 *Max length:*{.openapi-description-annotation} \`100\`
  
-|||#
+|||#{.openapi-table}
 
 </div>
 

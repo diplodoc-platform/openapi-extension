@@ -137,7 +137,7 @@ Generated server url
  name {.openapi-table-parameter-name} 
 |
  **Type:** string 
-|||#
+|||#{.openapi-table}
 
 </div>
 
@@ -231,7 +231,7 @@ Generated server url
  ...rest 
 |
  **oneOf** [Cat](#cat) 
-|||#
+|||#{.openapi-table}
 
 </div>
 
@@ -249,7 +249,7 @@ Generated server url
  name {.openapi-table-parameter-name} 
 |
  **Type:** string 
-|||#
+|||#{.openapi-table}
 
 </div>
 
@@ -367,7 +367,7 @@ Test description
 }
 \`\`\`
  
-|||#
+|||#{.openapi-table}
 
 </div>
 
@@ -382,10 +382,10 @@ Test description
 ||
 
 ||
- ...rest {.openapi-table-parameter-name} 
+ _[additional]_ {.openapi-table-parameter-name} 
 |
  **Type:** string 
-|||#
+|||#{.openapi-table}
 
 </div>
 

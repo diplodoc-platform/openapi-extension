@@ -63,7 +63,7 @@ Generated server url
  A {.openapi-table-parameter-name} 
 |
  **Type:** [RecurseMiddle](#recursemiddle) 
-|||#
+|||#{.openapi-table}
 
 </div>
 
@@ -81,7 +81,7 @@ Generated server url
  B {.openapi-table-parameter-name} 
 |
  **Type:** [RecurseTop](#recursetop) 
-|||#
+|||#{.openapi-table}
 
 </div>
 
@@ -99,7 +99,7 @@ Generated server url
  A {.openapi-table-parameter-name} 
 |
  **Type:** [RecurseMiddle](#recursemiddle) 
-|||#
+|||#{.openapi-table}
 
 </div>
 
@@ -174,7 +174,7 @@ Generated server url
  A {.openapi-table-parameter-name} 
 |
  **Type:** [RecurseTop](#recursetop) 
-|||#
+|||#{.openapi-table}
 
 </div>
 
@@ -192,7 +192,7 @@ Generated server url
  A {.openapi-table-parameter-name} 
 |
  **Type:** [RecurseTop](#recursetop) 
-|||#
+|||#{.openapi-table}
 
 </div>
 
@@ -267,7 +267,7 @@ Generated server url
  A {.openapi-table-parameter-name} 
 |
  **Type:** [RecurseTop](#recursetop) 
-|||#
+|||#{.openapi-table}
 
 </div>
 
@@ -285,7 +285,7 @@ Generated server url
  A {.openapi-table-parameter-name} 
 |
  **Type:** [RecurseTop](#recursetop) 
-|||#
+|||#{.openapi-table}
 
 </div>
 

@@ -82,19 +82,21 @@ function endpoint(
     ctx.refs.mode('read');
     const response = responses(pagePrintedRefs, data.responses, ctx);
 
-    const endpointPage = block([
-        title(1)(data.summary ?? data.id),
-        data.deprecated && popups.deprecated(),
-        contentWrapper(
-            block([
-                data.description?.length && body(data.description),
-                request(data),
-                requestParams,
-                requestBody,
-                response,
-            ]),
-        ),
-    ]);
+    const endpointPage = unmask(
+        block([
+            title(1)(data.summary ?? data.id),
+            data.deprecated && popups.deprecated(),
+            contentWrapper(
+                block([
+                    data.description?.length && body(data.description),
+                    request(data),
+                    requestParams,
+                    requestBody,
+                    response,
+                ]),
+            ),
+        ]),
+    );
 
     return block([
         meta([data.noindex && 'noIndex: true']),
@@ -103,6 +105,10 @@ function endpoint(
         '</div>',
         popups.collect(),
     ]).trim();
+}
+
+function unmask(content: string) {
+    return content.replace(/__masked\(&#124;\)/g, '|');
 }
 
 function sandbox(
@@ -226,7 +232,7 @@ function parameters(pagePrintedRefs: Set<string>, params: V3Parameters | undefin
 
             contentAccumulator.push(
                 title(3)(tableHeading),
-                table([['Name', 'Description'], ...contentRows]),
+                table([['**Name**', '**Description**'], ...contentRows]),
                 ...printAllTables(pagePrintedRefs, additionalRefs, ctx),
             );
 
@@ -250,10 +256,7 @@ function parameterRow(param: V3Parameter, ctx: Context): {cells: string[]; ref?:
         description = concatNewLine(description, `Default: \`${param.default}\``);
     }
     return {
-        cells: [
-            tableParameterName(param.name, param),
-            block([`${bold('Type:')} ${row.type}`, description]),
-        ],
+        cells: [tableParameterName(param.name, param), block([row.type, description])],
         ref: row.ref,
     };
 }

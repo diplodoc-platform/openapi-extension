@@ -8,6 +8,10 @@ function removeInternalProperty(
     schema: OpenJSONSchema,
     mode: 'readOnly' | 'writeOnly' | undefined,
 ): OpenJSONSchema {
+    if (!schema.properties) {
+        return copy(schema);
+    }
+
     const properties = copy(schema.properties || {});
 
     Object.keys(properties).forEach((key) => {

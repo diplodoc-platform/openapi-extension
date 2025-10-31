@@ -58,7 +58,7 @@ CCDM designation for the requested star
  **Type:** string
 
 Name for the requested star 
-|||#
+|||#{.openapi-table}
 
 ## Responses
 
@@ -151,7 +151,7 @@ Internal ID for the requested star
  **Type:** string
 
 Name for the requested star 
-|||#
+|||#{.openapi-table}
 
 ## Responses
 

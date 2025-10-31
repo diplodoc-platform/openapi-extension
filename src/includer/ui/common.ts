@@ -74,7 +74,7 @@ function method(text: string, path: string, server: V3Server) {
 
 /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 function table(data: any[][]) {
-    const [names, ...rest] = data;
+    const sep = '__masked(&#124;)';
 
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     const colgen = (col: any) => {
@@ -83,13 +83,15 @@ function table(data: any[][]) {
         return `${EOL}${content}${EOL}`;
     };
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-    const rowgen = (row: any) => `||${row.map(colgen).join('|')}||`;
+    const rowgen = (row: any) => `${sep}${sep}${row.map(colgen).join(sep)}${sep}${sep}`;
 
-    return `#|${block([names.map(bold), ...rest].map(rowgen))}|#`;
+    return `#${sep}${block(data.map(rowgen))}${sep}#{.openapi-table}`;
 }
 
-function cut(text: string, heading = '') {
-    return block([`{% cut "${heading}" %}`, text, '{% endcut %}']) + EOL;
+function cut(text: string, heading = '', attrs = '') {
+    return (
+        block([`{% cut "${heading}" %}${attrs ? `{${attrs}}` : ''}`, text, '{% endcut %}']) + EOL
+    );
 }
 
 /* eslint-disable-next-line @typescript-eslint/no-explicit-any */

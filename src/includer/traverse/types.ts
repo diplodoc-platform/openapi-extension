@@ -26,9 +26,8 @@ function inferType(value: OpenJSONSchema, ctx: Context): JSONSchemaType {
             if (foundRef) {
                 return {ref: foundRef};
             }
-            const type = inferType(el, ctx);
 
-            return type;
+            return inferType(el, ctx);
         });
 
         if (unionOf.length === 1) {
@@ -123,7 +122,7 @@ function typeToText(type: JSONSchemaType): string {
         return anchor(type.ref);
     }
 
-    throw new Error(`Unbale to stringify type: ${type}`);
+    throw new Error(`Unable to stringify type: ${type}`);
 }
 
 function isSupportedEnumType(enumType: JsType): enumType is SupportedEnumType {

@@ -52,7 +52,7 @@ Generated server url
  b {.openapi-table-parameter-name} 
 |
  **Type:** number 
-|||#
+|||#{.openapi-table}
 
 <div class="openapi-entity">
 
@@ -106,7 +106,7 @@ Generated server url
  e {.openapi-table-parameter-name} 
 |
  **Type:** number 
-|||#
+|||#{.openapi-table}
 
 </div>
 
@@ -152,7 +152,7 @@ Cat class
  type {.openapi-table-parameter-name} 
 |
  **Type:** string 
-|||#
+|||#{.openapi-table}
 
 </div>
 

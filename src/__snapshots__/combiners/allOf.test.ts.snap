@@ -69,7 +69,7 @@ Generated server url
  type {.openapi-table-parameter-name} 
 |
  **Type:** string 
-|||#
+|||#{.openapi-table}
 
 </div>
 
@@ -126,7 +126,7 @@ Base 200 response
  type {.openapi-table-parameter-name} 
 |
  **Type:** string 
-|||#
+|||#{.openapi-table}
 
 </div>
 
@@ -200,7 +200,7 @@ Generated server url
  **Type:** [Cat](#cat)
 
 Cat class 
-|||#
+|||#{.openapi-table}
 
 </div>
 
@@ -226,7 +226,7 @@ Cat class
  type {.openapi-table-parameter-name} 
 |
  **Type:** string 
-|||#
+|||#{.openapi-table}
 
 </div>
 
@@ -270,7 +270,7 @@ Base 200 response
  **Type:** [Cat](#cat)
 
 Cat class 
-|||#
+|||#{.openapi-table}
 
 </div>
 

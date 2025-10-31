@@ -45,7 +45,7 @@ Amount of search results to show<br>
 
 *Default:*{.openapi-description-annotation} \`10\`
  
-|||#
+|||#{.openapi-table}
 
 ## Responses
 
@@ -180,7 +180,7 @@ Role for the user being created
 
 *Default:*{.openapi-description-annotation} \`blah\`
  
-|||#
+|||#{.openapi-table}
 
 </div>
 

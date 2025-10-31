@@ -66,7 +66,7 @@ Morgan-Keenan luminosity class for this star
  **Type:** string
 
 Name of this star 
-|||#
+|||#{.openapi-table}
 
 </div>
 
@@ -169,7 +169,7 @@ Field visible only for request
  **Type:** string
 
 Always visible field 
-|||#
+|||#{.openapi-table}
 
 </div>
 
@@ -217,7 +217,7 @@ Field visible only for response
  **Type:** string
 
 Always visible field 
-|||#
+|||#{.openapi-table}
 
 </div>
 

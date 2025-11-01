@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.0](https://github.com/diplodoc-platform/openapi-extension/compare/v3.0.0...v3.1.0) (2025-11-01)
+
+
+### Features
+
+* Render inline object info ([197be2e](https://github.com/diplodoc-platform/openapi-extension/commit/197be2edaad1a6058ccc5d2b3345a45318b7c1b9))
+
 ## [3.0.0](https://github.com/diplodoc-platform/openapi-extension/compare/v2.8.1...v3.0.0) (2025-10-13)
 
 

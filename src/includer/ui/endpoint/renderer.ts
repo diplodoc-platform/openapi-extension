@@ -50,7 +50,7 @@ export class Renderer {
         });
 
         if (isReference(schema)) {
-            const ref = this.resolveRef(schema.$ref);
+            const ref = this.resolveRef(schema.$ref, true);
             schema = ref ? (ref.schema as OpenAPIV3.SchemaObject) : schema;
         }
 
@@ -110,7 +110,15 @@ export class Renderer {
         return renderSandbox(data);
     };
 
-    resolveRef = (refId: string, visited = new Set()): ResolvedRef | undefined => {
+    resolveRef = (refId: string, silent = false): ResolvedRef | undefined => {
+        if (silent) {
+            this.renderedRefs.add(refId);
+        }
+
+        return this._resolveRef(refId);
+    };
+
+    private _resolveRef = (refId: string, visited = new Set()): ResolvedRef | undefined => {
         if (visited.has(refId)) {
             return undefined;
         }
@@ -123,7 +131,7 @@ export class Renderer {
         visited.add(refId);
 
         if (isEmptyReference(schema)) {
-            return this.resolveRef(schema.$ref, visited);
+            return this._resolveRef(schema.$ref, visited);
         }
 
         this.linkedRefs.add(refId);

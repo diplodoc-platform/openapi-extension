@@ -9,5 +9,9 @@ declare module 'openapi-types' {
         interface ParameterBaseObject {
             'x-hidden'?: boolean;
         }
+
+        interface OperationObject {
+            'x-navtitle'?: string;
+        }
     }
 }

@@ -1,4 +1,3 @@
-/* eslint-disable-next-line no-shadow */
 import type {V3Endpoint, V3Endpoints, V3Tag} from '../models';
 
 import {ENDPOINTS_SECTION_NAME} from '../constants';

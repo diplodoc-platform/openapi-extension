@@ -1,4 +1,5 @@
-import type {Primitive, V3Parameter, V3Parameters} from '../../includer/models';
+import type {OpenAPIV3} from 'openapi-types';
+import type {Primitive} from '../../includer/models';
 import type {Field, Nullable} from '../types';
 
 import React from 'react';
@@ -9,7 +10,7 @@ import {merge} from '../utils';
 import {Column} from './Column';
 
 function validate(
-    params: V3Parameters | undefined,
+    params: OpenAPIV3.ParameterObject[] | undefined,
     values: Record<string, Nullable<Primitive>>,
 ): Nullable<Record<string, string>> {
     const errors = merge(params || [], (param) =>
@@ -23,7 +24,7 @@ export class Params
     extends React.Component<
         {
             title: string;
-            params?: Array<V3Parameter & {placeholder?: string}>;
+            params?: Array<OpenAPIV3.ParameterObject & {placeholder?: string}>;
         },
         {
             values: Record<string, Nullable<Primitive>>;
@@ -34,7 +35,10 @@ export class Params
 {
     private onchange: Record<string, (value: string) => void>;
 
-    constructor(props: {title: string; params?: Array<V3Parameter & {placeholder?: string}>}) {
+    constructor(props: {
+        title: string;
+        params?: Array<OpenAPIV3.ParameterObject & {placeholder?: string}>;
+    }) {
         super(props);
 
         this.state = {

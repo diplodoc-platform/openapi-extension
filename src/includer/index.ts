@@ -16,8 +16,8 @@ import SwaggerParser from '@apidevtools/swagger-parser';
 
 import {filterUsefullContent, matchFilter} from './utils';
 import parsers from './parsers';
-import generators from './ui';
-import {RefsService} from './services/refs';
+import * as generators from './ui';
+import {$ref, RefsService} from './services/refs';
 import {
     LEADING_PAGE_MODES,
     LEADING_PAGE_NAME_DEFAULT,
@@ -51,30 +51,45 @@ export async function includer(run: Run, params: OpenApiIncluderParams, tocPath:
     const {input, tags = {}} = params;
 
     const vars = run.vars.for(tocPath);
-    const ctx: Context = {
-        params,
-        vars,
-        relative: (path: string) => join(run.input, path),
-        tag(id: string) {
-            return tags[id];
-        },
-        refs: new RefsService(),
-    };
     const contentPath = join(run.input, input);
 
     const parser = new SwaggerParser();
 
     try {
-        const data = (await parser.validate(contentPath, {validate: {spec: true}})) as OpenAPISpec;
+        const data = (await parser.validate(contentPath, {
+            validate: {spec: true},
+            mutateInputSchema: false,
+            dereference: {
+                excludedPathMatcher: (path: string) => {
+                    return path.match('/components/schemas') || path.endsWith('/schema');
+                },
+                onDereference: (
+                    path: string,
+                    value: object,
+                    parent?: Record<string, unknown>,
+                    prop?: string,
+                ) => {
+                    if (parent && prop) {
+                        parent[prop] = {
+                            ...value,
+                            [$ref]: path,
+                        };
+                    }
+                },
+            },
+        })) as Dereference<OpenAPIV3.Document>;
 
-        for (const file of Object.values(parser.$refs.values())) {
-            const schemas = Object.entries(file.components?.schemas || {}).concat(
-                Object.entries(file),
-            );
-            for (const [refName, schema] of schemas) {
-                ctx.refs.add(refName, schema as OpenJSONSchema);
-            }
-        }
+        const ctx: Context = {
+            params,
+            vars,
+            relative: (path: string) => join(run.input, path),
+            tag(id: string) {
+                return tags[id];
+            },
+            refs: new RefsService(data, contentPath),
+        };
+
+        await ctx.refs.resolve(data);
 
         const toc = await generateToc(data, ctx);
         const files = await generateContent(data, ctx);

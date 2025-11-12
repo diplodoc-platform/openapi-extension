@@ -1,0 +1,47 @@
+.json-schema-property {
+    color: #005a9c;
+    font-weight: 600;
+}
+
+.json-schema-additional-property {
+    color: #6c6cff;
+    font-style: italic;
+    font-weight: 600;
+}
+
+.json-schema-pattern-property {
+    color: #1f8d49;
+    font-weight: 600;
+}
+
+.json-schema-required::before {
+    content: '*';
+    color: #d32f2f;
+    margin-right: 0.25em;
+}
+
+.json-schema-deprecated {
+    opacity: 0.6;
+    text-decoration: line-through;
+}
+
+.json-schema-deprecated::after {
+    content: ' ⚠️';
+    margin-left: 0.25em;
+}
+
+.json-schema-assertion {
+    color: #b23a48;
+    font-weight: 600;
+}
+
+.json-schema-reset {
+    font-style: normal;
+    font-weight: inherit;
+    color: inherit;
+}
+
+.json-schema-properties {
+    /* Styles for property tables */
+    /* Can be customized by users */
+}

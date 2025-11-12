@@ -1,7 +1,6 @@
 import type {TitleDepth, V3Server} from '../models';
 
 import slugify from 'slugify';
-import bem from 'bem-cn-lite';
 
 import {
     BLOCK,
@@ -11,9 +10,9 @@ import {
     HTML_COMMENTS_OPEN_DIRECTIVE,
 } from '../constants';
 
-import {popups} from './popups';
-
-const openapiBlock = bem('openapi');
+function openapi(content: string) {
+    return block([`<div class="openapi">`, content, '</div>']);
+}
 
 function meta(content: (string | boolean | undefined)[]) {
     const entries = content.filter(Boolean);
@@ -104,8 +103,16 @@ function escapeTableColContent(cellContent: string) {
     return cellContent.replace(/\|/gi, '<code>&#124;</code>');
 }
 
+function nolint() {
+    return `${HTML_COMMENTS_OPEN_DIRECTIVE} ${DISABLE_LINTER_DIRECTIVE} ${HTML_COMMENTS_CLOSE_DIRECTIVE}`;
+}
+
 function page(content: string) {
     return `${content}\n${HTML_COMMENTS_OPEN_DIRECTIVE} ${DISABLE_LINTER_DIRECTIVE} ${HTML_COMMENTS_CLOSE_DIRECTIVE}`;
+}
+
+function entity(content: string) {
+    return block(['<div class="openapi-entity">', content, '</div>']);
 }
 
 function tabs(tabsObj: Record<string, string>) {
@@ -127,24 +134,6 @@ function anchor(ref: string, name?: string) {
     return link(name || ref, `#${slugify(ref).toLowerCase()}`);
 }
 
-type ParameterNameProps = Partial<{
-    required: boolean;
-    deprecated: boolean;
-}>;
-function tableParameterName(key: string, {required, deprecated}: ParameterNameProps) {
-    let tableName = key;
-
-    if (required) {
-        tableName += `<span class="${openapiBlock('required')}">*</span>`;
-    }
-
-    if (deprecated) {
-        tableName += popups.deprecated({compact: true});
-    }
-
-    return tableName + ' {.openapi-table-parameter-name}';
-}
-
 export {
     meta,
     list,
@@ -157,29 +146,11 @@ export {
     code,
     cut,
     block,
+    nolint,
     page,
+    entity,
     tabs,
     anchor,
     method,
-    tableParameterName,
-    openapiBlock,
-};
-
-export default {
-    meta,
-    list,
-    link,
-    title,
-    body,
-    mono,
-    bold,
-    table,
-    code,
-    cut,
-    block,
-    tabs,
-    anchor,
-    method,
-    tableParameterName,
-    openapiBlock,
+    openapi,
 };

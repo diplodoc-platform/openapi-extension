@@ -39,7 +39,6 @@ const assertionsMap: AssertionSpec[] = [
     {key: 'minLength', labelKey: 'minLength', types: ['string']},
     {key: 'maxLength', labelKey: 'maxLength', types: ['string']},
     {key: 'pattern', labelKey: 'pattern', types: ['string']},
-    {key: 'format', labelKey: 'format', types: ['string']},
     {key: 'minItems', labelKey: 'minItems', types: ['array']},
     {key: 'maxItems', labelKey: 'maxItems', types: ['array']},
     {key: 'uniqueItems', labelKey: 'uniqueItems', types: ['array']},

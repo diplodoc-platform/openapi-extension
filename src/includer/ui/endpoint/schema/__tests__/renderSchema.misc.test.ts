@@ -49,6 +49,25 @@ describe('renderSchema - miscellaneous', () => {
     `);
     });
 
+    it('renders string format inline with type', () => {
+        const schema: JSONSchema = {
+            type: 'string',
+            format: 'uuid',
+        };
+
+        const content = renderSchema(schema);
+
+        expect(content).toBe(dedent`
+      **Type**: string<uuid>
+
+      {% cut "**Examples**" %}
+
+      \`123e4567-e89b-12d3-a456-426614174000\`
+
+      {% endcut %}
+    `);
+    });
+
     it('renders values block before assertions', () => {
         const schema: JSONSchema = {
             type: 'number',

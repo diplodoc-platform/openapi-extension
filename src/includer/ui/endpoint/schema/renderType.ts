@@ -29,7 +29,10 @@ export function renderType(
     }
 
     if (isPrimitiveType(schema)) {
-        return `**${i18n.type}**: ${schema.type as PrimitiveType}${suffix}`;
+        const hasFormat =
+            schema.type === 'string' && 'format' in schema && typeof schema.format === 'string';
+        const baseType = hasFormat ? `string<${schema.format}>` : (schema.type as PrimitiveType);
+        return `**${i18n.type}**: ${baseType}${suffix}`;
     }
 
     if (schema.$ref) {

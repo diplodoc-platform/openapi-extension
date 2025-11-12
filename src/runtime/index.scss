@@ -1,3 +1,5 @@
+@use './schema.scss';
+
 .openapi {
     --dc-openapi-methods-post: rgb(45, 139, 93);
     --dc-openapi-methods-put: rgb(48, 170, 110);
@@ -22,54 +24,16 @@
         min-width: 100%;
     }
 
-    .openapi-description-annotation {
-        font-style: normal;
-        color: var(--g-color-text-hint);
+    #request {
+        margin-top: 0;
     }
 
-    &__required {
-        color: var(--g-color-text-danger);
-    }
-
-    .openapi-table td > *:first-child {
-        display: inline-block;
-    }
-
-    .openapi-table .openapi-table {
-        width: 100%;
-        margin-bottom: 0;
-
-        tr {
-            // stylelint-disable-next-line
-            background-color: unset !important;
-        }
-
-        td:last-child {
-            width: 100%;
-        }
-    }
-
-    .openapi-table-parameter-name {
-        white-space: nowrap;
-    }
-
-    .openapi-table-parameter-inline-type {
-        margin-left: -30px;
-        // stylelint-disable-next-line
-        margin-top: -6px !important;
-        width: calc(100% + 30px);
-
-        & > summary:before {
-            left: 10px;
-        }
+    &-entity {
+        margin-top: 24px;
     }
 
     & .openapi-deprecated {
         display: inline-block;
-        background-color: var(--dc-openapi-deprecated-bg);
-        color: var(--dc-openapi-deprecated-color);
-        font-size: 0.9em;
-
         padding: 4px 5px;
         border-radius: 5px;
 
@@ -80,17 +44,41 @@
         border-bottom: none;
         user-select: none;
 
+        color: var(--dc-openapi-deprecated-color);
+        background-color: var(--dc-openapi-deprecated-bg);
+
         &:hover {
             color: var(--dc-openapi-deprecated-color);
         }
 
-        &.compact {
+        & > .yfm-term_title {
+            border: none;
+            font-size: 0.9em;
+            color: var(--dc-openapi-deprecated-color);
+        }
+
+        &.openapi-deprecated-compact {
             padding: 1px 2px;
             border-radius: 2px;
+            background-color: transparent;
 
             bottom: -3px;
             left: 4px;
             font-size: 1.5em;
+
+            & > .yfm-term_title {
+                padding: 0 12px;
+            }
+
+            & > .yfm-term_title:before {
+                content: ' ⚠️';
+                font-style: normal;
+                font-weight: inherit;
+                color: inherit;
+                position: absolute;
+                left: 3px;
+                pointer-events: none;
+            }
         }
     }
 
@@ -107,10 +95,6 @@
             left: 0;
             margin-bottom: 10px;
         }
-    }
-
-    & #request {
-        margin-top: 0;
     }
 
     & .openapi__deprecated {

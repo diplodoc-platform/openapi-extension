@@ -1,12 +1,5 @@
 import type {Context} from '../index';
-import type {
-    ContactSource,
-    LeadingPageSpecRenderMode,
-    Specification,
-    V3Contact,
-    V3Info,
-    V3Tag,
-} from '../models';
+import type {LeadingPageSpecRenderMode, Specification, V3Info, V3Tag} from '../models';
 
 import stringify from 'json-stringify-safe';
 import {join} from 'path';
@@ -19,9 +12,9 @@ import {
     SPEC_SECTION_TYPE,
     TAGS_SECTION_NAME,
 } from '../constants';
-import {mdPath, sectionName} from '../index';
+import {mdPath, sectionName} from '../utils';
 
-import {block, body, code, cut, link, list, mono, page, title} from '.';
+import {block, code, cut, link, list, mono, nolint, title} from './common';
 
 export type MainParams = {
     data: unknown;
@@ -30,26 +23,23 @@ export type MainParams = {
     leadingPageSpecRenderMode: LeadingPageSpecRenderMode;
 };
 
-function main(params: MainParams, ctx: Context) {
+export function main(params: MainParams, ctx: Context) {
     const {data, info, spec, leadingPageSpecRenderMode} = params;
 
-    const license = info.license?.url ? link : body;
-
-    const mainPage = [
+    return block([
+        nolint(),
         title(1)(info.name),
-        info.version?.length && body(mono(`version: ${info.version}`)),
+        info.version?.length && mono(`version: ${info.version}`),
         info.terms?.length && link('Terms of service', info.terms),
-        info.license && license(info.license.name, info.license.url as string),
-        description(info.description),
+        info.license && link(info.license.name, info.license.url),
+        info.description,
         contact(info.contact),
         sections(spec, ctx),
         specification(data, leadingPageSpecRenderMode),
-    ];
-
-    return page(block(mainPage));
+    ]);
 }
 
-function contact(data?: V3Contact) {
+function contact(data: V3Info['contact']) {
     return (
         data?.name.length &&
         data?.sources.length &&
@@ -57,12 +47,11 @@ function contact(data?: V3Contact) {
     );
 }
 
-function contactSource(data: V3Contact) {
-    return (src: ContactSource) => link(data.name + ` ${src.type}`, src.url);
-}
+type V3InfoContact = Exclude<V3Info['contact'], undefined>;
+type V3InfoContactSource = V3InfoContact['sources'][number];
 
-function description(text?: string) {
-    return text?.length && body(text);
+function contactSource(data: V3InfoContact) {
+    return (src: V3InfoContactSource) => link(`${data.name} ${src.type}`, src.url);
 }
 
 function sections({tags, endpoints}: Specification, ctx: Context) {
@@ -93,7 +82,7 @@ function sections({tags, endpoints}: Specification, ctx: Context) {
         content.push(title(2)(ENDPOINTS_SECTION_NAME), list(untaggedLinks));
     }
 
-    return content.length && block(content);
+    return block(content);
 }
 
 function specification(data: unknown, renderMode: LeadingPageSpecRenderMode) {
@@ -102,7 +91,3 @@ function specification(data: unknown, renderMode: LeadingPageSpecRenderMode) {
         block([title(2)(SPEC_SECTION_NAME), cut(code(stringify(data, null, 4)), SPEC_SECTION_TYPE)])
     );
 }
-
-export {main};
-
-export default {main};

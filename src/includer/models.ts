@@ -1,5 +1,13 @@
 import type {OpenAPIV3} from 'openapi-types';
-import type {LeadingPageMode, SPEC_RENDER_MODE_DEFAULT, SPEC_RENDER_MODE_HIDDEN} from './constants';
+import type {
+    ENDPOINT_METHODS,
+    LeadingPageMode,
+    SPEC_RENDER_MODE_DEFAULT,
+    SPEC_RENDER_MODE_HIDDEN,
+} from './constants';
+import type {V3Endpoint, V3Info, V3Response, V3Schema, V3Tag} from './parsers';
+
+export {V3Info, V3Endpoint, V3Response, V3Schema, V3Tag};
 
 export type Dereference<T> = T extends OpenAPIV3.ReferenceObject
     ? never
@@ -18,34 +26,15 @@ type DereferenceObject<T extends object> = {
     [K in keyof T]: Dereference<T[K]>;
 };
 
-export type TableRef = string;
-
 export type YfmPreset = Record<string, string>;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type Metadata = Record<string, any>;
 
-export interface Filter {
-    when?: boolean | string;
-    [key: string]: unknown;
-}
-
-export interface TextItem extends Filter {
-    text: string | string[];
-}
-
-export type TextItems = string | (TextItem | string)[];
-
-export interface YfmTocItem extends Filter {
-    name: string;
+export interface YfmTocItem {
+    name?: string;
     href?: string;
     items?: YfmTocItem[];
     hidden?: boolean;
     deprecated?: boolean;
 }
-
-export const titleDepths = [1, 2, 3, 4, 5, 6] as const;
-
-export type TitleDepth = (typeof titleDepths)[number];
 
 export type SandboxProps = {
     path: string;
@@ -57,7 +46,7 @@ export type SandboxProps = {
     body?: string;
     bodyType?: string;
     schema?: Dereference<OpenAPIV3.SchemaObject>;
-    security?: V3Security[];
+    security?: OpenAPIV3.SecuritySchemeObject[];
     projectName: string;
 };
 
@@ -82,112 +71,22 @@ export type V3SecurityOAuthImplicit = {
 export type V3SecurityOAuthInline = {
     type: 'oauth2';
     description: string;
+    flows: {};
     'x-inline'?: boolean;
 };
 
-export type V3SecurityOAuth2 = V3SecurityOAuthImplicit | V3SecurityOAuthInline;
-
-export type V3Security = V3SecurityApiKey | V3SecurityOAuth2 | {type: string; description: string};
-
-export type V3SecurityType = V3Security['type'];
-
-export type V3Info = {
-    name: string;
-    version: string;
-    description?: string;
-    terms?: string;
-    license?: V3License;
-    contact?: V3Contact;
-};
-
-export type V3License = {
-    name: string;
-    url?: string;
-};
-
-export type V3Contact = {
-    name: string;
-    sources: ContactSource[];
-};
-
-export type ContactSource = {type: ContactSourceType; url: string};
-
-export type ContactSourceType = 'web' | 'email';
-
-export type V3Tag = {
-    id: string;
-    name: string;
-    description?: string;
-    endpoints: V3Endpoints;
-};
-
-export type V3Endpoints = V3Endpoint[];
-
-export type V3Endpoint = {
-    id: string;
-    operationId?: string;
-    method: string;
-    path: string;
-    tags: string[];
-    summary?: string;
-    description?: string;
-    servers: V3Servers;
-    parameters: Dereference<OpenAPIV3.ParameterObject>[];
-    responses: V3Responses;
-    requestBody?: V3Schema;
-    security: V3Security[];
-    noindex?: boolean;
-    hidden?: boolean;
-    deprecated?: boolean;
-};
+export type V3SecurityType = OpenAPIV3.SecuritySchemeObject['type'];
 
 export type Specification = {
     tags: Map<string, V3Tag>;
-    endpoints: V3Endpoints;
+    endpoints: V3Endpoint[];
 };
 
-export const methods = [
-    'get',
-    'put',
-    'post',
-    'delete',
-    'options',
-    'head',
-    'patch',
-    'trace',
-] as const;
-
-export type Method = (typeof methods)[number];
-
-export type V3Servers = V3Server[];
-
-export type V3Server = {
-    url: string;
-    description?: string;
-};
+export type Method = (typeof ENDPOINT_METHODS)[number];
 
 export type In = 'path' | 'query' | 'header' | 'cookie';
 
 export type Primitive = string | number | boolean;
-
-export type V3Responses = V3Response[];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export type V3Response = {
-    // response code validation omitted
-    code: string;
-    statusText: string;
-    description: string;
-    schemas?: V3Schema[];
-    deprecated?: boolean;
-};
-
-export type V3Schema = {
-    type: string;
-    schema: OpenAPIV3.SchemaObject;
-};
-
-export type Refs = {[typeName: string]: OpenAPIV3.SchemaObject};
 
 export type LeadingPageSpecRenderMode =
     | typeof SPEC_RENDER_MODE_DEFAULT
@@ -235,4 +134,5 @@ export type Run = {
     vars: {
         for(path: string): YfmPreset;
     };
+    read(file: string): Promise<string>;
 };

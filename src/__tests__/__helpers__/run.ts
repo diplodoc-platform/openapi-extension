@@ -1,10 +1,13 @@
 import type {OpenApiIncluderParams, Run} from '../../includer/models';
+import type {OpenAPIV3} from 'openapi-types';
 
-import {OpenAPIV3} from 'openapi-types';
-import {includer} from '../../includer';
+import {vi} from 'vitest';
 import {dump} from 'js-yaml';
-import {virtualFS} from './virtualFS';
 import nodeFS from 'fs';
+
+import {includer} from '../../includer';
+
+import {virtualFS} from './virtualFS';
 
 const baseDocument = {
     openapi: '3.0.2',
@@ -121,8 +124,9 @@ export async function run(spec: string, options: Partial<OpenApiIncluderParams> 
     };
     const run = {
         input: '/tmp',
+        read: async () => '',
         vars: {
-            for: jest.fn(),
+            for: vi.fn(),
         },
     } as Run;
 

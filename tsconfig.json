@@ -6,8 +6,6 @@
     "declaration": true,
     "baseUrl": "."
   },
-  "include": ["src"],
-  "exclude": ["src/__tests__"],
   "ts-node": {
     "esm": true,
     "transpileOnly": true

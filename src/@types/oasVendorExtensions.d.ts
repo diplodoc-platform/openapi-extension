@@ -13,5 +13,9 @@ declare module 'openapi-types' {
         interface OperationObject {
             'x-navtitle'?: string;
         }
+
+        interface OAuth2SecurityScheme {
+            'x-inline'?: boolean;
+        }
     }
 }

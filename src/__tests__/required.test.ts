@@ -1,3 +1,5 @@
+import {describe, expect, it} from 'vitest';
+
 import {DocumentBuilder, run} from './__helpers__/run';
 
 const name = 'required';

@@ -10,9 +10,4 @@ node_modules
 /build
 /cache
 /coverage
-
-/src/__tests__
-/jest.snapshots.js
-/jest.config.js
-
 /external

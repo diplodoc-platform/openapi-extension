@@ -1,12 +1,11 @@
+import type {OpenAPIV3} from 'openapi-types';
 import type {
-    OpenAPISpec,
+    Dereference,
     OpenApiIncluderParams,
-    OpenJSONSchema,
     Run,
     V3Endpoint,
     V3Info,
     YfmPreset,
-    YfmToc,
     YfmTocItem,
 } from './models';
 
@@ -111,7 +110,10 @@ function assertLeadingPageMode(mode: string) {
     );
 }
 
-async function generateToc(data: OpenAPISpec, ctx: Context): Promise<YfmToc> {
+async function generateToc(
+    data: Dereference<OpenAPIV3.Document>,
+    ctx: Context,
+): Promise<YfmTocItem> {
     const {vars, params} = ctx;
     const {leadingPage, filter} = params;
     const leadingPageName = leadingPage?.name ?? LEADING_PAGE_NAME_DEFAULT;
@@ -166,7 +168,7 @@ async function generateToc(data: OpenAPISpec, ctx: Context): Promise<YfmToc> {
         addLeadingPage(toc, leadingPageMode, rootLadingPageName, 'index.md');
     }
 
-    return toc as YfmToc;
+    return toc;
 }
 
 function addLeadingPage(section: YfmTocItem, mode: LeadingPageMode, name: string, href: string) {
@@ -185,7 +187,10 @@ type EndpointRoute = {
     content: string;
 };
 
-async function generateContent(data: OpenAPISpec, ctx: Context): Promise<EndpointRoute[]> {
+async function generateContent(
+    data: Dereference<OpenAPIV3.Document>,
+    ctx: Context,
+): Promise<EndpointRoute[]> {
     const {vars, params} = ctx;
     const {input, leadingPage, filter, noindex, hidden, sandbox} = params;
     const contentPath = ctx.relative(input);
@@ -274,17 +279,18 @@ function handleEndpointIncluder(
     return {path, content};
 }
 
-function handleEndpointRender(endpoint: V3Endpoint, pathPrefix?: string): YfmToc {
+function handleEndpointRender(endpoint: V3Endpoint, pathPrefix?: string): YfmTocItem {
     let path = mdPath(endpoint);
     if (pathPrefix) {
         path = join(pathPrefix, path);
     }
+
     return {
         href: path,
         name: sectionName(endpoint),
         hidden: endpoint.hidden,
         deprecated: endpoint.deprecated,
-    } as YfmToc;
+    };
 }
 
 export function sectionName(e: V3Endpoint): string {

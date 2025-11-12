@@ -1,8 +1,7 @@
-/* eslint-disable no-shadow */
+import type {OpenAPIV3} from 'openapi-types';
 import type {
-    Method,
-    OpenAPIOperation,
-    OpenAPISpec,
+    ContactSource,
+    Dereference,
     Specification,
     V3Endpoint,
     V3Endpoints,
@@ -16,9 +15,10 @@ import type {
 import slugify from 'slugify';
 import {getStatusText} from 'http-status-codes';
 
+import {methods} from './models';
 import {TAG_NAMES_FIELD} from './constants';
 
-function info(spec: OpenAPISpec): V3Info {
+function info(spec: Dereference<OpenAPIV3.Document>): V3Info {
     const {
         info: {title, description, version, termsOfService, license, contact},
     } = spec;
@@ -48,25 +48,21 @@ function info(spec: OpenAPISpec): V3Info {
 
     if (contact && (contact.url || contact.email)) {
         parsed.contact = {
-            name: contact.name,
-            sources: [],
+            name: contact.name || '',
+            sources: [
+                contact.url && {type: 'web', url: new URL(contact.url).href},
+                contact.email && {
+                    type: 'email',
+                    url: new URL('mailto:' + contact.email).href,
+                },
+            ].filter(Boolean) as ContactSource[],
         };
-        if (contact.url) {
-            parsed.contact.sources.push({type: 'web', url: new URL(contact.url).href});
-        }
-
-        if (contact.email) {
-            parsed.contact.sources.push({
-                type: 'email',
-                url: new URL('mailto:' + contact.email).href,
-            });
-        }
     }
 
     return parsed;
 }
 
-function tagsFromSpec(spec: OpenAPISpec): Map<string, V3Tag> {
+function tagsFromSpec(spec: Dereference<OpenAPIV3.Document>): Map<string, V3Tag> {
     const {tags, paths} = spec;
 
     const parsed = new Map();
@@ -91,6 +87,7 @@ function tagsFromSpec(spec: OpenAPISpec): Map<string, V3Tag> {
         const {endpoint} = params;
 
         const endpointTags = endpoint.tags;
+        // @ts-ignore
         const titles = endpoint[TAG_NAMES_FIELD];
 
         if (!endpointTags?.length || !titles?.length || endpointTags.length !== titles.length) {
@@ -114,10 +111,13 @@ function tagsFromSpec(spec: OpenAPISpec): Map<string, V3Tag> {
 }
 const opid = (path: string, method: string, id?: string) => slugify(id ?? [path, method].join('-'));
 
-function pathsFromSpec(spec: OpenAPISpec, tagsByID: Map<string, V3Tag>): Specification {
+function pathsFromSpec(
+    spec: Dereference<OpenAPIV3.Document>,
+    tagsByID: Map<string, V3Tag>,
+): Specification {
     const endpoints: V3Endpoints = [];
     const {paths, servers, components = {}, security: globalSecurity = []} = spec;
-    const visiter = ({path, method, endpoint}: VisiterParams) => {
+    const visiter = ({path, method, endpoint}: Dereference<VisiterParams>) => {
         const {
             summary,
             description,
@@ -150,7 +150,10 @@ function pathsFromSpec(spec: OpenAPISpec, tagsByID: Map<string, V3Tag>): Specifi
         );
 
         /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-        const parseResponse = ([code, response]: [string, {[key: string]: any}]) => {
+        const parseResponse = ([code, response]: [
+            string,
+            Dereference<OpenAPIV3.ResponseObject>,
+        ]) => {
             const parsed: Partial<V3Response> = {code, description: response.description};
 
             try {
@@ -166,20 +169,21 @@ function pathsFromSpec(spec: OpenAPISpec, tagsByID: Map<string, V3Tag>): Specifi
                 );
             }
 
+            if (parsed.schemas?.length && parsed.schemas?.every(({schema}) => schema.deprecated)) {
+                parsed.deprecated = true;
+            }
+
             return parsed as V3Response;
         };
 
-        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-        const parsedResponses: V3Responses = Object.entries<{[key: string]: any}>(
-            responses ?? {},
-        ).map(parseResponse);
+        const parsedResponses: V3Responses = Object.entries(responses ?? {}).map(parseResponse);
 
         const contentType = requestBody ? Object.keys(requestBody.content)[0] : undefined;
 
         const parsedEndpoint: V3Endpoint = {
             servers: parsedServers,
             responses: parsedResponses,
-            parameters,
+            parameters: parameters || [],
             summary,
             deprecated,
             description,
@@ -192,7 +196,8 @@ function pathsFromSpec(spec: OpenAPISpec, tagsByID: Map<string, V3Tag>): Specifi
                 contentType && requestBody
                     ? {
                           type: contentType,
-                          schema: requestBody.content[contentType].schema,
+                          schema: (requestBody as OpenAPIV3.RequestBodyObject).content[contentType]
+                              .schema as OpenAPIV3.SchemaObject,
                       }
                     : undefined,
             security: parsedSecurity,
@@ -222,19 +227,23 @@ function trimSlash(str: string) {
     return str.replace(/^\/|\/$/g, '');
 }
 
-type VisiterParams = {path: string; method: Method; endpoint: OpenAPIOperation};
+type VisiterParams = {
+    path: string;
+    method: string;
+    endpoint: Dereference<OpenAPIV3.OperationObject>;
+};
 
-/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-function visitPaths<T>(paths: {[key: string]: any}, visiter: (params: VisiterParams) => T): T[] {
+function visitPaths<T>(paths: OpenAPIV3.PathsObject, visiter: (params: VisiterParams) => T): T[] {
     const results: T[] = [];
 
-    for (const path of Object.keys(paths)) {
-        const methods = paths[path];
-
-        for (const method of Object.keys(methods)) {
-            const endpoint = methods[method];
-
-            results.push(visiter({path, method: method as Method, endpoint}));
+    for (const [path, items] of Object.entries(paths)) {
+        for (const method of methods) {
+            const endpoint = (items as OpenAPIV3.PathItemObject)[
+                method
+            ] as Dereference<OpenAPIV3.OperationObject>;
+            if (endpoint) {
+                results.push(visiter({path, method, endpoint}));
+            }
         }
     }
 

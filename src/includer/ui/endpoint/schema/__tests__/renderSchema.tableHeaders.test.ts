@@ -208,31 +208,33 @@ describe('renderSchema - table headers', () => {
 
         const content = renderSchema(schema, {suppressExamples: true});
 
-        expect(content).toBe(String.raw`{% cut "**Type**: object" %}
+        expect(content).toBe(dedent`
+            {% cut "**Type**: object" %}
 
-#| {.json-schema-properties}
-|| **Name** | **Description** ||
-||
+            #| {.json-schema-properties}
+            || **Name** | **Description** ||
+            ||
 
-_[additional]_{.json-schema-reset .json-schema-additional-property}
-{.table-cell}|
-{% cut "**Type**: object" %}
+            _[additional]_{.json-schema-reset .json-schema-additional-property}
+            {.table-cell}|
+            {% cut "**Type**: object" %}
 
-#| {.json-schema-properties}
-||
+            #| {.json-schema-properties}
+            ||
 
-_key_{.json-schema-reset .json-schema-property}
-{.table-cell}|
-**Type**: string
-{.table-cell}
-||
-|#
+            _key_{.json-schema-reset .json-schema-property}
+            {.table-cell}|
+            **Type**: string
+            {.table-cell}
+            ||
+            |#
 
-{% endcut %}
-{.table-cell}
-||
-|#
+            {% endcut %}
+            {.table-cell}
+            ||
+            |#
 
-{% endcut %}`);
+            {% endcut %}
+        `);
     });
 });

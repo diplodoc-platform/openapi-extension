@@ -52,6 +52,7 @@ export class Renderer {
 
                 return this.schema(schema as OpenAPIV3.SchemaObject, options);
             },
+            isRoot: true,
         });
 
         if (isReference(schema)) {

@@ -32,13 +32,11 @@ export function endpoint(
         });
     };
 
-    const endpointPage = unmask(
-        block([
-            title(1)(data.summary ?? data.id),
-            data.deprecated && deprecated(),
-            contentWrapper(block([data.description, render.request(data), render.responses(data)])),
-        ]),
-    );
+    const endpointPage = block([
+        title(1)(data.summary ?? data.id),
+        data.deprecated && deprecated(),
+        contentWrapper(block([data.description, render.request(data), render.responses(data)])),
+    ]);
 
     return block([
         meta([data.noindex && 'noIndex: true']),
@@ -46,8 +44,4 @@ export function endpoint(
         openapi(page(endpointPage)),
         terms(['Deprecated']),
     ]).trim();
-}
-
-function unmask(content: string) {
-    return content.replace(/__masked\(&#124;\)/g, '|');
 }

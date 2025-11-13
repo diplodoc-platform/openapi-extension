@@ -45,7 +45,9 @@ function formatRow(row: TableRow): string {
         return row;
     }
 
-    return `||\n\n${row.join('\n{.table-cell}|\n')}\n{.table-cell}\n||`;
+    return `||\n\n${row
+        .map((cell) => escapeTableText(cell))
+        .join('\n{.table-cell}|\n')}\n{.table-cell}\n||`;
 }
 
 export function decorate(

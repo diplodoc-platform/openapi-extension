@@ -62,6 +62,7 @@ function renderCombinatorList(
             const variantContext = context.clone({
                 suppressTitle: true,
                 suppressTableHeaders: true,
+                expandType: true,
             });
             const rendered = context.renderSchema(variant, variantContext.toOptions());
             const lines = rendered.trimEnd().split('\n');

@@ -45,7 +45,7 @@ function formatRow(row: TableRow): string {
         return row;
     }
 
-    return `||\n${row.join('\n|\n')}\n||`;
+    return `||\n\n${row.join('\n{.table-cell}|\n')}\n{.table-cell}\n||`;
 }
 
 export function decorate(
@@ -83,7 +83,7 @@ export function resolveRef(
         return undefined;
     }
 
-    const label = schema.$ref.split('/').pop() ?? schema.$ref;
+    const label = refData.label || schema.$ref.split('/').pop() || schema.$ref;
 
     return {
         label,

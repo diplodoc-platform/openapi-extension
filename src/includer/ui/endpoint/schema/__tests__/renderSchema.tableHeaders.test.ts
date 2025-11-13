@@ -21,16 +21,20 @@ describe('renderSchema - table headers', () => {
       {% cut "**Type**: object" %}
 
       #| {.json-schema-properties}
-      || Name | Description ||
+      || **Name** | **Description** ||
       ||
+
       _name_{.json-schema-reset .json-schema-property}
-      |
+      {.table-cell}|
       **Type**: string
+      {.table-cell}
       ||
       ||
+
       _age_{.json-schema-reset .json-schema-property}
-      |
+      {.table-cell}|
       **Type**: number
+      {.table-cell}
       ||
       |#
 
@@ -57,14 +61,18 @@ describe('renderSchema - table headers', () => {
 
       #| {.json-schema-properties}
       ||
+
       _name_{.json-schema-reset .json-schema-property}
-      |
+      {.table-cell}|
       **Type**: string
+      {.table-cell}
       ||
       ||
+
       _age_{.json-schema-reset .json-schema-property}
-      |
+      {.table-cell}|
       **Type**: number
+      {.table-cell}
       ||
       |#
 
@@ -92,26 +100,32 @@ describe('renderSchema - table headers', () => {
       {% cut "**Type**: object" %}
 
       #| {.json-schema-properties}
-      || Name | Description ||
+      || **Name** | **Description** ||
       ||
+
       _user_{.json-schema-reset .json-schema-property}
-      |
+      {.table-cell}|
       {% cut "**Type**: object" %}
 
       #| {.json-schema-properties}
       ||
+
       _name_{.json-schema-reset .json-schema-property}
-      |
+      {.table-cell}|
       **Type**: string
+      {.table-cell}
       ||
       ||
+
       _email_{.json-schema-reset .json-schema-property}
-      |
+      {.table-cell}|
       **Type**: string
+      {.table-cell}
       ||
       |#
 
       {% endcut %}
+      {.table-cell}
       ||
       |#
 
@@ -143,31 +157,37 @@ describe('renderSchema - table headers', () => {
       {% cut "**Type**: object" %}
 
       #| {.json-schema-properties}
-      || Name | Description ||
+      || **Name** | **Description** ||
       ||
+
       _level1_{.json-schema-reset .json-schema-property}
-      |
+      {.table-cell}|
       {% cut "**Type**: object" %}
 
       #| {.json-schema-properties}
       ||
+
       _level2_{.json-schema-reset .json-schema-property}
-      |
+      {.table-cell}|
       {% cut "**Type**: object" %}
 
       #| {.json-schema-properties}
       ||
+
       _value_{.json-schema-reset .json-schema-property}
-      |
+      {.table-cell}|
       **Type**: string
+      {.table-cell}
       ||
       |#
 
       {% endcut %}
+      {.table-cell}
       ||
       |#
 
       {% endcut %}
+      {.table-cell}
       ||
       |#
 
@@ -188,29 +208,31 @@ describe('renderSchema - table headers', () => {
 
         const content = renderSchema(schema, {suppressExamples: true});
 
-        expect(content).toBe(dedent`
-      {% cut "**Type**: object" %}
+        expect(content).toBe(String.raw`{% cut "**Type**: object" %}
 
-      #| {.json-schema-properties}
-      || Name | Description ||
-      ||
-      _[additional]_{.json-schema-reset .json-schema-additional-property}
-      |
-      {% cut "**Type**: object" %}
+#| {.json-schema-properties}
+|| **Name** | **Description** ||
+||
 
-      #| {.json-schema-properties}
-      ||
-      _key_{.json-schema-reset .json-schema-property}
-      |
-      **Type**: string
-      ||
-      |#
+_[additional]_{.json-schema-reset .json-schema-additional-property}
+{.table-cell}|
+{% cut "**Type**: object" %}
 
-      {% endcut %}
-      ||
-      |#
+#| {.json-schema-properties}
+||
 
-      {% endcut %}
-    `);
+_key_{.json-schema-reset .json-schema-property}
+{.table-cell}|
+**Type**: string
+{.table-cell}
+||
+|#
+
+{% endcut %}
+{.table-cell}
+||
+|#
+
+{% endcut %}`);
     });
 });

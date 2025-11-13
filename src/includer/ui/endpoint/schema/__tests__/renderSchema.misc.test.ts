@@ -117,4 +117,19 @@ describe('renderSchema - miscellaneous', () => {
       {% endcut %}
     `);
     });
+
+    it('skips examples for string enum', () => {
+        const schema: JSONSchema = {
+            type: 'string',
+            enum: ['alpha', 'beta'],
+        };
+
+        const content = renderSchema(schema);
+
+        expect(content).toBe(dedent`
+      **Type**: string
+
+      **Enum**: \`alpha\`, \`beta\`
+    `);
+    });
 });

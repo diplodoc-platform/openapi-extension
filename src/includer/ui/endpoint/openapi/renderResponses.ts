@@ -10,7 +10,7 @@ export function renderResponses(render: Renderer, data: V3Endpoint) {
         data.responses?.length &&
         block([
             title(2)(RESPONSES_SECTION_NAME),
-            data.responses.map((resp) => render.response(resp)),
+            ...data.responses.map((resp) => render.response(resp)),
         ])
     );
 }

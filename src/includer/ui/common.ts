@@ -39,7 +39,12 @@ function link(text: string, src: string, className?: string) {
 }
 
 function title(depth: TitleDepth) {
-    return (content?: string) => (content?.length ? '#'.repeat(depth) + ` ${content}` : '');
+    const markup = '#'.repeat(depth) + ' ';
+    return (content?: string, anchor?: string) => {
+        anchor = (anchor || '').trim();
+        anchor = anchor ? ' {' + anchor + '}' : '';
+        return content?.length ? `${markup}${content}${anchor}` : '';
+    };
 }
 
 function body(text?: string) {

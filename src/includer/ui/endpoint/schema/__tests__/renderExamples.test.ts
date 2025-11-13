@@ -152,4 +152,19 @@ describe('renderExamples', () => {
       {% endcut %}
     `);
     });
+
+    it('skips examples for boolean schemas', () => {
+        const schema: JSONSchema = {type: 'boolean'};
+
+        expect(renderExamples(schema, createContext())).toBe('');
+    });
+
+    it('skips examples for string enums', () => {
+        const schema: JSONSchema = {
+            type: 'string',
+            enum: ['alpha', 'beta'],
+        };
+
+        expect(renderExamples(schema, createContext())).toBe('');
+    });
 });

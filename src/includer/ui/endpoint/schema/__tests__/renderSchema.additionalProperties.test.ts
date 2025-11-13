@@ -18,11 +18,13 @@ describe('renderSchema - additionalProperties', () => {
       {% cut "**Type**: object" %}
 
       #| {.json-schema-properties}
-      || Name | Description ||
+      || **Name** | **Description** ||
       ||
+
       _[additional]_{.json-schema-reset .json-schema-additional-property}
-      |
+      {.table-cell}|
       **Type**: any
+      {.table-cell}
       ||
       |#
 
@@ -42,11 +44,13 @@ describe('renderSchema - additionalProperties', () => {
       {% cut "**Type**: object" %}
 
       #| {.json-schema-properties}
-      || Name | Description ||
+      || **Name** | **Description** ||
       ||
+
       _[additional]_{.json-schema-reset .json-schema-additional-property}
-      |
+      {.table-cell}|
       **Type**: never
+      {.table-cell}
       ||
       |#
 
@@ -69,7 +73,7 @@ describe('renderSchema - additionalProperties', () => {
       {% cut "**Type**: object" %}
 
       #| {.json-schema-properties}
-      || Name | Description ||
+      || **Name** | **Description** ||
       |#
 
       {% endcut %}
@@ -91,7 +95,7 @@ describe('renderSchema - additionalProperties', () => {
       {% cut "**Type**: object" %}
 
       #| {.json-schema-properties}
-      || Name | Description ||
+      || **Name** | **Description** ||
       |#
 
       {% endcut %}
@@ -116,13 +120,15 @@ describe('renderSchema - additionalProperties', () => {
       {% cut "**Type**: object" %}
 
       #| {.json-schema-properties}
-      || Name | Description ||
+      || **Name** | **Description** ||
       ||
+
       _[additional]_{.json-schema-reset .json-schema-additional-property}
-      |
+      {.table-cell}|
       **Type**: string
 
       Any string value
+      {.table-cell}
       ||
       |#
 
@@ -145,16 +151,20 @@ describe('renderSchema - additionalProperties', () => {
       {% cut "**Type**: object" %}
 
       #| {.json-schema-properties}
-      || Name | Description ||
+      || **Name** | **Description** ||
       ||
+
       _name_{.json-schema-reset .json-schema-property}
-      |
+      {.table-cell}|
       **Type**: string
+      {.table-cell}
       ||
       ||
+
       _[additional]_{.json-schema-reset .json-schema-additional-property}
-      |
+      {.table-cell}|
       **Type**: any
+      {.table-cell}
       ||
       |#
 
@@ -180,11 +190,13 @@ describe('renderSchema - additionalProperties', () => {
       {% cut "**Type**: object" %}
 
       #| {.json-schema-properties}
-      || Name | Description ||
+      || **Name** | **Description** ||
       ||
+
       _name_{.json-schema-reset .json-schema-property}
-      |
+      {.table-cell}|
       **Type**: string
+      {.table-cell}
       ||
       |#
 

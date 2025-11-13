@@ -39,11 +39,13 @@ describe('renderSchema - title', () => {
       {% cut "**Type**: User Profile" %}
 
       #| {.json-schema-properties}
-      || Name | Description ||
+      || **Name** | **Description** ||
       ||
+
       _name_{.json-schema-reset .json-schema-property}
-      |
+      {.table-cell}|
       **Type**: string
+      {.table-cell}
       ||
       |#
 

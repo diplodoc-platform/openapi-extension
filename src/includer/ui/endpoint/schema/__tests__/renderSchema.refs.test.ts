@@ -30,13 +30,15 @@ describe('renderSchema - references', () => {
           {% cut "**Type**: object" %}
 
           #| {.json-schema-properties}
-          || Name | Description ||
+          || **Name** | **Description** ||
           ||
+
           _address_{.json-schema-reset .json-schema-property}
-          |
+          {.table-cell}|
           **Type**: [Address](#definitions-Address)
 
           Ссылка на адрес
+          {.table-cell}
           ||
           |#
 

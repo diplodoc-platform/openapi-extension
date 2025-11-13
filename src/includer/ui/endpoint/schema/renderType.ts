@@ -56,6 +56,9 @@ export function renderType(
                     ? `**${i18n.type}**: object${suffix}`
                     : `**${i18n.type}**: ${schema.title}`;
             const content = renderObjectType(schema, context);
+            if (context.expandType) {
+                return content;
+            }
             return cut(typeLabel, content);
         }
 
@@ -110,7 +113,7 @@ export function renderObjectType(schema: JSONSchema, context: RenderContext): st
     const {i18n} = context;
 
     if (!context.suppressTableHeaders) {
-        rows.push(`|| ${i18n.name} | ${i18n.description} ||`);
+        rows.push(`|| **${i18n.name}** | **${i18n.description}** ||`);
     }
 
     if (has(schema, 'properties')) {

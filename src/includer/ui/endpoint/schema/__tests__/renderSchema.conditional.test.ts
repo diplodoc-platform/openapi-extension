@@ -33,19 +33,17 @@ describe('renderSchema - conditional (if/then/else)', () => {
 
       - **When country = "USA"**
 
-        {% cut "**Type**: object" %}
-
         #| {.json-schema-properties}
         ||
+
         _zipCode_{.json-schema-reset .json-schema-property}
-        |
+        {.table-cell}|
         **Type**: string
 
         _Pattern:_{.json-schema-reset .json-schema-assertion} \`^[0-9]{5}$\`
+        {.table-cell}
         ||
         |#
-
-        {% endcut %}
 
       {% endcut %}
     `);
@@ -80,33 +78,29 @@ describe('renderSchema - conditional (if/then/else)', () => {
 
       - **When country = "USA"**
 
-        {% cut "**Type**: object" %}
-
         #| {.json-schema-properties}
         ||
+
         _zipCode_{.json-schema-reset .json-schema-property}
-        |
+        {.table-cell}|
         **Type**: string
 
         _Pattern:_{.json-schema-reset .json-schema-assertion} \`^[0-9]{5}$\`
+        {.table-cell}
         ||
         |#
-
-        {% endcut %}
 
       - **When NOT country = "USA"**
 
-        {% cut "**Type**: object" %}
-
         #| {.json-schema-properties}
         ||
+
         _postalCode_{.json-schema-reset .json-schema-property}
-        |
+        {.table-cell}|
         **Type**: string
+        {.table-cell}
         ||
         |#
-
-        {% endcut %}
 
       {% endcut %}
     `);

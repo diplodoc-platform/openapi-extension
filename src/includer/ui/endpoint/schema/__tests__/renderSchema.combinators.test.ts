@@ -28,19 +28,17 @@ describe('renderSchema - combinators', () => {
 
         Строка
 
-      - {% cut "**Type**: object" %}
-
-        #| {.json-schema-properties}
+      - #| {.json-schema-properties}
         ||
+
         _value_{.json-schema-reset .json-schema-property}
-        |
+        {.table-cell}|
         **Type**: number
 
         Число
+        {.table-cell}
         ||
         |#
-
-        {% endcut %}
 
       {% endcut %}
     `);
@@ -61,11 +59,13 @@ describe('renderSchema - combinators', () => {
       {% cut "**Type**: object" %}
 
       #| {.json-schema-properties}
-      || Name | Description ||
+      || **Name** | **Description** ||
       ||
+
       _value_{.json-schema-reset .json-schema-property}
-      |
+      {.table-cell}|
       **Type**: string
+      {.table-cell}
       ||
       |#
 

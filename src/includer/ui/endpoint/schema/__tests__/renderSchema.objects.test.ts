@@ -34,57 +34,96 @@ describe('renderSchema - objects', () => {
       {% cut "**Type**: object" %}
 
       #| {.json-schema-properties}
-      || Name | Description ||
+      || **Name** | **Description** ||
       ||
+
       _address_{.json-schema-reset .json-schema-property}
-      |
+      {.table-cell}|
       {% cut "**Type**: object" %}
 
       #| {.json-schema-properties}
       ||
+
       _city_{.json-schema-reset .json-schema-property}
-      |
+      {.table-cell}|
       **Type**: string
 
       Город
+      {.table-cell}
       ||
       ||
+
       _postcode_{.json-schema-reset .json-schema-property}
-      |
+      {.table-cell}|
       **Type**: string
 
       Почтовый индекс
+      {.table-cell}
       ||
       ||
+
       _complex_{.json-schema-reset .json-schema-property}
-      |
+      {.table-cell}|
       {% cut "**Type**: object" %}
 
       #| {.json-schema-properties}
       ||
+
       _someprop_{.json-schema-reset .json-schema-property}
-      |
+      {.table-cell}|
       **Type**: string
 
       Дополнительное поле
+      {.table-cell}
       ||
       |#
 
       {% endcut %}
 
       Сложная структура
+      {.table-cell}
       ||
       |#
 
       {% endcut %}
 
       Адрес пользователя
+      {.table-cell}
       ||
       |#
 
       {% endcut %}
 
       Корневой объект адреса
+    `);
+    });
+
+    it('renders object table without cut when expandType is true', () => {
+        const schema: JSONSchema = {
+            type: 'object',
+            properties: {
+                name: {type: 'string', description: 'Имя'},
+            },
+        };
+
+        const content = renderSchema(schema, {
+            suppressExamples: true,
+            expandType: true,
+        });
+
+        expect(content).toBe(dedent`
+      #| {.json-schema-properties}
+      || **Name** | **Description** ||
+      ||
+
+      _name_{.json-schema-reset .json-schema-property}
+      {.table-cell}|
+      **Type**: string
+
+      Имя
+      {.table-cell}
+      ||
+      |#
     `);
     });
 
@@ -110,50 +149,56 @@ describe('renderSchema - objects', () => {
         };
 
         const content = renderSchema(schema, {suppressExamples: true});
-        expect(content).toBe(dedent`
-      {% cut "**Type**: object" %}
+        expect(content).toBe(String.raw`{% cut "**Type**: object" %}
 
-      #| {.json-schema-properties}
-      || Name | Description ||
-      ||
-      _children_{.json-schema-reset .json-schema-property}
-      |
-      {% cut "**Type**: object[]" %}
+#| {.json-schema-properties}
+|| **Name** | **Description** ||
+||
 
-      #| {.json-schema-properties}
-      ||
-      _name_{.json-schema-reset .json-schema-property}
-      |
-      **Type**: string
+_children_{.json-schema-reset .json-schema-property}
+{.table-cell}|
+{% cut "**Type**: object[]" %}
 
-      Имя
-      ||
-      ||
-      _age_{.json-schema-reset .json-schema-property}
-      |
-      **Type**: integer
+#| {.json-schema-properties}
+||
 
-      Возраст
-      ||
-      |#
+_name_{.json-schema-reset .json-schema-property}
+{.table-cell}|
+**Type**: string
 
-      {% endcut %}
+Имя
+{.table-cell}
+||
+||
 
-      Массив детей
-      ||
-      ||
-      _type_{.json-schema-reset .json-schema-property}
-      |
-      **Type**: string
+_age_{.json-schema-reset .json-schema-property}
+{.table-cell}|
+**Type**: integer
 
-      Тип записи
-      ||
-      |#
+Возраст
+{.table-cell}
+||
+|#
 
-      {% endcut %}
+{% endcut %}
 
-      Объект с массивом
-    `);
+Массив детей
+{.table-cell}
+||
+||
+
+_type_{.json-schema-reset .json-schema-property}
+{.table-cell}|
+**Type**: string
+
+Тип записи
+{.table-cell}
+||
+|#
+
+{% endcut %}
+
+Объект с массивом`);
     });
 
     it('renders object without properties and with additionalProperties', () => {
@@ -168,13 +213,15 @@ describe('renderSchema - objects', () => {
       {% cut "**Type**: object" %}
 
       #| {.json-schema-properties}
-      || Name | Description ||
+      || **Name** | **Description** ||
       ||
+
       _[additional]_{.json-schema-reset .json-schema-additional-property}
-      |
+      {.table-cell}|
       **Type**: string
 
       Любое строковое свойство
+      {.table-cell}
       ||
       |#
 
@@ -197,13 +244,15 @@ describe('renderSchema - objects', () => {
       {% cut "**Type**: object" %}
 
       #| {.json-schema-properties}
-      || Name | Description ||
+      || **Name** | **Description** ||
       ||
+
       _/^foo.*$/_{.json-schema-reset .json-schema-pattern-property}
-      |
+      {.table-cell}|
       **Type**: string
 
       Любая строка, начинающаяся с foo
+      {.table-cell}
       ||
       |#
 
@@ -226,16 +275,20 @@ describe('renderSchema - objects', () => {
       {% cut "**Type**: object" %}
 
       #| {.json-schema-properties}
-      || Name | Description ||
+      || **Name** | **Description** ||
       ||
+
       _name_{.json-schema-reset .json-schema-property .json-schema-required}
-      |
+      {.table-cell}|
       **Type**: string
+      {.table-cell}
       ||
       ||
+
       _age_{.json-schema-reset .json-schema-property}
-      |
+      {.table-cell}|
       **Type**: integer
+      {.table-cell}
       ||
       |#
 
@@ -259,16 +312,20 @@ describe('renderSchema - objects', () => {
       {% cut "**Type**: object" %}
 
       #| {.json-schema-properties}
-      || Name | Description ||
+      || **Name** | **Description** ||
       ||
+
       _password_{.json-schema-reset .json-schema-property}
-      |
+      {.table-cell}|
       **Type**: string
+      {.table-cell}
       ||
       ||
+
       _email_{.json-schema-reset .json-schema-property}
-      |
+      {.table-cell}|
       **Type**: string
+      {.table-cell}
       ||
       |#
 
@@ -292,16 +349,20 @@ describe('renderSchema - objects', () => {
       {% cut "**Type**: object" %}
 
       #| {.json-schema-properties}
-      || Name | Description ||
+      || **Name** | **Description** ||
       ||
+
       _id_{.json-schema-reset .json-schema-property}
-      |
+      {.table-cell}|
       **Type**: string
+      {.table-cell}
       ||
       ||
+
       _email_{.json-schema-reset .json-schema-property}
-      |
+      {.table-cell}|
       **Type**: string
+      {.table-cell}
       ||
       |#
 

@@ -40,20 +40,24 @@ describe('renderSchema - arrays', () => {
       {% cut "**Type**: object[]" %}
 
       #| {.json-schema-properties}
-      || Name | Description ||
+      || **Name** | **Description** ||
       ||
+
       _foo_{.json-schema-reset .json-schema-property}
-      |
+      {.table-cell}|
       **Type**: string
 
       Поле foo
+      {.table-cell}
       ||
       ||
+
       _bar_{.json-schema-reset .json-schema-property}
-      |
+      {.table-cell}|
       **Type**: integer
 
       Поле bar
+      {.table-cell}
       ||
       |#
 
@@ -99,13 +103,15 @@ describe('renderSchema - arrays', () => {
       {% cut "**Type**: object[]" %}
 
       #| {.json-schema-properties}
-      || Name | Description ||
+      || **Name** | **Description** ||
       ||
+
       _name_{.json-schema-reset .json-schema-property}
-      |
+      {.table-cell}|
       **Type**: string
 
       Имя
+      {.table-cell}
       ||
       |#
 

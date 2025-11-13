@@ -4,6 +4,8 @@ import type {Dereference, V3Endpoint, V3Response, V3Schema} from '../../models';
 import type {SandboxData} from './openapi/renderSandbox';
 import type {JSONSchema, ResolvedRef, SchemaRenderOptions} from './schema/jsonSchema';
 
+import {createHash} from 'crypto';
+
 import {block, entity, title} from '../common';
 
 import {RenderContext} from './schema/jsonSchema';
@@ -33,6 +35,8 @@ export class Renderer {
     schema = (schema: OpenAPIV3.SchemaObject, options: SchemaRenderOptions = {}) => {
         return renderSchema(schema as JSONSchema, {
             ref: this.resolveRef,
+            suppressTitle: true,
+            suppressVerboseAdditional: true,
             ...options,
         });
     };
@@ -43,6 +47,7 @@ export class Renderer {
             renderSchema: (schema, options) => {
                 options = Object.assign(options || {}, {
                     suppressExamples: true,
+                    suppressTitle: true,
                 });
 
                 return this.schema(schema as OpenAPIV3.SchemaObject, options);
@@ -61,25 +66,29 @@ export class Renderer {
         const results = [];
 
         while (this.pendingRefs.length) {
-            for (const ref of this.pendingRefs) {
-                const schema = this.ctx.refs.get(ref);
+            for (const refId of this.pendingRefs) {
+                const schema = this.ctx.refs.get(refId);
 
                 if (!schema || isEmptyReference(schema)) {
                     continue;
                 }
 
+                const name = schema.title || refId.split('/').pop() || refId;
+                const ref = this._resolveRef(refId) as ResolvedRef;
+
                 results.push(
                     entity(
                         block([
-                            title(3)(ref.split('/').pop() ?? ref),
-                            // this.schema(schema, {only: ['description']}),
-                            this.schema(schema),
-                            this.table(schema),
+                            title(3)(name, ref.href),
+                            this.schema(schema, {
+                                expandType: true,
+                                suppressTitle: true,
+                            }),
                         ]),
                     ),
                 );
 
-                this.renderedRefs.add(ref);
+                this.renderedRefs.add(refId);
             }
         }
 
@@ -136,8 +145,12 @@ export class Renderer {
 
         this.linkedRefs.add(refId);
 
+        const hash = createHash('sha256');
+        hash.write(refId);
+
         return {
-            href: refId,
+            label: schema.title,
+            href: '#' + hash.digest('base64url'),
             schema,
         };
     };

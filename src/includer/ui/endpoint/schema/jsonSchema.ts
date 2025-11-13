@@ -40,6 +40,7 @@ export interface JSONSchema {
 }
 
 export interface ResolvedRef {
+    label?: string;
     href: string;
     schema: JSONSchema;
 }
@@ -187,6 +188,7 @@ export interface SchemaRenderOptions {
     suppressDeprecatedWarning?: boolean;
     suppressTableHeaders?: boolean;
     suppressVerboseAdditional?: boolean;
+    expandType?: boolean;
     i18n?: SchemaI18nOverrides;
 }
 
@@ -204,6 +206,7 @@ export interface SchemaRenderContext {
     suppressDeprecatedWarning?: boolean;
     suppressTableHeaders?: boolean;
     suppressVerboseAdditional?: boolean;
+    expandType?: boolean;
     i18n: SchemaI18nLabels;
 }
 
@@ -222,6 +225,8 @@ export class RenderContext implements SchemaRenderContext {
 
     suppressVerboseAdditional: boolean;
 
+    expandType: boolean;
+
     renderSchema: SchemaRenderer;
 
     ref: RefResolver;
@@ -238,6 +243,7 @@ export class RenderContext implements SchemaRenderContext {
         this.suppressDeprecatedWarning = options.suppressDeprecatedWarning ?? false;
         this.suppressTableHeaders = options.suppressTableHeaders ?? false;
         this.suppressVerboseAdditional = options.suppressVerboseAdditional ?? false;
+        this.expandType = options.expandType ?? false;
         this.i18n = mergeI18n(options.i18n);
     }
 
@@ -253,7 +259,7 @@ export class RenderContext implements SchemaRenderContext {
                 | 'suppressTableHeaders'
                 | 'suppressVerboseAdditional'
             >
-        >,
+        > & {expandType?: boolean},
     ): RenderContext {
         return new RenderContext({
             renderSchema: this.renderSchema,
@@ -267,6 +273,7 @@ export class RenderContext implements SchemaRenderContext {
             suppressTableHeaders: overrides?.suppressTableHeaders ?? this.suppressTableHeaders,
             suppressVerboseAdditional:
                 overrides?.suppressVerboseAdditional ?? this.suppressVerboseAdditional,
+            expandType: overrides?.expandType ?? false,
             i18n: this.i18n,
         });
     }
@@ -281,6 +288,7 @@ export class RenderContext implements SchemaRenderContext {
             suppressDeprecatedWarning: this.suppressDeprecatedWarning,
             suppressTableHeaders: this.suppressTableHeaders,
             suppressVerboseAdditional: this.suppressVerboseAdditional,
+            expandType: this.expandType,
             i18n: this.i18n,
         };
     }

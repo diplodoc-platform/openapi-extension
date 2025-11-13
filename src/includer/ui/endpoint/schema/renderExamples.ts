@@ -214,6 +214,22 @@ function ensureUniqueValue(base: unknown, index: number): unknown {
     return base;
 }
 
+function hasStringEnum(schema: JSONSchema, context: RenderContext): boolean {
+    let found = false;
+
+    traverseSchemaRefs(schema, context.ref, (current) => {
+        if (found) {
+            return;
+        }
+
+        if (Array.isArray(current.enum) && current.enum.length > 0) {
+            found = current.enum.every((value) => typeof value === 'string');
+        }
+    });
+
+    return found;
+}
+
 function pickDirectExample(schema: JSONSchema): unknown | undefined {
     if (schema.example !== undefined) {
         return schema.example;
@@ -503,6 +519,16 @@ export function renderExamples(schema: JSONSchema, context: RenderContext): stri
     }
 
     if (collector.list.length === 0) {
+        return '';
+    }
+
+    const schemaType = inferType(schema);
+
+    if (schemaType === 'boolean') {
+        return '';
+    }
+
+    if ((schemaType === 'string' || schemaType === undefined) && hasStringEnum(schema, context)) {
         return '';
     }
 

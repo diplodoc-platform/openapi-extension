@@ -1,3 +1,5 @@
+import type {OpenAPIV3} from 'openapi-types';
+
 import {dirname, join} from 'node:path';
 import {readFile} from 'node:fs/promises';
 import {load} from 'js-yaml';
@@ -28,7 +30,7 @@ export class RefsService {
             schema = (schema as Record<string, unknown>)[part] as object;
         }
 
-        return schema as object | undefined;
+        return schema as OpenAPIV3.SchemaObject | undefined;
     }
 
     async resolve(value: object, root?: string) {

@@ -42,16 +42,20 @@ describe('renderSchema - deprecated', () => {
       {% cut "**Type**: object" %}
 
       #| {.json-schema-properties}
-      || Name | Description ||
+      || **Name** | **Description** ||
       ||
+
       _currentField_{.json-schema-reset .json-schema-property}
-      |
+      {.table-cell}|
       **Type**: string
+      {.table-cell}
       ||
       ||
+
       _oldField_{.json-schema-reset .json-schema-property .json-schema-deprecated}
-      |
+      {.table-cell}|
       **Type**: string
+      {.table-cell}
       ||
       |#
 
@@ -101,11 +105,13 @@ describe('renderSchema - deprecated', () => {
       {% cut "**Type**: object" %}
 
       #| {.json-schema-properties}
-      || Name | Description ||
+      || **Name** | **Description** ||
       ||
+
       _legacyId_{.json-schema-reset .json-schema-property .json-schema-required .json-schema-deprecated}
-      |
+      {.table-cell}|
       **Type**: string
+      {.table-cell}
       ||
       |#
 

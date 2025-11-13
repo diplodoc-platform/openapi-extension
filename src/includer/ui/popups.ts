@@ -7,12 +7,15 @@ const content: Record<string, string> = {
 };
 
 export function deprecated({compact = false} = {}) {
-    const markup = compact ? '&#10680;' : DEPRECATED_ANNOTATION; // ⦸
     const classes = ['.openapi-deprecated', compact ? '.openapi-deprecated-compact' : ''].filter(
         Boolean,
     );
 
-    return `[${markup}](*${content[DEPRECATED_ANNOTATION]}){${classes.join(' ')}`;
+    if (compact) {
+        return `_[ ](*${DEPRECATED_ANNOTATION})_{${classes.join(' ')}}`;
+    }
+
+    return `[${DEPRECATED_ANNOTATION}](*${DEPRECATED_ANNOTATION}){${classes.join(' ')}}`;
 }
 
 export function terms(list: (keyof typeof content)[]) {

@@ -1,7 +1,6 @@
 import type {JSONSchema, SchemaRenderContext, SchemaRenderer} from '../jsonSchema';
 
 import {describe, expect, it} from 'vitest';
-import dedent from 'ts-dedent';
 
 import {RenderContext} from '../jsonSchema';
 import {renderExamples} from '../renderExamples';
@@ -25,13 +24,7 @@ describe('renderExamples - pattern support', () => {
 
         const result = renderExamples(schema, createContext());
 
-        expect(result).toBe(dedent`
-      {% cut "**Examples**" %}
-
-      \`12345\`
-
-      {% endcut %}
-    `);
+        expect(result).toBe(`_Example:_{.json-schema-reset .json-schema-example} \`12345\``);
     });
 
     it('generates example for extended ZIP code pattern', () => {
@@ -42,13 +35,7 @@ describe('renderExamples - pattern support', () => {
 
         const result = renderExamples(schema, createContext());
 
-        expect(result).toBe(dedent`
-      {% cut "**Examples**" %}
-
-      \`12345-6789\`
-
-      {% endcut %}
-    `);
+        expect(result).toBe(`_Example:_{.json-schema-reset .json-schema-example} \`12345-6789\``);
     });
 
     it('generates example for hex color pattern', () => {
@@ -59,13 +46,7 @@ describe('renderExamples - pattern support', () => {
 
         const result = renderExamples(schema, createContext());
 
-        expect(result).toBe(dedent`
-      {% cut "**Examples**" %}
-
-      \`#FF5733\`
-
-      {% endcut %}
-    `);
+        expect(result).toBe(`_Example:_{.json-schema-reset .json-schema-example} \`#FF5733\``);
     });
 
     it('generates example for date pattern', () => {
@@ -76,13 +57,7 @@ describe('renderExamples - pattern support', () => {
 
         const result = renderExamples(schema, createContext());
 
-        expect(result).toBe(dedent`
-      {% cut "**Examples**" %}
-
-      \`2025-01-15\`
-
-      {% endcut %}
-    `);
+        expect(result).toBe(`_Example:_{.json-schema-reset .json-schema-example} \`2025-01-15\``);
     });
 
     it('generates example for simple digit pattern with {N}', () => {
@@ -93,13 +68,7 @@ describe('renderExamples - pattern support', () => {
 
         const result = renderExamples(schema, createContext());
 
-        expect(result).toBe(dedent`
-      {% cut "**Examples**" %}
-
-      \`111\`
-
-      {% endcut %}
-    `);
+        expect(result).toBe(`_Example:_{.json-schema-reset .json-schema-example} \`111\``);
     });
 
     it('generates example for lowercase letters pattern', () => {
@@ -110,13 +79,7 @@ describe('renderExamples - pattern support', () => {
 
         const result = renderExamples(schema, createContext());
 
-        expect(result).toBe(dedent`
-      {% cut "**Examples**" %}
-
-      \`aaaaa\`
-
-      {% endcut %}
-    `);
+        expect(result).toBe(`_Example:_{.json-schema-reset .json-schema-example} \`aaaaa\``);
     });
 
     it('generates example for uppercase letters pattern', () => {
@@ -127,13 +90,7 @@ describe('renderExamples - pattern support', () => {
 
         const result = renderExamples(schema, createContext());
 
-        expect(result).toBe(dedent`
-      {% cut "**Examples**" %}
-
-      \`AAA\`
-
-      {% endcut %}
-    `);
+        expect(result).toBe(`_Example:_{.json-schema-reset .json-schema-example} \`AAA\``);
     });
 
     it('generates example for alphanumeric pattern', () => {
@@ -144,13 +101,7 @@ describe('renderExamples - pattern support', () => {
 
         const result = renderExamples(schema, createContext());
 
-        expect(result).toBe(dedent`
-      {% cut "**Examples**" %}
-
-      \`abc123xx\`
-
-      {% endcut %}
-    `);
+        expect(result).toBe(`_Example:_{.json-schema-reset .json-schema-example} \`abc123xx\``);
     });
 
     it('falls back to format when pattern is not recognized', () => {
@@ -187,13 +138,7 @@ describe('renderExamples - pattern support', () => {
 
         const result = renderExamples(schema, createContext());
 
-        expect(result).toBe(dedent`
-      {% cut "**Examples**" %}
-
-      \`99999\`
-
-      {% endcut %}
-    `);
+        expect(result).toBe(`_Example:_{.json-schema-reset .json-schema-example} \`99999\``);
     });
 
     it('respects minLength when pattern example is too short', () => {

@@ -52,6 +52,7 @@ export interface SchemaI18nLabels {
     additional: string;
     pattern: string;
     examples: string;
+    example: string;
     values: {
         default: string;
         const: string;
@@ -93,6 +94,7 @@ export interface SchemaI18nOverrides {
     additional?: string;
     pattern?: string;
     examples?: string;
+    example?: string;
     values?: Partial<SchemaI18nLabels['values']>;
     assertions?: Partial<SchemaI18nLabels['assertions']>;
     combinators?: Partial<SchemaI18nLabels['combinators']>;
@@ -106,6 +108,7 @@ const DEFAULT_I18N: SchemaI18nLabels = {
     additional: '[additional]',
     pattern: 'Pattern',
     examples: 'Examples',
+    example: 'Example',
     values: {
         default: 'Default',
         const: 'Const',
@@ -136,7 +139,7 @@ const DEFAULT_I18N: SchemaI18nLabels = {
     },
     deprecated: {
         title: 'Deprecated',
-        message: 'This field is deprecated and may be removed in future versions.',
+        message: 'This entity is deprecated and may be removed in future versions.',
     },
 };
 
@@ -189,7 +192,7 @@ export interface SchemaRenderOptions {
     suppressTableHeaders?: boolean;
     suppressVerboseAdditional?: boolean;
     isRoot?: boolean;
-    expandType?: boolean;
+    expandType?: boolean | 'titled';
     i18n?: SchemaI18nOverrides;
 }
 
@@ -208,7 +211,7 @@ export interface SchemaRenderContext {
     suppressTableHeaders?: boolean;
     suppressVerboseAdditional?: boolean;
     isRoot?: boolean;
-    expandType?: boolean;
+    expandType?: boolean | 'titled';
     i18n: SchemaI18nLabels;
 }
 
@@ -229,7 +232,7 @@ export class RenderContext implements SchemaRenderContext {
 
     isRoot: boolean;
 
-    expandType: boolean;
+    expandType: boolean | 'titled';
 
     renderSchema: SchemaRenderer;
 
@@ -264,7 +267,7 @@ export class RenderContext implements SchemaRenderContext {
                 | 'suppressTableHeaders'
                 | 'suppressVerboseAdditional'
             >
-        > & {expandType?: boolean; isRoot?: boolean},
+        > & {expandType?: boolean | 'titled'; isRoot?: boolean},
     ): RenderContext {
         return new RenderContext({
             renderSchema: this.renderSchema,

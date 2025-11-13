@@ -19,7 +19,7 @@ describe('renderSchema - deprecated', () => {
         expect(content).toBe(dedent`
       **Old Field**
 
-      > ⚠️ **Deprecated**: This field is deprecated and may be removed in future versions.
+      _⚠️ Deprecated_{.json-schema-reset .json-schema-deprecated-title}_: This entity is deprecated and may be removed in future versions._{.json-schema-reset .json-schema-deprecated-message}
 
       **Type**: string
 
@@ -41,7 +41,7 @@ describe('renderSchema - deprecated', () => {
         expect(content).toBe(dedent`
       {% cut "**Type**: object" %}
 
-      #| {.json-schema-properties}
+      #|
       || **Name** | **Description** ||
       ||
 
@@ -52,12 +52,12 @@ describe('renderSchema - deprecated', () => {
       ||
       ||
 
-      _oldField_{.json-schema-reset .json-schema-property .json-schema-deprecated}
+      _oldField_{.json-schema-reset .json-schema-property .json-schema-deprecated}_[ ](*Deprecated)_{.openapi-deprecated .openapi-deprecated-compact}
       {.table-cell}|
       **Type**: string
       {.table-cell}
       ||
-      |#
+      |#{.json-schema-properties}
 
       {% endcut %}
     `);
@@ -74,11 +74,11 @@ describe('renderSchema - deprecated', () => {
         const content = renderSchema(schema, {suppressExamples: true});
 
         expect(content).toBe(dedent`
-      {% cut "**One of**: Text or Number" %}
+      {% cut "**One of**: Text or Number" %}{.json-schema-combinators data-marker=or}
 
       - **Text**
 
-        > ⚠️ **Deprecated**: This field is deprecated and may be removed in future versions.
+        _⚠️ Deprecated_{.json-schema-reset .json-schema-deprecated-title}_: This entity is deprecated and may be removed in future versions._{.json-schema-reset .json-schema-deprecated-message}
 
         **Type**: string
 
@@ -104,16 +104,16 @@ describe('renderSchema - deprecated', () => {
         expect(content).toBe(dedent`
       {% cut "**Type**: object" %}
 
-      #| {.json-schema-properties}
+      #|
       || **Name** | **Description** ||
       ||
 
-      _legacyId_{.json-schema-reset .json-schema-property .json-schema-required .json-schema-deprecated}
+      _legacyId_{.json-schema-reset .json-schema-property .json-schema-required .json-schema-deprecated}_[ ](*Deprecated)_{.openapi-deprecated .openapi-deprecated-compact}
       {.table-cell}|
       **Type**: string
       {.table-cell}
       ||
-      |#
+      |#{.json-schema-properties}
 
       {% endcut %}
     `);

@@ -62,7 +62,7 @@ function renderCombinatorList(
             const variantContext = context.clone({
                 suppressTitle: true,
                 suppressTableHeaders: true,
-                expandType: true,
+                expandType: 'titled',
             });
             const rendered = context.renderSchema(variant, variantContext.toOptions());
             const lines = rendered.trimEnd().split('\n');
@@ -89,7 +89,9 @@ function renderCombinatorList(
         })
         .join('\n\n');
 
-    return cut(title, items);
+    const separator = labelKey === 'allOf' ? 'and' : 'or';
+
+    return cut(title, items, ['.json-schema-combinators', 'data-marker=' + separator]);
 }
 
 export function renderOneOf(schema: JSONSchema, context: RenderContext): string {

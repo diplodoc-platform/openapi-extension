@@ -26,33 +26,7 @@ describe('renderDeprecated', () => {
         const schema: JSONSchema = {type: 'string', deprecated: true};
 
         expect(renderDeprecated(schema, createContext())).toBe(
-            '> ⚠️ **Deprecated**: This field is deprecated and may be removed in future versions.',
-        );
-    });
-
-    it('collects deprecated from ref chain', () => {
-        const refs: Record<string, JSONSchema> = {
-            '#/defs/Base': {
-                deprecated: true,
-            },
-        };
-
-        const schema: JSONSchema = {
-            $ref: '#/defs/Base',
-        };
-
-        const context = createContext({
-            ref: (refId) => {
-                const resolved = refs[refId];
-                if (!resolved) {
-                    return undefined;
-                }
-                return {href: refId, schema: resolved};
-            },
-        });
-
-        expect(renderDeprecated(schema, context)).toBe(
-            '> ⚠️ **Deprecated**: This field is deprecated and may be removed in future versions.',
+            '_⚠️ Deprecated_{.json-schema-reset .json-schema-deprecated-title}_: This entity is deprecated and may be removed in future versions._{.json-schema-reset .json-schema-deprecated-message}',
         );
     });
 

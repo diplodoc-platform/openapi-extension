@@ -18,11 +18,7 @@ describe('renderSchema - miscellaneous', () => {
 
       Простая строка
 
-      {% cut "**Examples**" %}
-
-      \`example\`
-
-      {% endcut %}
+      _Example:_{.json-schema-reset .json-schema-example} \`example\`
 
       ---
     `);
@@ -41,11 +37,7 @@ describe('renderSchema - miscellaneous', () => {
 
       Строка или null
 
-      {% cut "**Examples**" %}
-
-      \`example\`
-
-      {% endcut %}
+      _Example:_{.json-schema-reset .json-schema-example} \`example\`
     `);
     });
 
@@ -60,11 +52,7 @@ describe('renderSchema - miscellaneous', () => {
         expect(content).toBe(dedent`
       **Type**: string<uuid>
 
-      {% cut "**Examples**" %}
-
-      \`123e4567-e89b-12d3-a456-426614174000\`
-
-      {% endcut %}
+      _Example:_{.json-schema-reset .json-schema-example} \`123e4567-e89b-12d3-a456-426614174000\`
     `);
     });
 
@@ -80,15 +68,9 @@ describe('renderSchema - miscellaneous', () => {
         expect(content).toBe(dedent`
       **Type**: number
 
-      **Default**: \`0\`
+      _Default:_{.json-schema-reset .json-schema-value} \`0\`
 
       _Min value:_{.json-schema-reset .json-schema-assertion} \`0\`
-
-      {% cut "**Examples**" %}
-
-      \`0\`
-
-      {% endcut %}
     `);
     });
 
@@ -102,6 +84,7 @@ describe('renderSchema - miscellaneous', () => {
             i18n: {
                 type: 'Тип',
                 examples: 'Примеры',
+                example: 'Пример',
             },
         });
 
@@ -110,11 +93,7 @@ describe('renderSchema - miscellaneous', () => {
 
       Персонализированное описание
 
-      {% cut "**Примеры**" %}
-
-      \`example\`
-
-      {% endcut %}
+      _Пример:_{.json-schema-reset .json-schema-example} \`example\`
     `);
     });
 
@@ -129,7 +108,7 @@ describe('renderSchema - miscellaneous', () => {
         expect(content).toBe(dedent`
       **Type**: string
 
-      **Enum**: \`alpha\`, \`beta\`
+      _Enum:_{.json-schema-reset .json-schema-value} \`alpha\`, \`beta\`
     `);
     });
 });

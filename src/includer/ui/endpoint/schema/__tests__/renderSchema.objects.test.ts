@@ -33,7 +33,7 @@ describe('renderSchema - objects', () => {
         expect(content).toBe(dedent`
       {% cut "**Type**: object" %}
 
-      #| {.json-schema-properties}
+      #|
       || **Name** | **Description** ||
       ||
 
@@ -41,7 +41,7 @@ describe('renderSchema - objects', () => {
       {.table-cell}|
       {% cut "**Type**: object" %}
 
-      #| {.json-schema-properties}
+      #|
       ||
 
       _city_{.json-schema-reset .json-schema-property}
@@ -66,7 +66,7 @@ describe('renderSchema - objects', () => {
       {.table-cell}|
       {% cut "**Type**: object" %}
 
-      #| {.json-schema-properties}
+      #|
       ||
 
       _someprop_{.json-schema-reset .json-schema-property}
@@ -76,21 +76,21 @@ describe('renderSchema - objects', () => {
       Дополнительное поле
       {.table-cell}
       ||
-      |#
+      |#{.json-schema-properties}
 
       {% endcut %}
 
       Сложная структура
       {.table-cell}
       ||
-      |#
+      |#{.json-schema-properties}
 
       {% endcut %}
 
       Адрес пользователя
       {.table-cell}
       ||
-      |#
+      |#{.json-schema-properties}
 
       {% endcut %}
 
@@ -112,7 +112,7 @@ describe('renderSchema - objects', () => {
         });
 
         expect(content).toBe(dedent`
-      #| {.json-schema-properties}
+      #|
       || **Name** | **Description** ||
       ||
 
@@ -123,7 +123,7 @@ describe('renderSchema - objects', () => {
       Имя
       {.table-cell}
       ||
-      |#
+      |#{.json-schema-properties}
     `);
     });
 
@@ -151,7 +151,7 @@ describe('renderSchema - objects', () => {
         const content = renderSchema(schema, {suppressExamples: true});
         expect(content).toBe(String.raw`{% cut "**Type**: object" %}
 
-#| {.json-schema-properties}
+#|
 || **Name** | **Description** ||
 ||
 
@@ -159,7 +159,7 @@ _children_{.json-schema-reset .json-schema-property}
 {.table-cell}|
 {% cut "**Type**: object[]" %}
 
-#| {.json-schema-properties}
+#|
 ||
 
 _name_{.json-schema-reset .json-schema-property}
@@ -178,7 +178,7 @@ _age_{.json-schema-reset .json-schema-property}
 Возраст
 {.table-cell}
 ||
-|#
+|#{.json-schema-properties}
 
 {% endcut %}
 
@@ -194,7 +194,7 @@ _type_{.json-schema-reset .json-schema-property}
 Тип записи
 {.table-cell}
 ||
-|#
+|#{.json-schema-properties}
 
 {% endcut %}
 
@@ -212,7 +212,7 @@ _type_{.json-schema-reset .json-schema-property}
         expect(content).toBe(dedent`
       {% cut "**Type**: object" %}
 
-      #| {.json-schema-properties}
+      #|
       || **Name** | **Description** ||
       ||
 
@@ -223,7 +223,7 @@ _type_{.json-schema-reset .json-schema-property}
       Любое строковое свойство
       {.table-cell}
       ||
-      |#
+      |#{.json-schema-properties}
 
       {% endcut %}
 
@@ -243,7 +243,7 @@ _type_{.json-schema-reset .json-schema-property}
         expect(content).toBe(dedent`
       {% cut "**Type**: object" %}
 
-      #| {.json-schema-properties}
+      #|
       || **Name** | **Description** ||
       ||
 
@@ -254,7 +254,7 @@ _type_{.json-schema-reset .json-schema-property}
       Любая строка, начинающаяся с foo
       {.table-cell}
       ||
-      |#
+      |#{.json-schema-properties}
 
       {% endcut %}
     `);
@@ -274,7 +274,7 @@ _type_{.json-schema-reset .json-schema-property}
         expect(content).toBe(dedent`
       {% cut "**Type**: object" %}
 
-      #| {.json-schema-properties}
+      #|
       || **Name** | **Description** ||
       ||
 
@@ -290,7 +290,7 @@ _type_{.json-schema-reset .json-schema-property}
       **Type**: integer
       {.table-cell}
       ||
-      |#
+      |#{.json-schema-properties}
 
       {% endcut %}
     `);
@@ -311,7 +311,7 @@ _type_{.json-schema-reset .json-schema-property}
         expect(content).toBe(dedent`
       {% cut "**Type**: object" %}
 
-      #| {.json-schema-properties}
+      #|
       || **Name** | **Description** ||
       ||
 
@@ -327,7 +327,7 @@ _type_{.json-schema-reset .json-schema-property}
       **Type**: string
       {.table-cell}
       ||
-      |#
+      |#{.json-schema-properties}
 
       {% endcut %}
     `);
@@ -348,7 +348,7 @@ _type_{.json-schema-reset .json-schema-property}
         expect(content).toBe(dedent`
       {% cut "**Type**: object" %}
 
-      #| {.json-schema-properties}
+      #|
       || **Name** | **Description** ||
       ||
 
@@ -364,7 +364,7 @@ _type_{.json-schema-reset .json-schema-property}
       **Type**: string
       {.table-cell}
       ||
-      |#
+      |#{.json-schema-properties}
 
       {% endcut %}
     `);

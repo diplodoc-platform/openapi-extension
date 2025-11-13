@@ -22,19 +22,25 @@ describe('renderValues', () => {
     it('renders default value', () => {
         const schema: JSONSchema = {default: 'guest'};
 
-        expect(renderValues(schema, context)).toBe('**Default**: `guest`');
+        expect(renderValues(schema, context)).toBe(
+            `_Default:_{.json-schema-reset .json-schema-value} \`guest\``,
+        );
     });
 
     it('renders const value', () => {
         const schema: JSONSchema = {const: 42};
 
-        expect(renderValues(schema, context)).toBe('**Const**: `42`');
+        expect(renderValues(schema, context)).toBe(
+            `_Const:_{.json-schema-reset .json-schema-value} \`42\``,
+        );
     });
 
     it('renders enum values as list', () => {
         const schema: JSONSchema = {enum: ['a', 'b', null]};
 
-        expect(renderValues(schema, context)).toBe('**Enum**: `a`, `b`, `null`');
+        expect(renderValues(schema, context)).toBe(
+            `_Enum:_{.json-schema-reset .json-schema-value} \`a\`, \`b\`, \`null\``,
+        );
     });
 
     it('renders combined values block', () => {
@@ -45,11 +51,11 @@ describe('renderValues', () => {
         };
 
         expect(renderValues(schema, context)).toBe(dedent`
-      **Default**: \`admin\`
+      _Default:_{.json-schema-reset .json-schema-value} \`admin\`
 
-      **Const**: \`admin\`
+      _Const:_{.json-schema-reset .json-schema-value} \`admin\`
 
-      **Enum**: \`admin\`, \`guest\`
+      _Enum:_{.json-schema-reset .json-schema-value} \`admin\`, \`guest\`
     `);
     });
 
@@ -77,9 +83,9 @@ describe('renderValues', () => {
         });
 
         expect(renderValues(schema, refContext)).toBe(dedent`
-      **Default**: \`5\`
+      _Default:_{.json-schema-reset .json-schema-value} \`5\`
 
-      **Enum**: \`5\`, \`10\`
+      _Enum:_{.json-schema-reset .json-schema-value} \`5\`, \`10\`
     `);
     });
 
@@ -109,11 +115,11 @@ describe('renderValues', () => {
         });
 
         expect(renderValues(schema, refContext)).toBe(dedent`
-      **Default**: \`admin\`
+      _Default:_{.json-schema-reset .json-schema-value} \`admin\`
 
-      **Const**: \`guest\`
+      _Const:_{.json-schema-reset .json-schema-value} \`guest\`
 
-      **Enum**: \`guest\`, \`viewer\`
+      _Enum:_{.json-schema-reset .json-schema-value} \`guest\`, \`viewer\`
     `);
     });
 });

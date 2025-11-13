@@ -17,7 +17,7 @@ describe('renderSchema - additionalProperties', () => {
         expect(content).toBe(dedent`
       {% cut "**Type**: object" %}
 
-      #| {.json-schema-properties}
+      #|
       || **Name** | **Description** ||
       ||
 
@@ -26,7 +26,7 @@ describe('renderSchema - additionalProperties', () => {
       **Type**: any
       {.table-cell}
       ||
-      |#
+      |#{.json-schema-properties}
 
       {% endcut %}
     `);
@@ -43,7 +43,7 @@ describe('renderSchema - additionalProperties', () => {
         expect(content).toBe(dedent`
       {% cut "**Type**: object" %}
 
-      #| {.json-schema-properties}
+      #|
       || **Name** | **Description** ||
       ||
 
@@ -52,7 +52,7 @@ describe('renderSchema - additionalProperties', () => {
       **Type**: never
       {.table-cell}
       ||
-      |#
+      |#{.json-schema-properties}
 
       {% endcut %}
     `);
@@ -72,9 +72,9 @@ describe('renderSchema - additionalProperties', () => {
         expect(content).toBe(dedent`
       {% cut "**Type**: object" %}
 
-      #| {.json-schema-properties}
+      #|
       || **Name** | **Description** ||
-      |#
+      |#{.json-schema-properties}
 
       {% endcut %}
     `);
@@ -94,9 +94,9 @@ describe('renderSchema - additionalProperties', () => {
         expect(content).toBe(dedent`
       {% cut "**Type**: object" %}
 
-      #| {.json-schema-properties}
+      #|
       || **Name** | **Description** ||
-      |#
+      |#{.json-schema-properties}
 
       {% endcut %}
     `);
@@ -119,7 +119,7 @@ describe('renderSchema - additionalProperties', () => {
         expect(content).toBe(dedent`
       {% cut "**Type**: object" %}
 
-      #| {.json-schema-properties}
+      #|
       || **Name** | **Description** ||
       ||
 
@@ -130,7 +130,7 @@ describe('renderSchema - additionalProperties', () => {
       Any string value
       {.table-cell}
       ||
-      |#
+      |#{.json-schema-properties}
 
       {% endcut %}
     `);
@@ -150,7 +150,7 @@ describe('renderSchema - additionalProperties', () => {
         expect(content).toBe(dedent`
       {% cut "**Type**: object" %}
 
-      #| {.json-schema-properties}
+      #|
       || **Name** | **Description** ||
       ||
 
@@ -166,7 +166,7 @@ describe('renderSchema - additionalProperties', () => {
       **Type**: any
       {.table-cell}
       ||
-      |#
+      |#{.json-schema-properties}
 
       {% endcut %}
     `);
@@ -189,7 +189,7 @@ describe('renderSchema - additionalProperties', () => {
         expect(content).toBe(dedent`
       {% cut "**Type**: object" %}
 
-      #| {.json-schema-properties}
+      #|
       || **Name** | **Description** ||
       ||
 
@@ -198,7 +198,7 @@ describe('renderSchema - additionalProperties', () => {
       **Type**: string
       {.table-cell}
       ||
-      |#
+      |#{.json-schema-properties}
 
       {% endcut %}
     `);

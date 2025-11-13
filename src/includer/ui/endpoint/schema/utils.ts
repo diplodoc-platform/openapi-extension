@@ -23,8 +23,9 @@ export function blocks(parts: Array<string | undefined>): string {
     return parts.filter((part) => typeof part === 'string' && part.trim().length > 0).join('\n\n');
 }
 
-export function cut(title: string, body: string): string {
-    return `{% cut "${title}" %}\n\n${body}\n\n{% endcut %}`;
+export function cut(title: string, body: string, attrs?: string[]): string {
+    const attr = attrs ? `{${attrs.join(' ')}}` : '';
+    return `{% cut "${title}" %}${attr}\n\n${body}\n\n{% endcut %}`;
 }
 
 export type TableRow = string | [string, string];
@@ -35,9 +36,9 @@ export interface TableOptions {
 
 export function table(rows: TableRow[], options?: TableOptions): string {
     const classAttr = options?.classes?.length
-        ? ` {${options.classes.map((c) => `.${c}`).join(' ')}}`
+        ? `{${options.classes.map((c) => `.${c}`).join(' ')}}`
         : '';
-    return [`#|${classAttr}`, ...rows.map(formatRow), '|#'].join('\n');
+    return [`#|`, ...rows.map(formatRow), '|#'].join('\n') + classAttr;
 }
 
 function formatRow(row: TableRow): string {
@@ -50,6 +51,18 @@ function formatRow(row: TableRow): string {
         .join('\n{.table-cell}|\n')}\n{.table-cell}\n||`;
 }
 
+export function escapeTableText(value: string): string {
+    return value.replace(/\|/g, '&#124;');
+}
+
+export function maskTablePipes(value: string): string {
+    return value.replace(/\|/g, '__masked(&#124;)');
+}
+
+export function unmaskTableContent(value: string): string {
+    return value.replace(/__masked\(&#124;\)/g, '|');
+}
+
 export function decorate(
     label: string,
     ...classNames: Array<string | false | null | undefined>
@@ -60,9 +73,7 @@ export function decorate(
     }
 
     const stripped = label.replace(/^_+|_+$/g, '');
-    const unique = Array.from(
-        new Set(['json-schema-reset', ...classes.join(' ').split(' ').filter(Boolean)]),
-    );
+    const unique = Array.from(new Set(['json-schema-reset', ...classes.filter(Boolean)]));
     const classSuffix = unique.map((className) => `.${className}`).join(' ');
 
     return `_${stripped}_{${classSuffix}}`;
@@ -130,41 +141,4 @@ export function traverseSchemaRefs(
             stack.push({node: resolved.schema, refId: node.$ref});
         }
     }
-}
-
-export function extractConditionDescription(ifSchema: JSONSchema): string {
-    // Try to extract from properties with const/enum
-    if (ifSchema.properties) {
-        const conditions = Object.entries(ifSchema.properties).map(([key, value]) => {
-            if (value.const !== undefined) {
-                return `${key} = ${JSON.stringify(value.const)}`;
-            }
-            if (value.enum && value.enum.length > 0) {
-                const values = value.enum.map((v) => JSON.stringify(v)).join(', ');
-                return `${key} in [${values}]`;
-            }
-            if (value.type) {
-                return `${key} is ${value.type}`;
-            }
-            return `${key} is defined`;
-        });
-
-        if (conditions.length > 0) {
-            return conditions.join(' and ');
-        }
-    }
-
-    // Try to extract from required
-    if (ifSchema.required && ifSchema.required.length > 0) {
-        const fields = ifSchema.required.join(', ');
-        return `${fields} ${ifSchema.required.length === 1 ? 'is' : 'are'} required`;
-    }
-
-    // Try to extract from type
-    if (ifSchema.type) {
-        return `type is ${ifSchema.type}`;
-    }
-
-    // Fallback
-    return 'condition matches';
 }

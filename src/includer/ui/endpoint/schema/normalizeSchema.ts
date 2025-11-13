@@ -1,10 +1,14 @@
-import type {JSONSchema} from './jsonSchema';
+import type {JSONSchema, RefResolver} from './jsonSchema';
 
-import {extractConditionDescription} from './utils';
+import {traverseSchemaRefs} from './utils';
 
 const COMBINATOR_KEYS = ['oneOf', 'allOf', 'anyOf'] as const;
 
 type CombinatorKey = (typeof COMBINATOR_KEYS)[number];
+
+export interface NormalizeOptions {
+    resolveRef?: RefResolver;
+}
 
 function definedEntries(schema: JSONSchema): Array<[string, unknown]> {
     return Object.entries(schema).filter(([, value]) => value !== undefined);
@@ -25,7 +29,8 @@ function normalizeEnumToConst(schema: JSONSchema): JSONSchema {
 }
 
 function isPlainCombinator(schema: JSONSchema, key: CombinatorKey): boolean {
-    const entries = definedEntries(schema);
+    const {type: _type, ...rest} = schema;
+    const entries = definedEntries(rest);
     return entries.length === 1 && entries[0][0] === key;
 }
 
@@ -58,27 +63,25 @@ function normalizeConditional(schema: JSONSchema): JSONSchema {
         return schema;
     }
 
-    const {if: ifSchema, then: thenSchema, else: elseSchema, oneOf, type, ...rest} = schema;
+    const {if: _ifSchema, then: thenSchema, else: elseSchema, oneOf, type, ...rest} = schema;
 
     const conditionalVariants: JSONSchema[] = [];
 
     // Build "when condition matches" variant
     if (thenSchema) {
-        const conditionDesc = extractConditionDescription(ifSchema);
         conditionalVariants.push({
             ...thenSchema,
             type: thenSchema.type || type, // Inherit type from parent if not specified
-            title: thenSchema.title || `When ${conditionDesc}`,
+            title: thenSchema.title,
         });
     }
 
     // Build "when condition doesn't match" variant
     if (elseSchema) {
-        const conditionDesc = extractConditionDescription(ifSchema);
         conditionalVariants.push({
             ...elseSchema,
             type: elseSchema.type || type, // Inherit type from parent if not specified
-            title: elseSchema.title || `When NOT ${conditionDesc}`,
+            title: elseSchema.title,
         });
     }
 
@@ -98,27 +101,31 @@ function normalizeConditional(schema: JSONSchema): JSONSchema {
 
 function normalizeSchemaMap(
     map: Record<string, JSONSchema> | undefined,
+    options: NormalizeOptions,
 ): Record<string, JSONSchema> | undefined {
     if (!map) {
         return undefined;
     }
 
     return Object.fromEntries(
-        Object.entries(map).map(([key, value]) => [key, normalizeSchema(value)]),
+        Object.entries(map).map(([key, value]) => [key, normalizeSchema(value, options)]),
     );
 }
 
-function normalizeArrayItems(items: JSONSchema | JSONSchema[] | undefined) {
+function normalizeArrayItems(
+    items: JSONSchema | JSONSchema[] | undefined,
+    options: NormalizeOptions,
+) {
     if (!items) {
         return undefined;
     }
 
     if (Array.isArray(items)) {
-        return items.map((item) => normalizeSchema(item));
+        return items.map((item) => normalizeSchema(item, options));
     }
 
     if (typeof items === 'object') {
-        return normalizeSchema(items as JSONSchema);
+        return normalizeSchema(items as JSONSchema, options);
     }
 
     return items;
@@ -126,20 +133,25 @@ function normalizeArrayItems(items: JSONSchema | JSONSchema[] | undefined) {
 
 function normalizeAdditionalProperties(
     additional: JSONSchema['additionalProperties'],
+    options: NormalizeOptions,
 ): JSONSchema['additionalProperties'] {
     if (additional && typeof additional === 'object' && !Array.isArray(additional)) {
-        return normalizeSchema(additional as JSONSchema);
+        return normalizeSchema(additional as JSONSchema, options);
     }
 
     return additional;
 }
 
-function flattenCombinatorVariants(key: CombinatorKey, variants: JSONSchema[]): JSONSchema[] {
+function flattenCombinatorVariants(
+    key: CombinatorKey,
+    variants: JSONSchema[],
+    options: NormalizeOptions,
+): JSONSchema[] {
     return variants.flatMap((variant) => {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         if (isPlainCombinator(variant, key) && variant[key] && variant[key]!.length > 0) {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            return variant[key]!.map((inner) => normalizeSchema(inner));
+            return variant[key]!.map((inner) => normalizeSchema(inner, options));
         }
 
         return [variant];
@@ -151,13 +163,14 @@ function shouldCollapseSingleVariant(
     key: CombinatorKey,
     variants: JSONSchema[],
 ): boolean {
-    const isConditionalOneOf =
-        key === 'oneOf' && variants.length === 1 && variants[0].title?.startsWith('When ');
-
-    return variants.length === 1 && isPlainCombinator(schema, key) && !isConditionalOneOf;
+    return variants.length === 1 && isPlainCombinator(schema, key);
 }
 
-function normalizeCombinator(schema: JSONSchema, key: CombinatorKey): JSONSchema {
+function normalizeCombinator(
+    schema: JSONSchema,
+    key: CombinatorKey,
+    options: NormalizeOptions,
+): JSONSchema {
     const variants = schema[key];
 
     if (!variants || variants.length === 0) {
@@ -167,8 +180,8 @@ function normalizeCombinator(schema: JSONSchema, key: CombinatorKey): JSONSchema
         return schema;
     }
 
-    const normalizedVariants = variants.map((variant) => normalizeSchema(variant));
-    const flattened = flattenCombinatorVariants(key, normalizedVariants);
+    const normalizedVariants = variants.map((variant) => normalizeSchema(variant, options));
+    const flattened = flattenCombinatorVariants(key, normalizedVariants, options);
 
     if (flattened.length === 0) {
         return cloneWithoutKey(schema, key);
@@ -180,20 +193,23 @@ function normalizeCombinator(schema: JSONSchema, key: CombinatorKey): JSONSchema
     };
 
     if (shouldCollapseSingleVariant(updated, key, flattened)) {
-        return normalizeSchema(cloneWithoutKey(flattened[0], key));
+        return normalizeSchema(cloneWithoutKey(flattened[0], key), options);
     }
 
     return updated;
 }
 
-function normalizeCombinators(schema: JSONSchema): JSONSchema {
-    return COMBINATOR_KEYS.reduce((current, key) => normalizeCombinator(current, key), schema);
+function normalizeCombinators(schema: JSONSchema, options: NormalizeOptions): JSONSchema {
+    return COMBINATOR_KEYS.reduce(
+        (current, key) => normalizeCombinator(current, key, options),
+        schema,
+    );
 }
 
-function normalizeNestedSchemas(schema: JSONSchema): JSONSchema {
+function normalizeNestedSchemas(schema: JSONSchema, options: NormalizeOptions): JSONSchema {
     let result = schema;
 
-    const properties = normalizeSchemaMap(result.properties);
+    const properties = normalizeSchemaMap(result.properties, options);
     if (properties) {
         result = {
             ...result,
@@ -201,7 +217,7 @@ function normalizeNestedSchemas(schema: JSONSchema): JSONSchema {
         };
     }
 
-    const patternProperties = normalizeSchemaMap(result.patternProperties);
+    const patternProperties = normalizeSchemaMap(result.patternProperties, options);
     if (patternProperties) {
         result = {
             ...result,
@@ -209,7 +225,10 @@ function normalizeNestedSchemas(schema: JSONSchema): JSONSchema {
         };
     }
 
-    const additionalProperties = normalizeAdditionalProperties(result.additionalProperties);
+    const additionalProperties = normalizeAdditionalProperties(
+        result.additionalProperties,
+        options,
+    );
     if (additionalProperties !== result.additionalProperties) {
         result = {
             ...result,
@@ -217,7 +236,7 @@ function normalizeNestedSchemas(schema: JSONSchema): JSONSchema {
         };
     }
 
-    const items = normalizeArrayItems(result.items);
+    const items = normalizeArrayItems(result.items, options);
     if (items !== undefined) {
         result = {
             ...result,
@@ -228,14 +247,38 @@ function normalizeNestedSchemas(schema: JSONSchema): JSONSchema {
     return result;
 }
 
-export function normalizeSchema(schema: JSONSchema): JSONSchema {
+function markDeprecatedFromRefs(schema: JSONSchema, resolver: RefResolver | undefined): JSONSchema {
+    if (!resolver) {
+        return schema;
+    }
+
+    let isDeprecated = schema.deprecated === true;
+
+    if (!isDeprecated) {
+        traverseSchemaRefs(schema, resolver, (current) => {
+            if (current !== schema && current.deprecated === true) {
+                isDeprecated = true;
+            }
+        });
+    }
+
+    if (isDeprecated && schema.deprecated !== true) {
+        return {
+            ...schema,
+            deprecated: true,
+        };
+    }
+
+    return schema;
+}
+
+export function normalizeSchema(schema: JSONSchema, options: NormalizeOptions = {}): JSONSchema {
     let normalized: JSONSchema = normalizeEnumToConst({...schema});
 
     // Normalize conditionals first (before combinators)
     normalized = normalizeConditional(normalized);
-
-    normalized = normalizeCombinators(normalized);
-    normalized = normalizeNestedSchemas(normalized);
+    normalized = normalizeCombinators(normalized, options);
+    normalized = normalizeNestedSchemas(normalized, options);
 
     if (!normalized.deprecated && allCombinatorVariantsDeprecated(normalized)) {
         normalized = {
@@ -243,6 +286,8 @@ export function normalizeSchema(schema: JSONSchema): JSONSchema {
             deprecated: true,
         };
     }
+
+    normalized = markDeprecatedFromRefs(normalized, options.resolveRef);
 
     return normalized;
 }

@@ -107,8 +107,52 @@ describe('normalizeSchema', () => {
         });
     });
 
-    it('converts if/then to oneOf with title', () => {
+    it('converts if/then to plain', () => {
         const schema: JSONSchema = {
+            if: {
+                properties: {
+                    premium: {const: true},
+                },
+            },
+            then: {
+                properties: {
+                    maxFeatures: {const: 100},
+                },
+            },
+        };
+
+        const normalized = normalizeSchema(schema);
+
+        expect(normalized.oneOf).not.toBeDefined();
+        expect(normalized.properties).toBeDefined();
+        expect(normalized.properties?.maxFeatures).toEqual({const: 100});
+    });
+
+    it('converts if/then/type to plain', () => {
+        const schema: JSONSchema = {
+            if: {
+                properties: {
+                    premium: {const: true},
+                },
+            },
+            then: {
+                properties: {
+                    maxFeatures: {const: 100},
+                },
+            },
+        };
+
+        const normalized = normalizeSchema(schema);
+
+        expect(normalized.oneOf).not.toBeDefined();
+        expect(normalized.properties).toBeDefined();
+        expect(normalized.properties?.maxFeatures).toEqual({const: 100});
+    });
+
+    it('converts if/then/type/properties to oneOf', () => {
+        const schema: JSONSchema = {
+            type: 'object',
+            properties: {},
             if: {
                 properties: {
                     premium: {const: true},
@@ -125,7 +169,6 @@ describe('normalizeSchema', () => {
 
         expect(normalized.oneOf).toBeDefined();
         expect(normalized.oneOf?.length).toBe(1);
-        expect(normalized.oneOf?.[0].title).toContain('When premium = true');
         expect(normalized.oneOf?.[0].properties?.maxFeatures).toEqual({const: 100});
     });
 
@@ -152,8 +195,6 @@ describe('normalizeSchema', () => {
 
         expect(normalized.oneOf).toBeDefined();
         expect(normalized.oneOf?.length).toBe(2);
-        expect(normalized.oneOf?.[0].title).toContain('When country = "USA"');
-        expect(normalized.oneOf?.[1].title).toContain('When NOT country = "USA"');
     });
 
     it('merges conditional with existing oneOf', () => {
@@ -175,7 +216,6 @@ describe('normalizeSchema', () => {
 
         expect(normalized.oneOf).toBeDefined();
         expect(normalized.oneOf?.length).toBe(3);
-        expect(normalized.oneOf?.[0].title).toContain('When premium = true');
         expect(normalized.oneOf?.[1]).toEqual({type: 'string'});
         expect(normalized.oneOf?.[2]).toEqual({type: 'number'});
     });

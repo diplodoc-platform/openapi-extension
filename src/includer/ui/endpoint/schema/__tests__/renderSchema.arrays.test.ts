@@ -39,7 +39,7 @@ describe('renderSchema - arrays', () => {
         expect(content).toBe(dedent`
       {% cut "**Type**: object[]" %}
 
-      #| {.json-schema-properties}
+      #|
       || **Name** | **Description** ||
       ||
 
@@ -59,7 +59,7 @@ describe('renderSchema - arrays', () => {
       Поле bar
       {.table-cell}
       ||
-      |#
+      |#{.json-schema-properties}
 
       {% endcut %}
 
@@ -102,7 +102,7 @@ describe('renderSchema - arrays', () => {
         expect(content).toBe(dedent`
       {% cut "**Type**: object[]" %}
 
-      #| {.json-schema-properties}
+      #|
       || **Name** | **Description** ||
       ||
 
@@ -113,7 +113,7 @@ describe('renderSchema - arrays', () => {
       Имя
       {.table-cell}
       ||
-      |#
+      |#{.json-schema-properties}
 
       {% endcut %}
 

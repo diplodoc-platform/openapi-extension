@@ -20,7 +20,7 @@ describe('renderSchema - table headers', () => {
         expect(content).toBe(dedent`
       {% cut "**Type**: object" %}
 
-      #| {.json-schema-properties}
+      #|
       || **Name** | **Description** ||
       ||
 
@@ -36,7 +36,7 @@ describe('renderSchema - table headers', () => {
       **Type**: number
       {.table-cell}
       ||
-      |#
+      |#{.json-schema-properties}
 
       {% endcut %}
     `);
@@ -59,7 +59,7 @@ describe('renderSchema - table headers', () => {
         expect(content).toBe(dedent`
       {% cut "**Type**: object" %}
 
-      #| {.json-schema-properties}
+      #|
       ||
 
       _name_{.json-schema-reset .json-schema-property}
@@ -74,7 +74,7 @@ describe('renderSchema - table headers', () => {
       **Type**: number
       {.table-cell}
       ||
-      |#
+      |#{.json-schema-properties}
 
       {% endcut %}
     `);
@@ -99,7 +99,7 @@ describe('renderSchema - table headers', () => {
         expect(content).toBe(dedent`
       {% cut "**Type**: object" %}
 
-      #| {.json-schema-properties}
+      #|
       || **Name** | **Description** ||
       ||
 
@@ -107,7 +107,7 @@ describe('renderSchema - table headers', () => {
       {.table-cell}|
       {% cut "**Type**: object" %}
 
-      #| {.json-schema-properties}
+      #|
       ||
 
       _name_{.json-schema-reset .json-schema-property}
@@ -122,12 +122,12 @@ describe('renderSchema - table headers', () => {
       **Type**: string
       {.table-cell}
       ||
-      |#
+      |#{.json-schema-properties}
 
       {% endcut %}
       {.table-cell}
       ||
-      |#
+      |#{.json-schema-properties}
 
       {% endcut %}
     `);
@@ -156,7 +156,7 @@ describe('renderSchema - table headers', () => {
         expect(content).toBe(dedent`
       {% cut "**Type**: object" %}
 
-      #| {.json-schema-properties}
+      #|
       || **Name** | **Description** ||
       ||
 
@@ -164,14 +164,14 @@ describe('renderSchema - table headers', () => {
       {.table-cell}|
       {% cut "**Type**: object" %}
 
-      #| {.json-schema-properties}
+      #|
       ||
 
       _level2_{.json-schema-reset .json-schema-property}
       {.table-cell}|
       {% cut "**Type**: object" %}
 
-      #| {.json-schema-properties}
+      #|
       ||
 
       _value_{.json-schema-reset .json-schema-property}
@@ -179,17 +179,17 @@ describe('renderSchema - table headers', () => {
       **Type**: string
       {.table-cell}
       ||
-      |#
+      |#{.json-schema-properties}
 
       {% endcut %}
       {.table-cell}
       ||
-      |#
+      |#{.json-schema-properties}
 
       {% endcut %}
       {.table-cell}
       ||
-      |#
+      |#{.json-schema-properties}
 
       {% endcut %}
     `);
@@ -211,7 +211,7 @@ describe('renderSchema - table headers', () => {
         expect(content).toBe(dedent`
             {% cut "**Type**: object" %}
 
-            #| {.json-schema-properties}
+            #|
             || **Name** | **Description** ||
             ||
 
@@ -219,7 +219,7 @@ describe('renderSchema - table headers', () => {
             {.table-cell}|
             {% cut "**Type**: object" %}
 
-            #| {.json-schema-properties}
+            #|
             ||
 
             _key_{.json-schema-reset .json-schema-property}
@@ -227,12 +227,12 @@ describe('renderSchema - table headers', () => {
             **Type**: string
             {.table-cell}
             ||
-            |#
+            |#{.json-schema-properties}
 
             {% endcut %}
             {.table-cell}
             ||
-            |#
+            |#{.json-schema-properties}
 
             {% endcut %}
         `);

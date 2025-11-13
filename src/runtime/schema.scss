@@ -6,17 +6,18 @@
     }
 
     &-property {
-        //color: #005a9c;
-        //font-weight: 600;
+        white-space: nowrap;
     }
 
     &-additional-property {
+        white-space: nowrap;
         color: var(--g-color-text-hint);
         font-style: italic;
         font-weight: 600;
     }
 
     &-pattern-property {
+        white-space: nowrap;
         color: #1f8d49;
         font-weight: 600;
     }
@@ -24,27 +25,86 @@
     &-required::after {
         content: '*';
         user-select: none;
-        color: #d32f2f;
-        margin-right: 0.25em;
+        color: var(--g-color-text-danger);
+        margin: 0 0.25em;
+        font-size: 1.2em;
     }
 
-    &-deprecated {
-        opacity: 0.6;
-        text-decoration: line-through;
+    &-deprecated-title {
+        font-weight: bold;
     }
 
-    &-deprecated::after {
-        content: ' ⚠️';
-        margin-left: 0.25em;
+    &-deprecated-message {
     }
 
-    &-assertion {
+    &-properties &-properties {
+        width: 100%;
+        margin-bottom: 0;
+
+        tr {
+            // stylelint-disable-next-line
+            background-color: unset !important;
+        }
+
+        td:last-child {
+            width: 100%;
+        }
+    }
+
+    &-properties {
+        --yfm-list-text-only-margin-block: 15px;
+    }
+
+    &-properties &-value,
+    &-properties &-example,
+    &-properties &-assertion {
         font-style: normal;
         color: var(--g-color-text-hint);
     }
 
-    &-properties {
-        /* Styles for property tables */
-        /* Can be customized by users */
+    &-properties &-deprecated-message {
+        display: none;
+    }
+
+    &-properties .yfm-cut {
+        margin-left: -20px;
+
+        &-title > strong {
+            margin-left: -10px;
+        }
+    }
+
+    &-properties .table-cell > *:last-child {
+        // stylelint-disable-next-line
+        margin-bottom: 0 !important;
+    }
+
+    &-properties &-combinators {
+        --marker: attr(data-marker);
+
+        & > .yfm-cut-content > ul {
+            margin-left: -30px;
+        }
+
+        & > .yfm-cut-content > ul > li {
+            list-style: none;
+            border: solid var(--yfm-color-table-border);
+            border-width: 1px 0 0;
+            padding: 8px 6px;
+            margin: 0 6px 8px;
+            position: relative;
+        }
+
+        & > .yfm-cut-content > ul > li:first-child {
+            border: none;
+        }
+
+        & > .yfm-cut-content > ul > li:not(:first-child):before {
+            content: var(--marker, '?');
+            position: absolute;
+            top: -12px;
+            right: calc(100% + 4px);
+            color: var(--g-color-text-hint);
+        }
     }
 }

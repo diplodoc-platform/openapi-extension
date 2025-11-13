@@ -22,13 +22,15 @@ describe('renderSchema - combinators', () => {
         const content = renderSchema(schema, {suppressExamples: true});
 
         expect(content).toBe(dedent`
-      {% cut "**One of 2 types**" %}
+      {% cut "**One of 2 types**" %}{.json-schema-combinators data-marker=or}
 
       - **Type**: string
 
         Строка
 
-      - #| {.json-schema-properties}
+      - **Type**: object
+
+        #|
         ||
 
         _value_{.json-schema-reset .json-schema-property}
@@ -38,7 +40,7 @@ describe('renderSchema - combinators', () => {
         Число
         {.table-cell}
         ||
-        |#
+        |#{.json-schema-properties}
 
       {% endcut %}
     `);
@@ -58,7 +60,7 @@ describe('renderSchema - combinators', () => {
         expect(content).toBe(dedent`
       {% cut "**Type**: object" %}
 
-      #| {.json-schema-properties}
+      #|
       || **Name** | **Description** ||
       ||
 
@@ -67,11 +69,11 @@ describe('renderSchema - combinators', () => {
       **Type**: string
       {.table-cell}
       ||
-      |#
+      |#{.json-schema-properties}
 
       {% endcut %}
 
-      {% cut "**One of 2 types**" %}
+      {% cut "**One of 2 types**" %}{.json-schema-combinators data-marker=or}
 
       - **Type**: string
 
@@ -101,9 +103,9 @@ describe('renderSchema - combinators', () => {
         const content = renderSchema(schema, {suppressExamples: true});
 
         expect(content).toBe(dedent`
-      {% cut "**One of 2 types**" %}
+      {% cut "**One of 2 types**" %}{.json-schema-combinators data-marker=or}
 
-      - {% cut "**One of 2 types**" %}
+      - {% cut "**One of 2 types**" %}{.json-schema-combinators data-marker=or}
 
         - **Type**: string
 
@@ -141,7 +143,7 @@ describe('renderSchema - combinators', () => {
         const content = renderSchema(schema, {suppressExamples: true});
 
         expect(content).toBe(dedent`
-      {% cut "**One of 3 types**" %}
+      {% cut "**One of 3 types**" %}{.json-schema-combinators data-marker=or}
 
       - **Type**: string
 
@@ -186,7 +188,7 @@ describe('renderSchema - combinators', () => {
         const content = renderSchema(schema, {suppressExamples: true});
 
         expect(content).toBe(dedent`
-      {% cut "**Any of 2 types**" %}
+      {% cut "**Any of 2 types**" %}{.json-schema-combinators data-marker=or}
 
       - **Type**: string
 
@@ -209,7 +211,7 @@ describe('renderSchema - combinators', () => {
         const content = renderSchema(schema, {suppressExamples: true});
 
         expect(content).toBe(dedent`
-      {% cut "**All of 2 types**" %}
+      {% cut "**All of 2 types**" %}{.json-schema-combinators data-marker=and}
 
       - **Type**: string
 

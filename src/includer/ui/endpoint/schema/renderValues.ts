@@ -1,6 +1,6 @@
 import type {JSONSchema, RenderContext} from './jsonSchema';
 
-import {blocks, traverseSchemaRefs} from './utils';
+import {blocks, decorate, traverseSchemaRefs} from './utils';
 
 function formatLiteral(value: unknown): string {
     if (typeof value === 'string') {
@@ -49,17 +49,19 @@ export function renderValues(schema: JSONSchema, context: RenderContext): string
     const parts: string[] = [];
     const {i18n} = context;
 
+    const makeLabel = (text: string): string => decorate(`${text}:`, 'json-schema-value');
+
     if (collected.default !== undefined) {
-        parts.push(`**${i18n.values.default}**: \`${formatLiteral(collected.default)}\``);
+        parts.push(`${makeLabel(i18n.values.default)} \`${formatLiteral(collected.default)}\``);
     }
 
     if (collected.const !== undefined) {
-        parts.push(`**${i18n.values.const}**: \`${formatLiteral(collected.const)}\``);
+        parts.push(`${makeLabel(i18n.values.const)} \`${formatLiteral(collected.const)}\``);
     }
 
     if (collected.enumValues.length > 0) {
         const items = collected.enumValues.map((value) => `\`${formatLiteral(value)}\``).join(', ');
-        parts.push(`**${i18n.values.enum}**: ${items}`);
+        parts.push(`${makeLabel(i18n.values.enum)} ${items}`);
     }
 
     return blocks(parts);

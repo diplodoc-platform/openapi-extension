@@ -1,7 +1,10 @@
 import type {JSONSchema, PrimitiveType, RenderContext} from './jsonSchema';
 
+import {deprecated} from '../../popups';
+
 import {hasCombinators} from './renderCombinators';
 import {
+    blocks,
     cut,
     decorate,
     escapeTableText,
@@ -73,14 +76,19 @@ export function renderType(
             has(schema, 'patternProperties')
         ) {
             // Don't use title in cut block if suppressTitle is set (e.g., in combinator variants)
-            const typeLabel =
-                context.suppressTitle || !schema.title
-                    ? `**${i18n.type}**: object${suffix}`
-                    : `**${i18n.type}**: ${schema.title}`;
+            const typeLabel = schema.title
+                ? `**${i18n.type}**: ${schema.title}`
+                : `**${i18n.type}**: object${suffix}`;
             const content = renderObjectType(schema, context);
-            if (context.expandType) {
+
+            if (context.expandType === true) {
                 return content;
             }
+
+            if (context.expandType === 'titled') {
+                return blocks([typeLabel, content]);
+            }
+
             return cut(typeLabel, content);
         }
 
@@ -128,7 +136,6 @@ export function renderObjectType(schema: JSONSchema, context: RenderContext): st
     const rows: Array<string | [string, string]> = [];
     const requiredSet = new Set(schema.required ?? []);
     const propertyContext = context.clone({
-        suppressDeprecatedWarning: true,
         suppressTableHeaders: true,
     });
 
@@ -144,16 +151,23 @@ export function renderObjectType(schema: JSONSchema, context: RenderContext): st
                 continue;
             }
 
-            const label = decorate(
+            let label = decorate(
                 key,
                 CLASS_NAMES.property,
                 requiredSet.has(key) ? CLASS_NAMES.requiredProperty : undefined,
                 value?.deprecated ? CLASS_NAMES.deprecatedProperty : undefined,
             );
 
+            if (value?.deprecated) {
+                label += deprecated({compact: true});
+            }
+
             const preparedLabel = prepareTableCell(label, context);
             const preparedValue = prepareTableCell(
-                renderSchema(value, propertyContext.toOptions()),
+                renderSchema(value, {
+                    ...propertyContext.toOptions(),
+                    suppressDeprecatedWarning: value.deprecated,
+                }),
                 context,
             );
 

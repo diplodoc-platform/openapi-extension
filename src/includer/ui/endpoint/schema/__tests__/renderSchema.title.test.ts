@@ -38,7 +38,7 @@ describe('renderSchema - title', () => {
         expect(content).toBe(dedent`
       {% cut "**Type**: User Profile" %}
 
-      #| {.json-schema-properties}
+      #|
       || **Name** | **Description** ||
       ||
 
@@ -47,7 +47,7 @@ describe('renderSchema - title', () => {
       **Type**: string
       {.table-cell}
       ||
-      |#
+      |#{.json-schema-properties}
 
       {% endcut %}
     `);
@@ -64,7 +64,7 @@ describe('renderSchema - title', () => {
         const content = renderSchema(schema, {suppressExamples: true});
 
         expect(content).toBe(dedent`
-      {% cut "**One of**: Text or Number" %}
+      {% cut "**One of**: Text or Number" %}{.json-schema-combinators data-marker=or}
 
       - **Text**
 
@@ -86,7 +86,7 @@ describe('renderSchema - title', () => {
         const content = renderSchema(schema, {suppressExamples: true});
 
         expect(content).toBe(dedent`
-      {% cut "**One of 2 types**" %}
+      {% cut "**One of 2 types**" %}{.json-schema-combinators data-marker=or}
 
       - **Text**
 

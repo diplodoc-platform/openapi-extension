@@ -18,7 +18,7 @@ export type RenderOptions = SchemaRenderOptions;
 
 export function renderSchema(schema: JSONSchema, options: RenderOptions = {}): string {
     const {before = '', after = ''} = options;
-    const normalized = normalizeSchema(schema);
+    const normalized = normalizeSchema(schema, {resolveRef: options.ref});
     const context = new RenderContext({
         ...options,
         renderSchema,

@@ -29,7 +29,7 @@ describe('renderSchema - references', () => {
         expect(content).toBe(dedent`
           {% cut "**Type**: object" %}
 
-          #| {.json-schema-properties}
+          #|
           || **Name** | **Description** ||
           ||
 
@@ -40,7 +40,7 @@ describe('renderSchema - references', () => {
           Ссылка на адрес
           {.table-cell}
           ||
-          |#
+          |#{.json-schema-properties}
 
           {% endcut %}
         `);

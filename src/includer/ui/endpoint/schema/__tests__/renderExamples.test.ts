@@ -20,13 +20,9 @@ describe('renderExamples', () => {
     it('renders explicit example value', () => {
         const schema: JSONSchema = {example: 'demo'};
 
-        expect(renderExamples(schema, createContext())).toBe(dedent`
-      {% cut "**Examples**" %}
-
-      \`demo\`
-
-      {% endcut %}
-    `);
+        expect(renderExamples(schema, createContext())).toBe(
+            `_Example:_{.json-schema-reset .json-schema-example} \`demo\``,
+        );
     });
 
     it('deduplicates examples from array and example property', () => {
@@ -155,6 +151,18 @@ describe('renderExamples', () => {
 
     it('skips examples for boolean schemas', () => {
         const schema: JSONSchema = {type: 'boolean'};
+
+        expect(renderExamples(schema, createContext())).toBe('');
+    });
+
+    it('skips examples for number schemas', () => {
+        const schema: JSONSchema = {type: 'number'};
+
+        expect(renderExamples(schema, createContext())).toBe('');
+    });
+
+    it('skips examples for integer schemas', () => {
+        const schema: JSONSchema = {type: 'integer'};
 
         expect(renderExamples(schema, createContext())).toBe('');
     });

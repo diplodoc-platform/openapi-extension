@@ -1,6 +1,6 @@
 import type {JSONSchema, RenderContext} from './jsonSchema';
 
-import {blocks, cut, traverseSchemaRefs} from './utils';
+import {blocks, cut, decorate, traverseSchemaRefs} from './utils';
 
 const FORMAT_SAMPLES: Record<string, string> = {
     email: 'user@example.com',
@@ -524,7 +524,7 @@ export function renderExamples(schema: JSONSchema, context: RenderContext): stri
 
     const schemaType = inferType(schema);
 
-    if (schemaType === 'boolean') {
+    if (schemaType === 'boolean' || schemaType === 'number' || schemaType === 'integer') {
         return '';
     }
 
@@ -532,7 +532,19 @@ export function renderExamples(schema: JSONSchema, context: RenderContext): stri
         return '';
     }
 
-    const formatted = blocks(collector.list.map(formatExampleValue));
+    const formattedValues = collector.list.map(formatExampleValue);
+
+    if (collector.list.length === 1) {
+        const [single] = formattedValues;
+        if (!single.includes('\n')) {
+            const labelSource = context.i18n.example ?? context.i18n.examples;
+            const labelText = labelSource.endsWith(':') ? labelSource : `${labelSource}:`;
+            const label = decorate(labelText, 'json-schema-example');
+            return `${label} ${single}`;
+        }
+    }
+
+    const formatted = blocks(formattedValues);
 
     return cut(`**${context.i18n.examples}**`, formatted);
 }

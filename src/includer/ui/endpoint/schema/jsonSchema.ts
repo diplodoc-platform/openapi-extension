@@ -6,6 +6,7 @@ export interface JSONSchema {
     title?: string;
     description?: string;
     deprecated?: boolean;
+    nullable?: boolean;
     readOnly?: boolean;
     writeOnly?: boolean;
     properties?: Record<string, JSONSchema>;

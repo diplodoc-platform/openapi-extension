@@ -41,6 +41,19 @@ describe('renderSchema - miscellaneous', () => {
         `);
     });
 
+    it('renders nullable primitive type', () => {
+        const schema: JSONSchema = {
+            type: 'string',
+            nullable: true,
+        };
+
+        const content = renderSchema(schema, {suppressExamples: true});
+
+        expect(content).toBe(dedent`
+          **Type**: string | null
+        `);
+    });
+
     it('renders string format inline with type', () => {
         const schema: JSONSchema = {
             type: 'string',
@@ -53,6 +66,19 @@ describe('renderSchema - miscellaneous', () => {
           **Type**: string&lt;uuid&gt;
 
           _Example:_{.json-schema-reset .json-schema-example} \`123e4567-e89b-12d3-a456-426614174000\`
+        `);
+    });
+
+    it('does not duplicate null when nullable union already includes null', () => {
+        const schema: JSONSchema = {
+            type: ['string', 'null'],
+            nullable: true,
+        };
+
+        const content = renderSchema(schema, {suppressExamples: true});
+
+        expect(content).toBe(dedent`
+          **Type**: string | null
         `);
     });
 

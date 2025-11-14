@@ -42,7 +42,7 @@
     "build:includer": "node esbuild/includer.js",
     "build:declarations": "tsc --emitDeclarationOnly --outDir ./build",
     "prepublishOnly": "npm run build",
-    "test": "vitest src/includer --run",
+    "test": "vitest src --run",
     "typecheck": "tsc --noEmit",
     "lint": "lint update && lint",
     "lint:fix": "lint update && lint fix",

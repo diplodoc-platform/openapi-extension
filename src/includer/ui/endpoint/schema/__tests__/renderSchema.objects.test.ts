@@ -127,6 +127,35 @@ describe('renderSchema - objects', () => {
         `);
     });
 
+    it('renders nullable object with type note', () => {
+        const schema: JSONSchema = {
+            type: 'object',
+            nullable: true,
+            properties: {
+                name: {type: 'string'},
+            },
+        };
+
+        const content = renderSchema(schema, {suppressExamples: true});
+
+        expect(content).toBe(dedent`
+          {% cut "**Type**: object | null" %}
+
+          #|
+          || **Name** | **Description** ||
+          ||
+
+          _name_{.json-schema-reset .json-schema-property}
+          {.table-cell}|
+          **Type**: string
+          {.table-cell}
+          ||
+          |#{.json-schema-properties}
+
+          {% endcut %}
+        `);
+    });
+
     it('renders object with array of objects', () => {
         const schema: JSONSchema = {
             type: 'object',

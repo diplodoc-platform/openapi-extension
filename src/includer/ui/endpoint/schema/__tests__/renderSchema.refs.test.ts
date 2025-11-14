@@ -148,4 +148,23 @@ describe('renderSchema - references', () => {
           Описание адреса
         `);
     });
+
+    it('renders nullable $ref as union with null', () => {
+        const ref = vi.fn((_refId: string) => ({
+            label: 'User',
+            href: '#user',
+            schema: {},
+        }));
+
+        const schema: JSONSchema = {
+            $ref: '#/definitions/User',
+            nullable: true,
+        };
+
+        const content = renderSchema(schema, {ref, suppressExamples: true});
+
+        expect(content).toBe(dedent`
+          **Type**: [User](#user) | null
+        `);
+    });
 });

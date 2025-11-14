@@ -15,10 +15,37 @@ const CLASS_NAMES = {
     deprecatedProperty: 'json-schema-deprecated',
 } as const;
 
+const NULL_PATTERN = /(^|\W)null(\W|$)/i;
+const TYPE_LINE_PATTERN = /^(\*\*[^\n:]+:\s*)([^\n]+)([\s\S]*)$/;
+
 export interface RenderTypeOptions {
     suffix?: string;
 }
 
+function addNullableVariant(value: string, schema: JSONSchema): string {
+    if (!schema.nullable || NULL_PATTERN.test(value)) {
+        return value;
+    }
+
+    return `${value} | null`;
+}
+
+function formatTypeValue(base: string, schema: JSONSchema, suffix = ''): string {
+    const combined = suffix ? `${base}${suffix}` : base;
+    return addNullableVariant(combined, schema);
+}
+
+function applyNullableToRenderedOutput(output: string, schema: JSONSchema): string {
+    if (!schema.nullable) {
+        return output;
+    }
+
+    return output.replace(TYPE_LINE_PATTERN, (_match, prefix, value, rest) => {
+        return `${prefix}${addNullableVariant(value.trim(), schema)}${rest}`;
+    });
+}
+
+// eslint-disable-next-line complexity
 export function renderType(
     schema: JSONSchema | undefined,
     context: RenderContext,
@@ -38,7 +65,8 @@ export function renderType(
         const baseType = hasFormat
             ? `string&lt;${schema.format}&gt;`
             : (schema.type as PrimitiveType);
-        return `**${i18n.type}**: ${baseType}${suffix}`;
+        const typeValue = formatTypeValue(baseType, schema, suffix);
+        return `**${i18n.type}**: ${typeValue}`;
     }
 
     if (schema.$ref) {
@@ -47,7 +75,8 @@ export function renderType(
             return `**${i18n.type}**: unknown${suffix}`;
         }
 
-        return `**${i18n.type}**: [${resolved.label}](${resolved.href})${suffix}`;
+        const typeValue = formatTypeValue(`[${resolved.label}](${resolved.href})`, schema, suffix);
+        return `**${i18n.type}**: ${typeValue}`;
     }
 
     if (schema.type === 'object') {
@@ -57,12 +86,16 @@ export function renderType(
             has(schema, 'patternProperties')
         ) {
             // Don't use title in cut block if suppressTitle is set (e.g., in combinator variants)
-            const typeLabel = schema.title
-                ? `**${i18n.type}**: ${schema.title}`
-                : `**${i18n.type}**: object${suffix}`;
+            const baseTypeLabel = schema.title
+                ? addNullableVariant(schema.title, schema)
+                : formatTypeValue('object', schema, suffix);
+            const typeLabel = `**${i18n.type}**: ${baseTypeLabel}`;
             const content = renderObjectType(schema, context);
 
             if (context.expandType === true) {
+                if (schema.nullable) {
+                    return block([typeLabel, content]);
+                }
                 return content;
             }
 
@@ -73,7 +106,8 @@ export function renderType(
             return cut(content, typeLabel);
         }
 
-        return `**${i18n.type}**: object${suffix}`;
+        const typeValue = formatTypeValue('object', schema, suffix);
+        return `**${i18n.type}**: ${typeValue}`;
     }
 
     if (schema.type === 'array') {
@@ -82,11 +116,14 @@ export function renderType(
 
     if (Array.isArray(schema.type)) {
         const joined = schema.type.join(' | ');
-        return suffix ? `**${i18n.type}**: (${joined})${suffix}` : `**${i18n.type}**: ${joined}`;
+        const baseValue = suffix ? `(${joined})${suffix}` : joined;
+        const typeValue = addNullableVariant(baseValue, schema);
+        return `**${i18n.type}**: ${typeValue}`;
     }
 
     if (typeof schema.type === 'string') {
-        return `**${i18n.type}**: ${schema.type}${suffix}`;
+        const typeValue = formatTypeValue(schema.type, schema, suffix);
+        return `**${i18n.type}**: ${typeValue}`;
     }
 
     if (hasCombinators(schema)) {
@@ -250,8 +287,10 @@ function renderArrayType(
 
     if (encounteredTuple) {
         const {i18n} = context;
-        return `**${i18n.type}**: unknown${suffix}`;
+        const typeValue = formatTypeValue('unknown', schema, suffix);
+        return `**${i18n.type}**: ${typeValue}`;
     }
 
-    return renderType(target, context, {suffix});
+    const rendered = renderType(target, context, {suffix});
+    return applyNullableToRenderedOutput(rendered, schema);
 }

@@ -18,7 +18,7 @@ export class RefsService {
 
     get(key: string) {
         const [path, anchor] = key.split('#');
-        let schema = this._files[path];
+        let schema = this._files[path || this._root];
 
         if (!schema) {
             throw new Error(`Unknown ref target: ${key}`);
@@ -26,7 +26,7 @@ export class RefsService {
 
         const parts = anchor ? anchor.split('/').slice(1) : [];
         while (parts.length) {
-            const part = parts.pop() as string;
+            const part = parts.shift() as string;
             schema = (schema as Record<string, unknown>)[part] as object;
         }
 

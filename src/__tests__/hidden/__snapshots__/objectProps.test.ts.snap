@@ -1,0 +1,324 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Properties in object schemas marked with \`x-hidden\` > should not be rendered in the resulting markdown 1`] = `
+"<!-- markdownlint-disable-file -->
+
+<div class="openapi">
+
+# HiddenObjectProperties
+
+## Request
+
+<div class="openapi__requests">
+
+<div class="openapi__request__wrapper" style="--method: var(--dc-openapi-methods-post);margin-bottom: 12px">
+
+<div class="openapi__request">
+
+POST {.openapi__method}
+\`\`\`text translate=no
+http://localhost:8080/test
+\`\`\`
+
+</div>
+
+Generated server url
+
+</div>
+
+</div>
+
+<div class="openapi-entity">
+
+### Body
+
+{% cut "application/json" %}
+
+\`\`\`json translate=no
+{
+  "id": "123e4567-e89b-12d3-a456-426614174000",
+  "luminosityClass": "example",
+  "name": "example",
+  "catalogueDesignationCCDM": "example"
+}
+\`\`\`
+
+{% endcut %}
+
+#|
+|| **Name** | **Description** ||
+||
+
+_catalogueDesignationCCDM_{.json-schema-reset .json-schema-property}
+{.table-cell}|
+**Type**: string
+
+CCDM catalogue designation for this star
+{.table-cell}
+||
+||
+
+_id_{.json-schema-reset .json-schema-property}
+{.table-cell}|
+**Type**: string&lt;uuid&gt;
+
+Internal ID for this star
+{.table-cell}
+||
+||
+
+_luminosityClass_{.json-schema-reset .json-schema-property}
+{.table-cell}|
+**Type**: string
+
+Morgan-Keenan luminosity class for this star
+{.table-cell}
+||
+||
+
+_name_{.json-schema-reset .json-schema-property}
+{.table-cell}|
+**Type**: string
+
+Name of this star
+{.table-cell}
+||
+|#{.json-schema-properties}
+
+</div>
+
+## Responses
+
+<div class="openapi__response__code__204">
+
+## 204 No Content
+
+<div class="openapi-entity">
+
+### Body
+
+{% cut "application/json" %}
+
+\`null\`
+
+{% endcut %}
+
+#|
+|| **Name** | **Description** ||
+|#{.json-schema-properties}
+
+</div>
+
+</div>
+
+</div>
+
+[*Deprecated]: No longer supported, please use an alternative and newer version."
+`;
+
+exports[`Properties in object schemas marked with readOnly/writeOnly > should be filtered in request/response 1`] = `
+"<!-- markdownlint-disable-file -->
+
+<div class="openapi">
+
+# HiddenObjectProperties
+
+## Request
+
+<div class="openapi__requests">
+
+<div class="openapi__request__wrapper" style="--method: var(--dc-openapi-methods-post);margin-bottom: 12px">
+
+<div class="openapi__request">
+
+POST {.openapi__method}
+\`\`\`text translate=no
+http://localhost:8080/test
+\`\`\`
+
+</div>
+
+Generated server url
+
+</div>
+
+</div>
+
+<div class="openapi-entity">
+
+### Body
+
+{% cut "application/json" %}
+
+\`\`\`json translate=no
+{
+  "visibleField": "example",
+  "hiddenField": "example",
+  "requestField": "example",
+  "responseField": "example"
+}
+\`\`\`
+
+{% endcut %}
+
+#|
+|| **Name** | **Description** ||
+||
+
+_hiddenField_{.json-schema-reset .json-schema-property}
+{.table-cell}|
+**Type**: [hiddenField](#vx6pQDx-)
+
+Always hidden field
+{.table-cell}
+||
+||
+
+_requestField_{.json-schema-reset .json-schema-property}
+{.table-cell}|
+**Type**: [requestField](#QTbRI5Eg)
+
+Field visible only for request
+{.table-cell}
+||
+||
+
+_responseField_{.json-schema-reset .json-schema-property}
+{.table-cell}|
+**Type**: [responseField](#PLqIQqQ4)
+
+Field visible only for response
+{.table-cell}
+||
+||
+
+_visibleField_{.json-schema-reset .json-schema-property}
+{.table-cell}|
+**Type**: [visibleField](#3k6E-gsB)
+
+Always visible field
+{.table-cell}
+||
+|#{.json-schema-properties}
+
+</div>
+
+<div class="openapi-entity">
+
+### visibleField {#3k6E-gsB}
+
+**Type**: string
+
+Always visible field
+
+_Example:_{.json-schema-reset .json-schema-example} \`example\`
+
+</div>
+
+<div class="openapi-entity">
+
+### hiddenField {#vx6pQDx-}
+
+**Type**: string
+
+Always hidden field
+
+_Example:_{.json-schema-reset .json-schema-example} \`example\`
+
+</div>
+
+<div class="openapi-entity">
+
+### requestField {#QTbRI5Eg}
+
+**Type**: string
+
+Field visible only for request
+
+_Example:_{.json-schema-reset .json-schema-example} \`example\`
+
+</div>
+
+<div class="openapi-entity">
+
+### responseField {#PLqIQqQ4}
+
+**Type**: string
+
+Field visible only for response
+
+_Example:_{.json-schema-reset .json-schema-example} \`example\`
+
+</div>
+
+## Responses
+
+<div class="openapi__response__code__204">
+
+## 204 No Content
+
+<div class="openapi-entity">
+
+### Body
+
+{% cut "application/json" %}
+
+\`\`\`json translate=no
+{
+  "visibleField": "example",
+  "hiddenField": "example",
+  "requestField": "example",
+  "responseField": "example"
+}
+\`\`\`
+
+{% endcut %}
+
+#|
+|| **Name** | **Description** ||
+||
+
+_hiddenField_{.json-schema-reset .json-schema-property}
+{.table-cell}|
+**Type**: [hiddenField](#vx6pQDx-)
+
+Always hidden field
+{.table-cell}
+||
+||
+
+_requestField_{.json-schema-reset .json-schema-property}
+{.table-cell}|
+**Type**: [requestField](#QTbRI5Eg)
+
+Field visible only for request
+{.table-cell}
+||
+||
+
+_responseField_{.json-schema-reset .json-schema-property}
+{.table-cell}|
+**Type**: [responseField](#PLqIQqQ4)
+
+Field visible only for response
+{.table-cell}
+||
+||
+
+_visibleField_{.json-schema-reset .json-schema-property}
+{.table-cell}|
+**Type**: [visibleField](#3k6E-gsB)
+
+Always visible field
+{.table-cell}
+||
+|#{.json-schema-properties}
+
+</div>
+
+</div>
+
+</div>
+
+[*Deprecated]: No longer supported, please use an alternative and newer version."
+`;

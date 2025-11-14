@@ -120,4 +120,21 @@ describe('renderSchema - arrays', () => {
       Коллекция пользователей
     `);
     });
+
+    it('renders nullable array type', () => {
+        const schema: JSONSchema = {
+            type: 'array',
+            nullable: true,
+            description: 'Опциональный список идентификаторов',
+            items: {type: 'string'},
+        };
+
+        const content = renderSchema(schema, {suppressExamples: true});
+
+        expect(content).toBe(dedent`
+      **Type**: string[] | null
+
+      Опциональный список идентификаторов
+    `);
+    });
 });

@@ -1,6 +1,8 @@
 import type {JSONSchema, RenderContext} from './jsonSchema';
 
-import {blocks, decorate, traverseSchemaRefs} from './utils';
+import {block} from '../../common';
+
+import {decorate, traverseSchemaRefs} from './utils';
 
 function formatLiteral(value: unknown): string {
     if (typeof value === 'string') {
@@ -64,5 +66,5 @@ export function renderValues(schema: JSONSchema, context: RenderContext): string
         parts.push(`${makeLabel(i18n.values.enum)} ${items}`);
     }
 
-    return blocks(parts);
+    return block(parts);
 }

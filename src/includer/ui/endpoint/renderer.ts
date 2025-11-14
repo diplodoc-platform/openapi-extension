@@ -16,6 +16,7 @@ import {renderRequest} from './openapi/renderRequest';
 import {renderParameters} from './openapi/renderParameters';
 import {renderResponse, renderResponses} from './openapi/renderResponses';
 import {renderSandbox} from './openapi/renderSandbox';
+import {collectExamples, formatExample} from './schema/renderExamples';
 
 export class Renderer {
     private ctx: Context;
@@ -108,6 +109,19 @@ export class Renderer {
         return renderBody(this, data);
     };
 
+    example = (schema: OpenAPIV3.SchemaObject, format = true) => {
+        const context = new RenderContext({
+            ref: this.resolveRef,
+            renderSchema: (schema, options) => {
+                return this.schema(schema as OpenAPIV3.SchemaObject, options);
+            },
+            isRoot: true,
+        });
+        const examples = collectExamples(context, schema as JSONSchema);
+
+        return (format ? formatExample(examples[0]) : examples[0]) || '';
+    };
+
     responses = (data: V3Endpoint) => {
         return renderResponses(this, data);
     };
@@ -117,7 +131,7 @@ export class Renderer {
     };
 
     sandbox = (data: SandboxData) => {
-        return renderSandbox(data);
+        return renderSandbox(this, data);
     };
 
     resolveRef = (refId: string, silent = false): ResolvedRef | undefined => {

@@ -11,23 +11,6 @@ export function has<T, K extends keyof T>(
     return Object.prototype.hasOwnProperty.call(object, key) && object[key] !== undefined;
 }
 
-const primitiveTypes = new Set(['string', 'number', 'integer', 'boolean']);
-
-export function isPrimitiveType(
-    schema: {type?: unknown} | null | undefined,
-): schema is {type: 'string' | 'number' | 'integer' | 'boolean'} {
-    return Boolean(schema && typeof schema.type === 'string' && primitiveTypes.has(schema.type));
-}
-
-export function blocks(parts: Array<string | undefined>): string {
-    return parts.filter((part) => typeof part === 'string' && part.trim().length > 0).join('\n\n');
-}
-
-export function cut(title: string, body: string, attrs?: string[]): string {
-    const attr = attrs ? `{${attrs.join(' ')}}` : '';
-    return `{% cut "${title}" %}${attr}\n\n${body}\n\n{% endcut %}`;
-}
-
 export type TableRow = string | [string, string];
 
 export interface TableOptions {
@@ -38,7 +21,7 @@ export function table(rows: TableRow[], options?: TableOptions): string {
     const classAttr = options?.classes?.length
         ? `{${options.classes.map((c) => `.${c}`).join(' ')}}`
         : '';
-    return [`#|`, ...rows.map(formatRow), '|#'].join('\n') + classAttr;
+    return maskTablePipes([`#|`, ...rows.map(formatRow), '|#'].join('\n') + classAttr);
 }
 
 function formatRow(row: TableRow): string {
@@ -51,11 +34,11 @@ function formatRow(row: TableRow): string {
         .join('\n{.table-cell}|\n')}\n{.table-cell}\n||`;
 }
 
-export function escapeTableText(value: string): string {
+function escapeTableText(value: string): string {
     return value.replace(/\|/g, '&#124;');
 }
 
-export function maskTablePipes(value: string): string {
+function maskTablePipes(value: string): string {
     return value.replace(/\|/g, '__masked(&#124;)');
 }
 

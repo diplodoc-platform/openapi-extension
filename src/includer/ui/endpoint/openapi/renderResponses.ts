@@ -24,7 +24,6 @@ export function renderResponse(render: Renderer, resp: V3Response) {
 
     return block([
         `<div class="openapi__response__code__${resp.code}">`,
-        // TODO: Depth 3
         title(2)(header),
         resp.deprecated && deprecated(),
         resp.description,

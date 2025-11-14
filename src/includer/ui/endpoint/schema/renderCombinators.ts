@@ -1,6 +1,6 @@
 import type {JSONSchema, RenderContext} from './jsonSchema';
 
-import {blocks, cut} from './utils';
+import {block, cut} from '../../common';
 
 type CombinatorLabelKey = keyof RenderContext['i18n']['combinators'];
 
@@ -16,24 +16,6 @@ function buildCombinatorTitle(
         .filter((title): title is string => Boolean(title));
 
     if (titles.length === variants.length && titles.length > 0) {
-        // Check if this is a conditional oneOf (from if/then/else)
-        const isConditional = titles.every((t) => t.startsWith('When '));
-
-        if (isConditional && labelKey === 'oneOf') {
-            // Extract base condition from first variant
-            const firstTitle = titles[0].replace(/^When /, '');
-
-            // If it's a simple NOT condition pair, just show the base condition
-            if (titles.length === 2 && titles[1] === `When NOT ${firstTitle}`) {
-                return `**${combinators.conditional}**: ${firstTitle}`;
-            }
-
-            // For single condition or multiple, still show as conditional
-            if (titles.length === 1) {
-                return `**${combinators.conditional}**: ${firstTitle}`;
-            }
-        }
-
         const separator = labelKey === 'allOf' ? ' and ' : ' or ';
         return `**${label}**: ${titles.join(separator)}`;
     }
@@ -91,7 +73,7 @@ function renderCombinatorList(
 
     const separator = labelKey === 'allOf' ? 'and' : 'or';
 
-    return cut(title, items, ['.json-schema-combinators', 'data-marker=' + separator]);
+    return cut(items, title, ['.json-schema-combinators', 'data-marker=' + separator]);
 }
 
 export function renderOneOf(schema: JSONSchema, context: RenderContext): string {
@@ -119,7 +101,7 @@ export function renderCombinators(schema: JSONSchema, context: RenderContext): s
         return '';
     }
 
-    return blocks([
+    return block([
         renderOneOf(schema, context),
         renderAllOf(schema, context),
         renderAnyOf(schema, context),

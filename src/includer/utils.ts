@@ -43,7 +43,7 @@ export function matchFilter(
     };
 }
 
-export function filterUsefullContent(
+export function filterUsefulContent(
     filter: OpenApiIncluderParams['filter'] | undefined,
     vars: YfmPreset,
 ) {

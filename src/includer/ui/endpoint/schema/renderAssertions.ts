@@ -1,6 +1,8 @@
 import type {JSONSchema, RenderContext} from './jsonSchema';
 
-import {blocks, decorate, traverseSchemaRefs} from './utils';
+import {block} from '../../common';
+
+import {decorate, traverseSchemaRefs} from './utils';
 
 const ASSERTION_CLASS = 'json-schema-assertion';
 
@@ -124,5 +126,5 @@ export function renderAssertions(schema: JSONSchema, context: RenderContext): st
         parts.push(`${decoratedLabel} \`${entry.value}\``);
     }
 
-    return blocks(parts);
+    return block(parts);
 }

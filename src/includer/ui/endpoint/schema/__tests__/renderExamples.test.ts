@@ -66,7 +66,7 @@ describe('renderExamples', () => {
         expect(renderExamples(schema, context)).toBe(dedent`
       {% cut "**Examples**" %}
 
-      \`\`\`json
+      \`\`\`json translate=no
       {
         "id": 1
       }
@@ -89,7 +89,7 @@ describe('renderExamples', () => {
         expect(renderExamples(schema, createContext())).toBe(dedent`
       {% cut "**Examples**" %}
 
-      \`\`\`json
+      \`\`\`json translate=no
       {
         "name": "example",
         "age": 18
@@ -114,7 +114,7 @@ describe('renderExamples', () => {
         expect(renderExamples(schema, context)).toBe(dedent`
       {% cut "**Examples**" %}
 
-      \`\`\`json
+      \`\`\`json translate=no
       {
         "publicField": "example"
       }
@@ -139,7 +139,7 @@ describe('renderExamples', () => {
         expect(renderExamples(schema, createContext())).toBe(dedent`
       {% cut "**Examples**" %}
 
-      \`\`\`json
+      \`\`\`json translate=no
       {
         "quantity": 1
       }

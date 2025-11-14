@@ -1,6 +1,8 @@
 import type {JSONSchema, RenderContext} from './jsonSchema';
 
-import {blocks, cut, decorate, traverseSchemaRefs} from './utils';
+import {block, code, cut} from '../../common';
+
+import {decorate, traverseSchemaRefs} from './utils';
 
 const FORMAT_SAMPLES: Record<string, string> = {
     email: 'user@example.com',
@@ -107,30 +109,6 @@ function addExample(collector: Collector, value: unknown): void {
 
     collector.keys.add(key);
     collector.list.push(value);
-}
-
-function escapeBackticks(value: string): string {
-    return value.replace(/`/g, '\\`');
-}
-
-function formatExampleValue(value: unknown): string {
-    if (value === null) {
-        return '`null`';
-    }
-
-    if (typeof value === 'string') {
-        return `\`${escapeBackticks(value)}\``;
-    }
-
-    if (typeof value === 'number' || typeof value === 'boolean') {
-        return `\`${String(value)}\``;
-    }
-
-    if (typeof value === 'object') {
-        return `\`\`\`json\n${JSON.stringify(value, null, 2)}\n\`\`\``;
-    }
-
-    return `\`${String(value)}\``;
 }
 
 function isPropertyVisible(property: JSONSchema | undefined, context: RenderContext): boolean {
@@ -492,11 +470,31 @@ function generateExample(schema: JSONSchema, context: RenderContext): unknown {
     });
 }
 
-export function renderExamples(schema: JSONSchema, context: RenderContext): string {
-    if (context.suppressExamples) {
-        return '';
+function escapeBackticks(value: string): string {
+    return value.replace(/`/g, '\\`');
+}
+
+export function formatExample(value: unknown): string {
+    if (value === null) {
+        return '`null`';
     }
 
+    if (typeof value === 'string') {
+        return `\`${escapeBackticks(value)}\``;
+    }
+
+    if (typeof value === 'number' || typeof value === 'boolean') {
+        return `\`${String(value)}\``;
+    }
+
+    if (typeof value === 'object') {
+        return code(JSON.stringify(value, null, 2), 'json');
+    }
+
+    return `\`${String(value)}\``;
+}
+
+export function collectExamples(context: RenderContext, schema: JSONSchema) {
     const collector = createCollector();
 
     traverseSchemaRefs(schema, context.ref, (current) => {
@@ -518,7 +516,11 @@ export function renderExamples(schema: JSONSchema, context: RenderContext): stri
         }
     }
 
-    if (collector.list.length === 0) {
+    return collector.list;
+}
+
+export function renderExamples(schema: JSONSchema, context: RenderContext): string {
+    if (context.suppressExamples) {
         return '';
     }
 
@@ -532,10 +534,14 @@ export function renderExamples(schema: JSONSchema, context: RenderContext): stri
         return '';
     }
 
-    const formattedValues = collector.list.map(formatExampleValue);
+    const examples = collectExamples(context, schema).map(formatExample);
 
-    if (collector.list.length === 1) {
-        const [single] = formattedValues;
+    if (examples.length === 0) {
+        return '';
+    }
+
+    if (examples.length === 1) {
+        const [single] = examples;
         if (!single.includes('\n')) {
             const labelSource = context.i18n.example ?? context.i18n.examples;
             const labelText = labelSource.endsWith(':') ? labelSource : `${labelSource}:`;
@@ -544,7 +550,5 @@ export function renderExamples(schema: JSONSchema, context: RenderContext): stri
         }
     }
 
-    const formatted = blocks(formattedValues);
-
-    return cut(`**${context.i18n.examples}**`, formatted);
+    return cut(block(examples), `**${context.i18n.examples}**`);
 }

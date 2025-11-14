@@ -1,30 +1,30 @@
-import type {V3Schema, V3Security} from '../../../models';
 import type {OpenAPIV3} from 'openapi-types';
+import type {V3Schema} from '../../../models';
+import type {Renderer} from '../renderer';
 
 import {dump} from 'js-yaml';
 
-// import { prepareSampleObject } from '../../traverse/tables';
 import {block} from '../../common';
 
 export type SandboxData = {
     params?: OpenAPIV3.ParameterObject[];
     host?: string;
     path: string;
-    security: V3Security[];
+    security: OpenAPIV3.SecuritySchemeObject[];
     requestBody?: V3Schema;
     method: string;
 };
 
-export function renderSandbox(data: SandboxData) {
+export function renderSandbox(render: Renderer, data: SandboxData) {
     const {params, host, path, security, requestBody, method} = data;
     const pathParams = params?.filter((param: OpenAPIV3.ParameterObject) => param.in === 'path');
     const searchParams = params?.filter((param: OpenAPIV3.ParameterObject) => param.in === 'query');
     const headers = params?.filter((param: OpenAPIV3.ParameterObject) => param.in === 'header');
-    const bodyStr: null | string = null;
+    let bodyStr: null | string = null;
 
-    // if (requestBody?.type === 'application/json' || requestBody?.type === 'multipart/form-data') {
-    //     bodyStr = JSON.stringify(prepareSampleObject(requestBody?.schema ?? {}, [], ctx), null, 2);
-    // }
+    if (requestBody?.type === 'application/json' || requestBody?.type === 'multipart/form-data') {
+        bodyStr = JSON.stringify(render.example(requestBody.schema, false), null, 2);
+    }
 
     const props = dump({
         pathParams,

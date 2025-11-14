@@ -1,13 +1,8 @@
-import type {OpenAPIV3} from 'openapi-types';
 import type {V3Schema} from '../../../models';
 import type {Renderer} from '../renderer';
 
-import {block, bold, title} from '../../common';
-import {PRIMITIVE_JSON6_SCHEMA_TYPES} from '../../../constants';
-
-function isPrimitive(type: OpenAPIV3.SchemaObject['type']) {
-    return PRIMITIVE_JSON6_SCHEMA_TYPES.has(type);
-}
+import {block, bold, cut, title} from '../../common';
+import {isPrimitiveType} from '../utils';
 
 export function renderBody(render: Renderer, obj: V3Schema | undefined) {
     if (!obj) {
@@ -17,7 +12,7 @@ export function renderBody(render: Renderer, obj: V3Schema | undefined) {
     const {type = 'schema', schema} = obj;
     const sectionTitle = title(3)('Body');
 
-    if (isPrimitive(schema.type)) {
+    if (isPrimitiveType(schema)) {
         return block([
             sectionTitle,
             type,
@@ -30,7 +25,7 @@ export function renderBody(render: Renderer, obj: V3Schema | undefined) {
     const result = [
         '<div class="openapi-entity">',
         sectionTitle,
-        // cut(code(stringify(parsedSchema, null, 4), 'json'), type),
+        cut(render.example(schema) as string, type),
         render.table(schema),
         '</div>',
         ...render.refs(),

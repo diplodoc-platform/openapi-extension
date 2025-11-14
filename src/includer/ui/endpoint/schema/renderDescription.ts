@@ -1,6 +1,8 @@
 import type {JSONSchema, RenderContext} from './jsonSchema';
 
-import {blocks, traverseSchemaRefs} from './utils';
+import {block} from '../../common';
+
+import {traverseSchemaRefs} from './utils';
 
 export function renderDescription(schema: JSONSchema, context: RenderContext): string {
     const descriptions: string[] = [];
@@ -19,5 +21,5 @@ export function renderDescription(schema: JSONSchema, context: RenderContext): s
         append(current.description);
     });
 
-    return blocks(descriptions);
+    return block(descriptions);
 }

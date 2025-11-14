@@ -4,7 +4,6 @@ import type {
     OpenApiIncluderParams,
     Run,
     V3Endpoint,
-    V3Info,
     YfmPreset,
     YfmTocItem,
 } from './models';
@@ -14,8 +13,8 @@ import {dirname, join} from 'path';
 import {readFileSync} from 'fs';
 import SwaggerParser from '@apidevtools/swagger-parser';
 
-import {filterUsefullContent, matchFilter} from './utils';
-import parsers from './parsers';
+import {filterUsefulContent, matchFilter} from './utils';
+import * as parsers from './parsers';
 import * as generators from './ui';
 import {$ref, RefsService} from './services/refs';
 import {
@@ -136,7 +135,7 @@ async function generateToc(
 
     assertLeadingPageMode(leadingPageMode);
 
-    const filterContent = filterUsefullContent(filter, vars);
+    const filterContent = filterUsefulContent(filter, vars);
     const {tags, endpoints} = filterContent(parsers.paths(data, parsers.tags(data)));
 
     const toc: YfmTocItem & {items: YfmTocItem[]} = {
@@ -211,7 +210,7 @@ async function generateContent(
     const contentPath = ctx.relative(input);
     const customLeadingPageDir = dirname(contentPath);
 
-    const filterContent = filterUsefullContent(filter, vars);
+    const filterContent = filterUsefulContent(filter, vars);
     const applyNoindex = matchFilter(noindex || {}, vars, (endpoint) => {
         endpoint.noindex = true;
     });
@@ -225,7 +224,7 @@ async function generateContent(
 
     const results: EndpointRoute[] = [];
 
-    const info: V3Info = parsers.info(data);
+    const info = parsers.info(data);
     let spec = parsers.paths(data, parsers.tags(data));
 
     if (noindex) {

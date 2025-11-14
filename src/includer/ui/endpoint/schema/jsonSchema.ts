@@ -77,9 +77,6 @@ export interface SchemaI18nLabels {
         oneOf: string;
         anyOf: string;
         allOf: string;
-        conditional: string;
-        when: string;
-        whenNot: string;
     };
     deprecated: {
         title: string;
@@ -133,9 +130,6 @@ const DEFAULT_I18N: SchemaI18nLabels = {
         oneOf: 'One of',
         anyOf: 'Any of',
         allOf: 'All of',
-        conditional: 'Conditional',
-        when: 'When',
-        whenNot: 'When NOT',
     },
     deprecated: {
         title: 'Deprecated',

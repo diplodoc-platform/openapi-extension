@@ -2,7 +2,7 @@ import type {Context} from '../../index';
 import type {V3Endpoint} from '../../models';
 
 import {INFO_TAB_NAME, SANDBOX_TAB_NAME} from '../../constants';
-import {block, meta, nolint, openapi, page, tabs, title} from '../common';
+import {block, meta, nolint, openapi, tabs, title} from '../common';
 import {deprecated, terms} from '../popups';
 
 import {Renderer} from './renderer';
@@ -41,7 +41,7 @@ export function endpoint(
     return block([
         meta([data.noindex && 'noIndex: true']),
         nolint(),
-        openapi(page(endpointPage)),
+        openapi(endpointPage),
         terms(['Deprecated']),
     ]).trim();
 }

@@ -1,5 +1,7 @@
 import type {JSONSchema, SchemaRenderOptions} from './jsonSchema';
 
+import {block} from '../../common';
+
 import {RenderContext} from './jsonSchema';
 import {normalizeSchema} from './normalizeSchema';
 import {renderCombinators} from './renderCombinators';
@@ -10,7 +12,7 @@ import {renderDescription} from './renderDescription';
 import {renderValues} from './renderValues';
 import {renderAssertions} from './renderAssertions';
 import {renderExamples} from './renderExamples';
-import {blocks, unmaskTableContent} from './utils';
+import {unmaskTableContent} from './utils';
 
 export type {JSONSchema} from './jsonSchema';
 
@@ -25,7 +27,7 @@ export function renderSchema(schema: JSONSchema, options: RenderOptions = {}): s
         isRoot: options.isRoot ?? true,
     });
 
-    const output = blocks([
+    const output = block([
         before,
         renderTitle(normalized, context),
         renderDeprecated(normalized, context),

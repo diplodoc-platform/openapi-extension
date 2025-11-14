@@ -1,20 +1,11 @@
 import type {JSONSchema, PrimitiveType, RenderContext} from './jsonSchema';
 
 import {deprecated} from '../../popups';
+import {block, cut} from '../../common';
+import {isPrimitiveType} from '../utils';
 
 import {hasCombinators} from './renderCombinators';
-import {
-    blocks,
-    cut,
-    decorate,
-    escapeTableText,
-    has,
-    isPrimitiveType,
-    maskTablePipes,
-    resolveRef,
-    table,
-    unmaskTableContent,
-} from './utils';
+import {decorate, has, resolveRef, table, unmaskTableContent} from './utils';
 
 const CLASS_NAMES = {
     property: 'json-schema-property',
@@ -26,18 +17,6 @@ const CLASS_NAMES = {
 
 export interface RenderTypeOptions {
     suffix?: string;
-}
-
-function prepareTableCell(content: string, _context: RenderContext): string {
-    if (!content) {
-        return content;
-    }
-
-    if (content.includes('#|')) {
-        return maskTablePipes(content);
-    }
-
-    return escapeTableText(content);
 }
 
 export function renderType(
@@ -86,10 +65,10 @@ export function renderType(
             }
 
             if (context.expandType === 'titled') {
-                return blocks([typeLabel, content]);
+                return block([typeLabel, content]);
             }
 
-            return cut(typeLabel, content);
+            return cut(content, typeLabel);
         }
 
         return `**${i18n.type}**: object${suffix}`;
@@ -162,16 +141,13 @@ export function renderObjectType(schema: JSONSchema, context: RenderContext): st
                 label += deprecated({compact: true});
             }
 
-            const preparedLabel = prepareTableCell(label, context);
-            const preparedValue = prepareTableCell(
+            rows.push([
+                label,
                 renderSchema(value, {
                     ...propertyContext.toOptions(),
                     suppressDeprecatedWarning: value.deprecated,
                 }),
-                context,
-            );
-
-            rows.push([preparedLabel, preparedValue]);
+            ]);
         }
     }
 
@@ -181,53 +157,37 @@ export function renderObjectType(schema: JSONSchema, context: RenderContext): st
         if (!context.suppressVerboseAdditional) {
             if (additional === true) {
                 rows.push([
-                    prepareTableCell(
-                        decorate(i18n.additional, CLASS_NAMES.additionalProperty),
-                        context,
-                    ),
-                    prepareTableCell(`**${i18n.type}**: any`, context),
+                    decorate(i18n.additional, CLASS_NAMES.additionalProperty),
+                    `**${i18n.type}**: any`,
                 ]);
             } else if (additional === false) {
                 rows.push([
-                    prepareTableCell(
-                        decorate(i18n.additional, CLASS_NAMES.additionalProperty),
-                        context,
-                    ),
-                    prepareTableCell(`**${i18n.type}**: never`, context),
+                    decorate(i18n.additional, CLASS_NAMES.additionalProperty),
+                    `**${i18n.type}**: never`,
                 ]);
             }
         }
 
         if (typeof additional === 'object' && additional !== null) {
-            const preparedLabel = prepareTableCell(
+            rows.push([
                 decorate(i18n.additional, CLASS_NAMES.additionalProperty),
-                context,
-            );
-            const preparedValue = prepareTableCell(
                 renderSchema(additional, propertyContext.toOptions()),
-                context,
-            );
-            rows.push([preparedLabel, preparedValue]);
+            ]);
         }
     }
 
     if (has(schema, 'patternProperties')) {
         for (const [pattern, value] of Object.entries(schema.patternProperties)) {
-            const preparedLabel = prepareTableCell(
+            rows.push([
                 decorate(`/${pattern}/`, CLASS_NAMES.patternProperty),
-                context,
-            );
-            const preparedValue = prepareTableCell(
                 renderSchema(value, propertyContext.toOptions()),
-                context,
-            );
-            rows.push([preparedLabel, preparedValue]);
+            ]);
         }
     }
 
     const tableContent = table(rows, {classes: ['json-schema-properties']});
 
-    return context.isRoot ? unmaskTableContent(tableContent) : maskTablePipes(tableContent);
+    return context.isRoot ? unmaskTableContent(tableContent) : tableContent;
 }
 
 function renderArrayType(

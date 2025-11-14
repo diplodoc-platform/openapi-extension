@@ -40,7 +40,7 @@
     "build": "run-p build:*",
     "build:plugin": "node esbuild/esbuild.js",
     "build:includer": "node esbuild/includer.js",
-    "build:declarations": "tsc --emitDeclarationOnly --outDir ./build",
+    "build:declarations": "tsc --emitDeclarationOnly --outDir ./build --project tsconfig.publish.json",
     "prepublishOnly": "npm run build",
     "test": "vitest src --run",
     "typecheck": "tsc --noEmit",

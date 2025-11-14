@@ -12,16 +12,16 @@ describe('renderSchema - miscellaneous', () => {
         const content = renderSchema(schema, {before: '# Schema', after: '---'});
 
         expect(content).toBe(dedent`
-      # Schema
+          # Schema
 
-      **Type**: string
+          **Type**: string
 
-      Простая строка
+          Простая строка
 
-      _Example:_{.json-schema-reset .json-schema-example} \`example\`
+          _Example:_{.json-schema-reset .json-schema-example} \`example\`
 
-      ---
-    `);
+          ---
+        `);
     });
 
     it('renders union type array type list', () => {
@@ -33,12 +33,12 @@ describe('renderSchema - miscellaneous', () => {
         const content = renderSchema(schema);
 
         expect(content).toBe(dedent`
-      **Type**: string | null
+          **Type**: string | null
 
-      Строка или null
+          Строка или null
 
-      _Example:_{.json-schema-reset .json-schema-example} \`example\`
-    `);
+          _Example:_{.json-schema-reset .json-schema-example} \`example\`
+        `);
     });
 
     it('renders string format inline with type', () => {
@@ -50,10 +50,10 @@ describe('renderSchema - miscellaneous', () => {
         const content = renderSchema(schema);
 
         expect(content).toBe(dedent`
-      **Type**: string<uuid>
+          **Type**: string&lt;uuid&gt;
 
-      _Example:_{.json-schema-reset .json-schema-example} \`123e4567-e89b-12d3-a456-426614174000\`
-    `);
+          _Example:_{.json-schema-reset .json-schema-example} \`123e4567-e89b-12d3-a456-426614174000\`
+        `);
     });
 
     it('renders values block before assertions', () => {
@@ -66,12 +66,12 @@ describe('renderSchema - miscellaneous', () => {
         const content = renderSchema(schema);
 
         expect(content).toBe(dedent`
-      **Type**: number
+          **Type**: number
 
-      _Default:_{.json-schema-reset .json-schema-value} \`0\`
+          _Default:_{.json-schema-reset .json-schema-value} \`0\`
 
-      _Min value:_{.json-schema-reset .json-schema-assertion} \`0\`
-    `);
+          _Min value:_{.json-schema-reset .json-schema-assertion} \`0\`
+        `);
     });
 
     it('respects i18n overrides for common labels', () => {
@@ -89,12 +89,12 @@ describe('renderSchema - miscellaneous', () => {
         });
 
         expect(content).toBe(dedent`
-      **Тип**: string
+          **Тип**: string
 
-      Персонализированное описание
+          Персонализированное описание
 
-      _Пример:_{.json-schema-reset .json-schema-example} \`example\`
-    `);
+          _Пример:_{.json-schema-reset .json-schema-example} \`example\`
+        `);
     });
 
     it('skips examples for string enum', () => {
@@ -106,9 +106,9 @@ describe('renderSchema - miscellaneous', () => {
         const content = renderSchema(schema);
 
         expect(content).toBe(dedent`
-      **Type**: string
+          **Type**: string
 
-      _Enum:_{.json-schema-reset .json-schema-value} \`alpha\`, \`beta\`
-    `);
+          _Enum:_{.json-schema-reset .json-schema-value} \`alpha\`, \`beta\`
+        `);
     });
 });

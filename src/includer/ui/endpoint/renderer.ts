@@ -165,7 +165,7 @@ export class Renderer {
 
         return {
             label: schema.title,
-            href: '#' + hash.digest('base64url'),
+            href: '#' + hash.digest('base64url').slice(0, 8),
             schema,
         };
     };

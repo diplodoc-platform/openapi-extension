@@ -5,7 +5,7 @@ import {ENDPOINTS_SECTION_NAME} from '../constants';
 import {block, link, list, nolint, title} from './common';
 
 export function section(tag: V3Tag) {
-    return block([nolint(), title(1)(tag.name), tag.description, endpoints(tag.endpoints)]);
+    return block([title(1)(tag.name), nolint(), tag.description, endpoints(tag.endpoints)]);
 }
 
 function endpoints(data?: V3Endpoint[]) {

@@ -24,16 +24,16 @@ describe('renderSchema - table headers', () => {
       || **Name** | **Description** ||
       ||
 
-      _name_{.json-schema-reset .json-schema-property}
+      _age_{.json-schema-reset .json-schema-property}
       {.table-cell}|
-      **Type**: string
+      **Type**: number
       {.table-cell}
       ||
       ||
 
-      _age_{.json-schema-reset .json-schema-property}
+      _name_{.json-schema-reset .json-schema-property}
       {.table-cell}|
-      **Type**: number
+      **Type**: string
       {.table-cell}
       ||
       |#{.json-schema-properties}
@@ -62,16 +62,16 @@ describe('renderSchema - table headers', () => {
       #|
       ||
 
-      _name_{.json-schema-reset .json-schema-property}
+      _age_{.json-schema-reset .json-schema-property}
       {.table-cell}|
-      **Type**: string
+      **Type**: number
       {.table-cell}
       ||
       ||
 
-      _age_{.json-schema-reset .json-schema-property}
+      _name_{.json-schema-reset .json-schema-property}
       {.table-cell}|
-      **Type**: number
+      **Type**: string
       {.table-cell}
       ||
       |#{.json-schema-properties}
@@ -110,14 +110,14 @@ describe('renderSchema - table headers', () => {
       #|
       ||
 
-      _name_{.json-schema-reset .json-schema-property}
+      _email_{.json-schema-reset .json-schema-property}
       {.table-cell}|
       **Type**: string
       {.table-cell}
       ||
       ||
 
-      _email_{.json-schema-reset .json-schema-property}
+      _name_{.json-schema-reset .json-schema-property}
       {.table-cell}|
       **Type**: string
       {.table-cell}

@@ -43,20 +43,20 @@ describe('renderSchema - arrays', () => {
       || **Name** | **Description** ||
       ||
 
-      _foo_{.json-schema-reset .json-schema-property}
-      {.table-cell}|
-      **Type**: string
-
-      Поле foo
-      {.table-cell}
-      ||
-      ||
-
       _bar_{.json-schema-reset .json-schema-property}
       {.table-cell}|
       **Type**: integer
 
       Поле bar
+      {.table-cell}
+      ||
+      ||
+
+      _foo_{.json-schema-reset .json-schema-property}
+      {.table-cell}|
+      **Type**: string
+
+      Поле foo
       {.table-cell}
       ||
       |#{.json-schema-properties}

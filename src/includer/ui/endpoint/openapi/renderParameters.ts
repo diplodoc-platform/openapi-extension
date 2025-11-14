@@ -11,7 +11,6 @@ import {
     QUERY_PARAMETERS_SECTION_NAME,
 } from '../../../constants';
 import {block, title} from '../../common';
-import {getOrderedPropList} from '../utils';
 
 export function renderParameters(
     render: Renderer,
@@ -36,8 +35,7 @@ export function renderParameters(
         }
 
         const schema: OpenAPIV3.SchemaObject = {type: 'object'};
-        const orderedParams = getOrderedPropList(filteredParams);
-        const orderedParamsSchema = orderedParams.reduce((acc, param) => {
+        const orderedParamsSchema = filteredParams.reduce((acc, param) => {
             acc.properties = acc.properties || {};
             acc.properties[param.name] = {
                 ...(param.schema || {}),

@@ -187,12 +187,20 @@ export interface SchemaRenderOptions {
     suppressVerboseAdditional?: boolean;
     isRoot?: boolean;
     expandType?: boolean | 'titled';
+    orderProperties?: OrderPropertiesHandler;
     i18n?: SchemaI18nOverrides;
 }
 
 export type RefResolver = (refId: string) => ResolvedRef | undefined;
 
 export type SchemaRenderer = (schema: JSONSchema, options?: SchemaRenderOptions) => string;
+
+export interface OrderedProperty {
+    name: string;
+    schema: JSONSchema;
+}
+
+export type OrderPropertiesHandler = (schema: JSONSchema) => OrderedProperty[] | undefined;
 
 export interface SchemaRenderContext {
     ref: RefResolver;
@@ -206,6 +214,7 @@ export interface SchemaRenderContext {
     suppressVerboseAdditional?: boolean;
     isRoot?: boolean;
     expandType?: boolean | 'titled';
+    orderProperties?: OrderPropertiesHandler;
     i18n: SchemaI18nLabels;
 }
 
@@ -228,6 +237,8 @@ export class RenderContext implements SchemaRenderContext {
 
     expandType: boolean | 'titled';
 
+    orderProperties?: OrderPropertiesHandler;
+
     renderSchema: SchemaRenderer;
 
     ref: RefResolver;
@@ -246,6 +257,7 @@ export class RenderContext implements SchemaRenderContext {
         this.suppressVerboseAdditional = options.suppressVerboseAdditional ?? false;
         this.isRoot = options.isRoot ?? false;
         this.expandType = options.expandType ?? false;
+        this.orderProperties = options.orderProperties;
         this.i18n = mergeI18n(options.i18n);
     }
 
@@ -261,7 +273,11 @@ export class RenderContext implements SchemaRenderContext {
                 | 'suppressTableHeaders'
                 | 'suppressVerboseAdditional'
             >
-        > & {expandType?: boolean | 'titled'; isRoot?: boolean},
+        > & {
+            expandType?: boolean | 'titled';
+            isRoot?: boolean;
+            orderProperties?: OrderPropertiesHandler;
+        },
     ): RenderContext {
         return new RenderContext({
             renderSchema: this.renderSchema,
@@ -277,6 +293,7 @@ export class RenderContext implements SchemaRenderContext {
                 overrides?.suppressVerboseAdditional ?? this.suppressVerboseAdditional,
             isRoot: overrides?.isRoot ?? false,
             expandType: overrides?.expandType ?? false,
+            orderProperties: overrides?.orderProperties ?? this.orderProperties,
             i18n: this.i18n,
         });
     }
@@ -293,6 +310,7 @@ export class RenderContext implements SchemaRenderContext {
             suppressVerboseAdditional: this.suppressVerboseAdditional,
             isRoot: false,
             expandType: this.expandType,
+            orderProperties: this.orderProperties,
             i18n: this.i18n,
         };
     }

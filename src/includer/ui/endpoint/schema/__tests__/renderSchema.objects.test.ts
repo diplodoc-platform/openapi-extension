@@ -31,71 +31,71 @@ describe('renderSchema - objects', () => {
 
         const content = renderSchema(schema, {suppressExamples: true});
         expect(content).toBe(dedent`
-      {% cut "**Type**: object" %}
+          {% cut "**Type**: object" %}
 
-      #|
-      || **Name** | **Description** ||
-      ||
+          #|
+          || **Name** | **Description** ||
+          ||
 
-      _address_{.json-schema-reset .json-schema-property}
-      {.table-cell}|
-      {% cut "**Type**: object" %}
+          _address_{.json-schema-reset .json-schema-property}
+          {.table-cell}|
+          {% cut "**Type**: object" %}
 
-      #|
-      ||
+          #|
+          ||
 
-      _city_{.json-schema-reset .json-schema-property}
-      {.table-cell}|
-      **Type**: string
+          _city_{.json-schema-reset .json-schema-property}
+          {.table-cell}|
+          **Type**: string
 
-      Город
-      {.table-cell}
-      ||
-      ||
+          Город
+          {.table-cell}
+          ||
+          ||
 
-      _postcode_{.json-schema-reset .json-schema-property}
-      {.table-cell}|
-      **Type**: string
+          _complex_{.json-schema-reset .json-schema-property}
+          {.table-cell}|
+          {% cut "**Type**: object" %}
 
-      Почтовый индекс
-      {.table-cell}
-      ||
-      ||
+          #|
+          ||
 
-      _complex_{.json-schema-reset .json-schema-property}
-      {.table-cell}|
-      {% cut "**Type**: object" %}
+          _someprop_{.json-schema-reset .json-schema-property}
+          {.table-cell}|
+          **Type**: string
 
-      #|
-      ||
+          Дополнительное поле
+          {.table-cell}
+          ||
+          |#{.json-schema-properties}
 
-      _someprop_{.json-schema-reset .json-schema-property}
-      {.table-cell}|
-      **Type**: string
+          {% endcut %}
 
-      Дополнительное поле
-      {.table-cell}
-      ||
-      |#{.json-schema-properties}
+          Сложная структура
+          {.table-cell}
+          ||
+          ||
 
-      {% endcut %}
+          _postcode_{.json-schema-reset .json-schema-property}
+          {.table-cell}|
+          **Type**: string
 
-      Сложная структура
-      {.table-cell}
-      ||
-      |#{.json-schema-properties}
+          Почтовый индекс
+          {.table-cell}
+          ||
+          |#{.json-schema-properties}
 
-      {% endcut %}
+          {% endcut %}
 
-      Адрес пользователя
-      {.table-cell}
-      ||
-      |#{.json-schema-properties}
+          Адрес пользователя
+          {.table-cell}
+          ||
+          |#{.json-schema-properties}
 
-      {% endcut %}
+          {% endcut %}
 
-      Корневой объект адреса
-    `);
+          Корневой объект адреса
+        `);
     });
 
     it('renders object table without cut when expandType is true', () => {
@@ -112,19 +112,19 @@ describe('renderSchema - objects', () => {
         });
 
         expect(content).toBe(dedent`
-      #|
-      || **Name** | **Description** ||
-      ||
+          #|
+          || **Name** | **Description** ||
+          ||
 
-      _name_{.json-schema-reset .json-schema-property}
-      {.table-cell}|
-      **Type**: string
+          _name_{.json-schema-reset .json-schema-property}
+          {.table-cell}|
+          **Type**: string
 
-      Имя
-      {.table-cell}
-      ||
-      |#{.json-schema-properties}
-    `);
+          Имя
+          {.table-cell}
+          ||
+          |#{.json-schema-properties}
+        `);
     });
 
     it('renders object with array of objects', () => {
@@ -149,56 +149,58 @@ describe('renderSchema - objects', () => {
         };
 
         const content = renderSchema(schema, {suppressExamples: true});
-        expect(content).toBe(String.raw`{% cut "**Type**: object" %}
+        expect(content).toBe(dedent`
+            {% cut "**Type**: object" %}
 
-#|
-|| **Name** | **Description** ||
-||
+            #|
+            || **Name** | **Description** ||
+            ||
 
-_children_{.json-schema-reset .json-schema-property}
-{.table-cell}|
-{% cut "**Type**: object[]" %}
+            _children_{.json-schema-reset .json-schema-property}
+            {.table-cell}|
+            {% cut "**Type**: object[]" %}
 
-#|
-||
+            #|
+            ||
 
-_name_{.json-schema-reset .json-schema-property}
-{.table-cell}|
-**Type**: string
+            _age_{.json-schema-reset .json-schema-property}
+            {.table-cell}|
+            **Type**: integer
 
-Имя
-{.table-cell}
-||
-||
+            Возраст
+            {.table-cell}
+            ||
+            ||
 
-_age_{.json-schema-reset .json-schema-property}
-{.table-cell}|
-**Type**: integer
+            _name_{.json-schema-reset .json-schema-property}
+            {.table-cell}|
+            **Type**: string
 
-Возраст
-{.table-cell}
-||
-|#{.json-schema-properties}
+            Имя
+            {.table-cell}
+            ||
+            |#{.json-schema-properties}
 
-{% endcut %}
+            {% endcut %}
 
-Массив детей
-{.table-cell}
-||
-||
+            Массив детей
+            {.table-cell}
+            ||
+            ||
 
-_type_{.json-schema-reset .json-schema-property}
-{.table-cell}|
-**Type**: string
+            _type_{.json-schema-reset .json-schema-property}
+            {.table-cell}|
+            **Type**: string
 
-Тип записи
-{.table-cell}
-||
-|#{.json-schema-properties}
+            Тип записи
+            {.table-cell}
+            ||
+            |#{.json-schema-properties}
 
-{% endcut %}
+            {% endcut %}
 
-Объект с массивом`);
+            Объект с массивом
+        `);
     });
 
     it('renders object without properties and with additionalProperties', () => {
@@ -241,23 +243,23 @@ _type_{.json-schema-reset .json-schema-property}
 
         const content = renderSchema(schema, {suppressExamples: true});
         expect(content).toBe(dedent`
-      {% cut "**Type**: object" %}
+          {% cut "**Type**: object" %}
 
-      #|
-      || **Name** | **Description** ||
-      ||
+          #|
+          || **Name** | **Description** ||
+          ||
 
-      _/^foo.*$/_{.json-schema-reset .json-schema-pattern-property}
-      {.table-cell}|
-      **Type**: string
+          _/^foo.*$/_{.json-schema-reset .json-schema-pattern-property}
+          {.table-cell}|
+          **Type**: string
 
-      Любая строка, начинающаяся с foo
-      {.table-cell}
-      ||
-      |#{.json-schema-properties}
+          Любая строка, начинающаяся с foo
+          {.table-cell}
+          ||
+          |#{.json-schema-properties}
 
-      {% endcut %}
-    `);
+          {% endcut %}
+        `);
     });
 
     it('marks required properties with additional class', () => {
@@ -272,28 +274,28 @@ _type_{.json-schema-reset .json-schema-property}
 
         const content = renderSchema(schema, {suppressExamples: true});
         expect(content).toBe(dedent`
-      {% cut "**Type**: object" %}
+          {% cut "**Type**: object" %}
 
-      #|
-      || **Name** | **Description** ||
-      ||
+          #|
+          || **Name** | **Description** ||
+          ||
 
-      _name_{.json-schema-reset .json-schema-property .json-schema-required}
-      {.table-cell}|
-      **Type**: string
-      {.table-cell}
-      ||
-      ||
+          _name_{.json-schema-reset .json-schema-property .json-schema-required}
+          {.table-cell}|
+          **Type**: string
+          {.table-cell}
+          ||
+          ||
 
-      _age_{.json-schema-reset .json-schema-property}
-      {.table-cell}|
-      **Type**: integer
-      {.table-cell}
-      ||
-      |#{.json-schema-properties}
+          _age_{.json-schema-reset .json-schema-property}
+          {.table-cell}|
+          **Type**: integer
+          {.table-cell}
+          ||
+          |#{.json-schema-properties}
 
-      {% endcut %}
-    `);
+          {% endcut %}
+        `);
     });
 
     it('hides readOnly properties in writeOnly mode', () => {
@@ -309,28 +311,88 @@ _type_{.json-schema-reset .json-schema-property}
         const content = renderSchema(schema, {writeOnly: true, suppressExamples: true});
 
         expect(content).toBe(dedent`
-      {% cut "**Type**: object" %}
+          {% cut "**Type**: object" %}
 
-      #|
-      || **Name** | **Description** ||
-      ||
+          #|
+          || **Name** | **Description** ||
+          ||
 
-      _password_{.json-schema-reset .json-schema-property}
-      {.table-cell}|
-      **Type**: string
-      {.table-cell}
-      ||
-      ||
+          _email_{.json-schema-reset .json-schema-property}
+          {.table-cell}|
+          **Type**: string
+          {.table-cell}
+          ||
+          ||
 
-      _email_{.json-schema-reset .json-schema-property}
-      {.table-cell}|
-      **Type**: string
-      {.table-cell}
-      ||
-      |#{.json-schema-properties}
+          _password_{.json-schema-reset .json-schema-property}
+          {.table-cell}|
+          **Type**: string
+          {.table-cell}
+          ||
+          |#{.json-schema-properties}
 
-      {% endcut %}
-    `);
+          {% endcut %}
+        `);
+    });
+
+    it('orders properties using orderProperties option', () => {
+        const schema: JSONSchema = {
+            type: 'object',
+            properties: {
+                name: {type: 'string'},
+                email: {type: 'string'},
+                age: {type: 'integer'},
+            },
+        };
+
+        const content = renderSchema(schema, {
+            suppressExamples: true,
+            orderProperties: (current) => {
+                if (!current.properties) {
+                    return undefined;
+                }
+
+                const order = ['email', 'name', 'age'];
+                return order
+                    .filter((key) => current.properties?.[key])
+                    .map((key) => ({
+                        name: key,
+                        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                        schema: current.properties![key]!,
+                    }));
+            },
+        });
+
+        expect(content).toBe(dedent`
+          {% cut "**Type**: object" %}
+
+          #|
+          || **Name** | **Description** ||
+          ||
+
+          _email_{.json-schema-reset .json-schema-property}
+          {.table-cell}|
+          **Type**: string
+          {.table-cell}
+          ||
+          ||
+
+          _name_{.json-schema-reset .json-schema-property}
+          {.table-cell}|
+          **Type**: string
+          {.table-cell}
+          ||
+          ||
+
+          _age_{.json-schema-reset .json-schema-property}
+          {.table-cell}|
+          **Type**: integer
+          {.table-cell}
+          ||
+          |#{.json-schema-properties}
+
+          {% endcut %}
+        `);
     });
 
     it('hides writeOnly properties in readOnly mode', () => {
@@ -346,27 +408,27 @@ _type_{.json-schema-reset .json-schema-property}
         const content = renderSchema(schema, {readOnly: true, suppressExamples: true});
 
         expect(content).toBe(dedent`
-      {% cut "**Type**: object" %}
+          {% cut "**Type**: object" %}
 
-      #|
-      || **Name** | **Description** ||
-      ||
+          #|
+          || **Name** | **Description** ||
+          ||
 
-      _id_{.json-schema-reset .json-schema-property}
-      {.table-cell}|
-      **Type**: string
-      {.table-cell}
-      ||
-      ||
+          _email_{.json-schema-reset .json-schema-property}
+          {.table-cell}|
+          **Type**: string
+          {.table-cell}
+          ||
+          ||
 
-      _email_{.json-schema-reset .json-schema-property}
-      {.table-cell}|
-      **Type**: string
-      {.table-cell}
-      ||
-      |#{.json-schema-properties}
+          _id_{.json-schema-reset .json-schema-property}
+          {.table-cell}|
+          **Type**: string
+          {.table-cell}
+          ||
+          |#{.json-schema-properties}
 
-      {% endcut %}
-    `);
+          {% endcut %}
+        `);
     });
 });

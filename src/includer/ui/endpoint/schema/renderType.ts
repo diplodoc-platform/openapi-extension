@@ -1,4 +1,4 @@
-import type {JSONSchema, PrimitiveType, RenderContext} from './jsonSchema';
+import type {JSONSchema, OrderedProperty, PrimitiveType, RenderContext} from './jsonSchema';
 
 import {deprecated} from '../../popups';
 import {block, cut} from '../../common';
@@ -35,7 +35,9 @@ export function renderType(
     if (isPrimitiveType(schema)) {
         const hasFormat =
             schema.type === 'string' && 'format' in schema && typeof schema.format === 'string';
-        const baseType = hasFormat ? `string<${schema.format}>` : (schema.type as PrimitiveType);
+        const baseType = hasFormat
+            ? `string&lt;${schema.format}&gt;`
+            : (schema.type as PrimitiveType);
         return `**${i18n.type}**: ${baseType}${suffix}`;
     }
 
@@ -110,6 +112,38 @@ function shouldRenderProperty(property: JSONSchema | undefined, context: RenderC
     return true;
 }
 
+function defaultOrderProperties(schema: JSONSchema): OrderedProperty[] {
+    if (!has(schema, 'properties')) {
+        return [];
+    }
+
+    const requiredSet = new Set(schema.required ?? []);
+
+    return Object.entries(schema.properties)
+        .map(([name, value]) => ({
+            name,
+            schema: value ?? {},
+            required: requiredSet.has(name),
+        }))
+        .sort((a, b) => {
+            if (a.required !== b.required) {
+                return a.required ? -1 : 1;
+            }
+
+            return a.name.localeCompare(b.name, undefined, {sensitivity: 'base'});
+        })
+        .map(({name, schema}) => ({name, schema}));
+}
+
+function resolveOrderedProperties(schema: JSONSchema, context: RenderContext): OrderedProperty[] {
+    const ordered = context.orderProperties?.(schema);
+    if (ordered && ordered.length > 0) {
+        return ordered;
+    }
+
+    return defaultOrderProperties(schema);
+}
+
 export function renderObjectType(schema: JSONSchema, context: RenderContext): string {
     const {renderSchema} = context;
     const rows: Array<string | [string, string]> = [];
@@ -125,7 +159,9 @@ export function renderObjectType(schema: JSONSchema, context: RenderContext): st
     }
 
     if (has(schema, 'properties')) {
-        for (const [key, value] of Object.entries(schema.properties)) {
+        const orderedProperties = resolveOrderedProperties(schema, context);
+
+        for (const {name: key, schema: value} of orderedProperties) {
             if (!shouldRenderProperty(value, context)) {
                 continue;
             }
@@ -141,13 +177,12 @@ export function renderObjectType(schema: JSONSchema, context: RenderContext): st
                 label += deprecated({compact: true});
             }
 
-            rows.push([
-                label,
-                renderSchema(value, {
-                    ...propertyContext.toOptions(),
-                    suppressDeprecatedWarning: value.deprecated,
-                }),
-            ]);
+            const propertyOptions = {
+                ...propertyContext.toOptions(),
+                suppressDeprecatedWarning: value?.deprecated,
+            };
+
+            rows.push([label, renderSchema(value ?? {}, propertyOptions)]);
         }
     }
 

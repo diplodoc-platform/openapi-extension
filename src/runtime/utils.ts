@@ -1,10 +1,10 @@
+import type {OpenAPIV3} from 'openapi-types';
 import type {RefObject} from 'react';
 import type {
-    V3Security,
     V3SecurityApiKey,
-    V3SecurityOAuth2,
     V3SecurityOAuthImplicit,
     V3SecurityOAuthInline,
+    V3SecurityType,
 } from '../includer/models';
 import type {Field, FormState} from './types';
 
@@ -37,7 +37,7 @@ export const prepareRequest = (
     {search, headers, path, bodyJson, bodyFormData}: FormState,
     projectName: string,
     bodyType?: string,
-    security?: V3Security[],
+    security?: OpenAPIV3.SecuritySchemeObject[],
 ) => {
     const preparedHeaders = {...headers};
     const requestUrl = Object.entries(path).reduce((acc, [key, value]) => {
@@ -129,8 +129,11 @@ export function collectValues<F extends Record<string, RefObject<Field>>>(
     );
 }
 
-export function getSelectedAuth(prefix: string): {type: string | null; value: string | null} {
-    const type = sessionStorage.getItem(`${prefix}_type`);
+export function getSelectedAuth(prefix: string): {
+    type: V3SecurityType | null;
+    value: string | null;
+} {
+    const type = sessionStorage.getItem(`${prefix}_type`) as V3SecurityType;
     return {
         type,
         value: sessionStorage.getItem(`${prefix}_value`),
@@ -153,16 +156,20 @@ export function setAuth(prefix: string, {type, value}: {type: string; value: str
     sessionStorage.setItem(`${prefix}_value`, value);
 }
 
-export function isV3SecurityApiKey(v3Security: V3Security): v3Security is V3SecurityApiKey {
+export function isV3SecurityApiKey(
+    v3Security: OpenAPIV3.SecuritySchemeObject,
+): v3Security is V3SecurityApiKey {
     return v3Security.type === 'apiKey';
 }
 
-export function isV3SecurityOAuth2(v3Security: V3Security): v3Security is V3SecurityOAuth2 {
+export function isV3SecurityOAuth2(
+    v3Security: OpenAPIV3.SecuritySchemeObject,
+): v3Security is OpenAPIV3.OAuth2SecurityScheme {
     return v3Security.type === 'oauth2';
 }
 
 export function isV3SecurityOAuthInline(
-    v3Security: V3Security,
+    v3Security: OpenAPIV3.SecuritySchemeObject,
 ): v3Security is V3SecurityOAuthInline {
     return (
         isV3SecurityOAuth2(v3Security) &&
@@ -171,7 +178,7 @@ export function isV3SecurityOAuthInline(
 }
 
 export function isV3SecurityOAuthImplicit(
-    v3Security: V3Security,
+    v3Security: OpenAPIV3.SecuritySchemeObject,
 ): v3Security is V3SecurityOAuthImplicit {
     return (
         isV3SecurityOAuth2(v3Security) &&

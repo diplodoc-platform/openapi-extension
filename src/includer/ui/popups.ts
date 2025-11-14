@@ -1,37 +1,27 @@
-import {DEPRECATED_ANNOTATION, DEPRECATED_POPUP_TEXT, EOL} from '../constants';
+import {DEPRECATED_ANNOTATION, DEPRECATED_POPUP_TEXT} from '../constants';
+
+import {block} from './common';
 
 const content: Record<string, string> = {
     [DEPRECATED_ANNOTATION]: DEPRECATED_POPUP_TEXT,
 };
 
-const register = (key: string, value: string) => {
-    content[key] = value;
-};
+export function deprecated({compact = false} = {}) {
+    const classes = ['.openapi-deprecated', compact ? '.openapi-deprecated-compact' : ''].filter(
+        Boolean,
+    );
 
-const render = (key: string, innerHTML: string, classList: string[] = []) => {
-    if (!key || !innerHTML) {
-        return '';
+    if (compact) {
+        return `_[ ](*${DEPRECATED_ANNOTATION})_{${classes.join(' ')}}`;
     }
 
-    const id = (Math.random() * 1e8).toString(16);
-    return `<div class="yfm yfm-term_title ${classList.join(' ')}" term-key=":${key}" role="button" aria-describedby=":${key}_element" tabindex="0" id="${id}">${innerHTML}</div>`;
-};
+    return `[${DEPRECATED_ANNOTATION}](*${DEPRECATED_ANNOTATION}){${classes.join(' ')}}`;
+}
 
-const collect = () => {
-    return Object.entries(content).reduce((acc, [name, content]) => {
-        return acc + EOL.repeat(2) + `[*${name}]: ${content}`;
-    }, '');
-};
-
-const deprecated = ({compact = false} = {}) => {
-    const markup = compact ? '&#10680;' : DEPRECATED_ANNOTATION; // ⦸
-
-    return render(DEPRECATED_ANNOTATION, markup, ['openapi-deprecated', compact ? 'compact' : '']);
-};
-
-export const popups = {
-    register,
-    render,
-    collect,
-    deprecated,
-};
+export function terms(list: (keyof typeof content)[]) {
+    return block(
+        Object.entries(content)
+            .filter(([name]) => list.includes(name))
+            .map(([name, content]) => `[*${name}]: ${content}`),
+    );
+}

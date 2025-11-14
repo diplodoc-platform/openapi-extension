@@ -1,4 +1,5 @@
-import type {V3Security} from '../../includer/models';
+import type {OpenAPIV3} from 'openapi-types';
+import type {V3SecurityType} from '../../includer/models';
 
 import React, {useCallback, useMemo, useState} from 'react';
 import {Box, Button, Dialog, RadioButton, Text} from '@gravity-ui/uikit';
@@ -10,7 +11,7 @@ import {useAuthSessionStorage} from '../hooks/useAuthSessionStorage';
 import {Column, SecurityApiKey, SecurityOAuthImplicit, SecurityOAuthInline} from '.';
 
 type SecurityProps = {
-    security: V3Security[];
+    security: OpenAPIV3.SecuritySchemeObject[];
     projectName: string;
 };
 
@@ -46,7 +47,7 @@ export const Security: React.FC<SecurityProps> = (props) => {
                         <Box>
                             <RadioButton
                                 onChange={(event) => {
-                                    setActiveType(event.currentTarget.value);
+                                    setActiveType(event.currentTarget.value as V3SecurityType);
                                 }}
                                 value={activeType}
                                 options={security.map((item) => ({
@@ -114,10 +115,10 @@ function SecurityTab({
     initialValue,
     setAuth,
 }: {
-    security: V3Security;
+    security: OpenAPIV3.SecuritySchemeObject;
     close: () => void;
     initialValue: string;
-    setAuth: (params: {type: V3Security['type']; value: string}) => void;
+    setAuth: (params: {type: OpenAPIV3.SecuritySchemeObject['type']; value: string}) => void;
 }) {
     if (isV3SecurityApiKey(security)) {
         return (

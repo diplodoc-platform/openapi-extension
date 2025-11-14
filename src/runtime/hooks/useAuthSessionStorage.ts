@@ -38,7 +38,7 @@ function createGetInitialAuthFunction({projectName, initialType}: UseAuthSession
         const hash = window.location.hash;
         if (hash.includes('access_token=')) {
             const searchParams = new URLSearchParams(hash.slice(1));
-            const tokenValue = searchParams.get('access_token');
+            const tokenValue = searchParams.get('access_token') as V3SecurityType;
             if (tokenValue) {
                 document
                     .querySelector('.openapi')
@@ -47,7 +47,7 @@ function createGetInitialAuthFunction({projectName, initialType}: UseAuthSession
                 const newUrl = new URL(window.location.toString());
                 newUrl.hash = '';
                 window.history.replaceState(null, document.title, newUrl);
-                const auth = {type: 'oauth2', value: tokenValue};
+                const auth = {type: 'oauth2' as const, value: tokenValue};
                 setAuthFromUtils(projectName, auth);
                 return auth;
             }

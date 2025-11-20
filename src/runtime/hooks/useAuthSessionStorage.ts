@@ -5,12 +5,12 @@ import {useCallback, useState} from 'react';
 import {getSelectedAuth, setAuth as setAuthFromUtils} from '../utils';
 
 type UseAuthSessionStorageProps = {
-    initialType: V3SecurityType;
+    initialType: V3SecurityType | undefined;
     projectName: string;
 };
 
 type UseAuthSessionStorageResult = [
-    {type: V3SecurityType; value: string},
+    {type: V3SecurityType | undefined; value: string},
     (params: {type: V3SecurityType; value: string}) => void,
 ];
 
@@ -18,7 +18,7 @@ export const useAuthSessionStorage = (
     props: UseAuthSessionStorageProps,
 ): UseAuthSessionStorageResult => {
     const {projectName} = props;
-    const [state, setState] = useState<{type: V3SecurityType; value: string}>(
+    const [state, setState] = useState<{type: V3SecurityType | undefined; value: string}>(
         createGetInitialAuthFunction(props),
     );
 

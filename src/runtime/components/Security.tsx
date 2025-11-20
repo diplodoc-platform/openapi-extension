@@ -11,12 +11,12 @@ import {useAuthSessionStorage} from '../hooks/useAuthSessionStorage';
 import {Column, SecurityApiKey, SecurityOAuthImplicit, SecurityOAuthInline} from '.';
 
 type SecurityProps = {
-    security: OpenAPIV3.SecuritySchemeObject[];
+    security?: OpenAPIV3.SecuritySchemeObject[];
     projectName: string;
 };
 
 export const Security: React.FC<SecurityProps> = (props) => {
-    const {security} = props;
+    const {security = []} = props;
     const {
         isOpen,
         close,
@@ -31,8 +31,8 @@ export const Security: React.FC<SecurityProps> = (props) => {
         hasAnyAuthorization,
     } = useEnhance(props);
 
-    if (!activeSecurityTab) {
-        throw new Error();
+    if (!security || !security.length || !activeSecurityTab) {
+        return null;
     }
 
     return (
@@ -73,15 +73,18 @@ export const Security: React.FC<SecurityProps> = (props) => {
 };
 
 function useEnhance({projectName, security}: SecurityProps) {
+    security = security || [];
+
+    const initialType: V3SecurityType | undefined = security[0]?.type;
     const [isOpen, setOpen] = useState(false);
     const [auth, setAuth] = useAuthSessionStorage({
         projectName,
-        initialType: security[0].type,
+        initialType,
     });
     const hasAnyAuthorization = Boolean(auth.value);
     const [activeType, setActiveType] = useState(auth.type);
     const activeSecurityTab = useMemo(
-        () => security.find(({type}) => activeType === type),
+        () => security?.find(({type}) => activeType === type) || undefined,
         [activeType],
     );
 
@@ -90,9 +93,9 @@ function useEnhance({projectName, security}: SecurityProps) {
     }, [setOpen]);
 
     const open = useCallback(() => {
-        setActiveType(auth.type || security[0].type);
+        setActiveType(auth.type || initialType);
         setOpen(true);
-    }, [setOpen]);
+    }, [setOpen, initialType]);
 
     return {
         isOpen,

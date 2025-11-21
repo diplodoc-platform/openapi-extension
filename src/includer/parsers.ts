@@ -155,7 +155,7 @@ function pathsFromSpec(spec: OpenAPISpec, tagsByID: Map<string, V3Tag>): Specifi
 
             try {
                 parsed.statusText = getStatusText(code);
-            } catch (err) {
+            } catch {
                 parsed.statusText = '';
             }
 

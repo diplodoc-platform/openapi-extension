@@ -1,6 +1,6 @@
+import type {OpenAPIV3} from 'openapi-types';
 import type {Field, Nullable} from '../types';
-import type {JSONSchema6Definition} from 'json-schema';
-import type {OpenJSONSchema} from '../../includer/models';
+import type {Dereference} from '../../includer/models';
 
 import React from 'react';
 import {Text, TextArea} from '@gravity-ui/uikit';
@@ -12,7 +12,7 @@ import {FileInputArray} from './FileInputArray';
 
 type Props = {
     example: Nullable<string>;
-    schema: OpenJSONSchema | undefined;
+    schema: Dereference<OpenAPIV3.SchemaObject> | undefined;
     bodyType?: string;
 };
 
@@ -54,7 +54,7 @@ export class BodyFormData extends React.Component<Props, State> implements Field
         );
     }
 
-    renderTextArea(key: string, property: OpenJSONSchema) {
+    renderTextArea(key: string, property: OpenAPIV3.SchemaObject) {
         const example = JSON.parse(this.props.example ?? '{}');
 
         const exampleValue =
@@ -74,7 +74,7 @@ export class BodyFormData extends React.Component<Props, State> implements Field
         );
     }
 
-    renderProperty(key: string, property: JSONSchema6Definition) {
+    renderProperty(key: string, property: Dereference<OpenAPIV3.SchemaObject>) {
         if (typeof property !== 'object') {
             return null;
         }
@@ -83,10 +83,12 @@ export class BodyFormData extends React.Component<Props, State> implements Field
             return this.renderInput(key);
         }
 
-        const {items} = property;
-
-        if (property.type === 'array' && typeof items === 'object' && !Array.isArray(items)) {
-            const {format, type} = items;
+        if (
+            property.type === 'array' &&
+            typeof property.items === 'object' &&
+            !Array.isArray(property.items)
+        ) {
+            const {format, type} = property.items;
 
             if (type === 'string' && format === 'binary') {
                 return this.renderFileInput(key);

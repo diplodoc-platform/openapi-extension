@@ -1,13 +1,15 @@
+import {vi} from 'vitest';
+
 function virtualFS() {
     /** virtual fs record with 1 depth */
     let pages: Record<string, string> = {};
 
     const fs = {
         mkdir() {},
-        readFile: jest.fn((path) => {
+        readFile: vi.fn((path) => {
             return pages[path];
         }),
-        writeFile: jest.fn((path, content) => {
+        writeFile: vi.fn((path, content) => {
             pages[path] = content;
         }),
         match(target: string) {

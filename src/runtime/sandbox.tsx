@@ -48,9 +48,7 @@ export const Sandbox: React.FC<SandboxProps> = (props) => {
     return (
         <form onSubmit={onSubmit} className={yfmSandbox()}>
             <Column>
-                {props.security?.length && (
-                    <Security security={props.security} projectName={props.projectName} />
-                )}
+                <Security security={props.security} projectName={props.projectName} />
                 <Params
                     ref={refs.path}
                     title={Text.PATH_PARAMS_SECTION_TITLE}

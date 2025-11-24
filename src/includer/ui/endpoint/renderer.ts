@@ -31,9 +31,11 @@ export class Renderer {
 
     private linkedRefs: Set<string> = new Set();
 
+    private resolvedRefs: Map<string, string> = new Map();
+
     private renderedRefs: Set<string> = new Set();
 
-    private renderedBlocks: Set<string> = new Set();
+    private renderedBlocks: Map<string, string> = new Map();
 
     constructor(ctx: Context) {
         this.ctx = ctx;
@@ -41,14 +43,14 @@ export class Renderer {
 
     table = (schema: OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject, mode: RenderMode) => {
         if (this.ctx.refs.isReference(schema)) {
-            const ref = this._resolveRef(schema.$ref);
+            const ref = this._resolveRef(schema.$ref, mode);
             this.renderedRefs.add(schema.$ref + '-' + mode);
 
             schema = ref ? (ref.schema as OpenAPIV3.SchemaObject) : schema;
         }
 
         return this._renderSchema(schema as Dereference<OpenAPIV3.SchemaObject>, mode, {
-            ref: this._resolveRef,
+            ref: (refId) => this._resolveRef(refId, mode),
             renderSchema: (schema, options) => {
                 return this._renderSchema(schema as OpenAPIV3.SchemaObject, mode, {
                     ...(options || {}),
@@ -66,43 +68,27 @@ export class Renderer {
         const results = [];
 
         let refs = this._pendingRefs(mode);
+        this.linkedRefs = new Set();
+
         while (refs.length) {
             for (const refId of refs) {
-                const ref = this._resolveRef(refId);
+                const ref = this._resolveRef(refId, mode);
 
                 if (!ref) {
                     continue;
                 }
 
-                const {schema, href, label} = ref;
-
-                let anchor = href;
-                if (this.usedAnchors[href]) {
-                    anchor += this.usedAnchors[href]++;
-                } else {
-                    this.usedAnchors[href] = 1;
-                }
-
-                const result = this._renderSchema(schema as OpenAPIV3.SchemaObject, mode, {
-                    expandType: true,
-                    blocks: ['title', 'deprecated', 'description', '...'],
-                    renderSchema: (schema, options) => {
-                        return this._renderSchema(schema, mode, {
-                            ...options,
-                            expandType: false,
-                            blocks: ['...'],
-                        });
-                    },
-                });
+                const {href, label, content} = ref;
 
                 this.renderedRefs.add(refId + '-' + mode);
 
-                if (this.renderedBlocks.has(result)) {
+                if (this.renderedBlocks.has(content)) {
                     continue;
                 }
-                this.renderedBlocks.add(result);
+                this.renderedBlocks.set(content, href);
+                this.usedAnchors[label] = (this.usedAnchors[label] || 0) + 1;
 
-                results.push(entity(block([title(3)(label, anchor), result])));
+                results.push(entity(block([title(3)(label, href), content])));
             }
 
             refs = this._pendingRefs(mode);
@@ -125,7 +111,7 @@ export class Renderer {
 
     example = (schema: OpenAPIV3.SchemaObject, mode: RenderMode, format = true) => {
         const context = new RenderContext({
-            ref: this._resolveRef,
+            ref: (refId) => this._resolveRef(refId, mode),
             renderSchema: () => '',
             isRoot: true,
             [mode + 'Only']: true,
@@ -161,7 +147,7 @@ export class Renderer {
         options: SchemaRenderOptions = {},
     ) {
         return renderSchema(schema as JSONSchema, {
-            ref: this._resolveRef,
+            ref: (refId) => this._resolveRef(refId, mode),
             suppressTitle: true,
             suppressVerboseAdditional: true,
             [mode + 'Only']: true,
@@ -173,7 +159,11 @@ export class Renderer {
         return [...this.linkedRefs].filter((ref) => !this.renderedRefs.has(ref + '-' + mode));
     }
 
-    private _resolveRef = (refId: string, visited = new Set()): ResolvedRef | undefined => {
+    private _resolveRef = (
+        refId: string,
+        mode: 'read' | 'write',
+        visited = new Set(),
+    ): (ResolvedRef & {content: string; label: string}) | undefined => {
         if (visited.has(refId)) {
             return undefined;
         }
@@ -186,14 +176,41 @@ export class Renderer {
         visited.add(refId);
 
         if (this.ctx.refs.isEmptyReference(schema)) {
-            return this._resolveRef(schema.$ref, visited);
+            return this._resolveRef(schema.$ref, mode, visited);
+        }
+
+        if (!this.resolvedRefs.get(refId + '-' + mode)) {
+            this.resolvedRefs.set(refId + '-' + mode, 'pending');
+            this.resolvedRefs.set(
+                refId + '-' + mode,
+                this._renderSchema(schema as OpenAPIV3.SchemaObject, mode, {
+                    expandType: true,
+                    blocks: ['title', 'deprecated', 'description', '...'],
+                    renderSchema: (schema, options) => {
+                        return this._renderSchema(schema, mode, {
+                            ...options,
+                            expandType: false,
+                            blocks: ['...'],
+                        });
+                    },
+                }),
+            );
         }
 
         this.linkedRefs.add(refId);
 
+        const content = this.resolvedRefs.get(refId + '-' + mode) as string;
         const label = refId.split('/').pop() as string;
-        const href = '#entity-' + slugify(label);
+        const href = this.renderedBlocks.has(content)
+            ? (this.renderedBlocks.get(content) as string)
+            : this._resolveAnchor(label);
 
-        return {label, href, schema};
+        return {label, href, schema, content};
     };
+
+    private _resolveAnchor(label: string) {
+        const anchor = '#entity-' + slugify(label);
+
+        return anchor + (this.usedAnchors[label] || '');
+    }
 }

@@ -36,14 +36,28 @@ class OpenApiIncluderError extends Error {
     }
 }
 
+/**
+ * Shared context passed through all includer rendering layers (parsers, UI).
+ */
 export type Context = {
+    /** YFM preset variables resolved for current TOC file. */
     vars: Readonly<YfmPreset>;
+    /** Includer params taken from TOC. */
     params: Readonly<OpenApiIncluderParams>;
+    /** Mapping from tag id (including special `__root__`) to custom tag config. */
     tag(id: string): {alias?: string; hidden?: boolean; path?: string; name?: string} | undefined;
+    /** Service that manages `$ref` loading, normalization and `$defs` building. */
     refs: RefsService;
+    /** Resolves relative paths against current run input root. */
     relative: (path: string) => string;
 };
 
+/**
+ * Entry point for OpenAPI includer.
+ * - Validates and partially dereferences OpenAPI document.
+ * - Builds rendering context (refs, vars, tags).
+ * - Produces TOC structure and Markdown files for endpoints and sections.
+ */
 export async function includer(run: Run, params: OpenApiIncluderParams, tocPath: string) {
     const {input, tags = {}} = params;
 
@@ -123,6 +137,9 @@ function assertLeadingPageMode(mode: string) {
     );
 }
 
+/**
+ * Builds YFM TOC structure from parsed OpenAPI document and includer context.
+ */
 function generateToc(data: Dereference<OpenAPIV3.Document>, ctx: Context): YfmTocItem {
     const {vars, params} = ctx;
     const {leadingPage, filter} = params;
@@ -171,10 +188,10 @@ function generateToc(data: Dereference<OpenAPIV3.Document>, ctx: Context): YfmTo
     }
 
     const root = ctx.tag('__root__');
-    const rootLadingPageName = root?.name || leadingPageName;
+    const rootLeadingPageName = root?.name || leadingPageName;
 
     if (!root?.hidden) {
-        addLeadingPage(toc, leadingPageMode, rootLadingPageName, 'index.md');
+        addLeadingPage(toc, leadingPageMode, rootLeadingPageName, 'index.md');
     }
 
     return toc;
@@ -196,6 +213,12 @@ type EndpointRoute = {
     content: string;
 };
 
+/**
+ * Produces a flat list of Markdown files for:
+ * - main (root) page,
+ * - tag section pages,
+ * - individual endpoint pages (tagged and untagged).
+ */
 function generateContent(data: Dereference<OpenAPIV3.Document>, ctx: Context): EndpointRoute[] {
     const {vars, params} = ctx;
     const {input, leadingPage, filter, noindex, hidden, sandbox} = params;

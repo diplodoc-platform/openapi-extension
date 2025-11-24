@@ -70,6 +70,13 @@ function generatePatternExample(pattern: string): string | undefined {
 interface GenerationState {
     depth: number;
     seenRefs: Set<string>;
+    /**
+     * When true, direct examples may be taken from `default` / `const`
+     * in addition to `example` / `examples` / `enum`.
+     * Used when generating composite (object) examples, but not for
+     * top-level scalar examples to avoid noisy duplication with defaults.
+     */
+    useDefaultConst: boolean;
 }
 
 interface Collector {
@@ -208,7 +215,7 @@ function hasStringEnum(schema: JSONSchema, context: RenderContext): boolean {
     return found;
 }
 
-function pickDirectExample(schema: JSONSchema): unknown | undefined {
+function pickDirectExample(schema: JSONSchema, useDefaultConst: boolean): unknown | undefined {
     if (schema.example !== undefined) {
         return schema.example;
     }
@@ -217,8 +224,14 @@ function pickDirectExample(schema: JSONSchema): unknown | undefined {
         return schema.examples[0];
     }
 
-    if (schema.const !== undefined) {
-        return schema.const;
+    if (useDefaultConst) {
+        if (schema.const !== undefined) {
+            return schema.const;
+        }
+
+        if (schema.default !== undefined) {
+            return schema.default;
+        }
     }
 
     if (Array.isArray(schema.enum) && schema.enum.length > 0) {
@@ -232,6 +245,7 @@ function incrementDepth(state: GenerationState): GenerationState {
     return {
         depth: state.depth + 1,
         seenRefs: state.seenRefs,
+        useDefaultConst: state.useDefaultConst,
     };
 }
 
@@ -382,7 +396,14 @@ function generateObjectExample(
                 continue;
             }
 
-            const child = generateExampleInternal(value, context, incrementDepth(state));
+            const childState: GenerationState = {
+                ...incrementDepth(state),
+                // For object properties we want to respect default/const
+                // when choosing direct examples.
+                useDefaultConst: true,
+            };
+
+            const child = generateExampleInternal(value, context, childState);
             if (child !== undefined) {
                 result[key] = child;
             }
@@ -430,8 +451,24 @@ function generateExampleInternal(
         return undefined;
     }
 
-    const direct = pickDirectExample(schema);
+    const direct = pickDirectExample(schema, state.useDefaultConst);
     if (direct !== undefined) {
+        const type = inferType(schema);
+
+        // Respect declared type when direct example has different JS type.
+        // For example, for string properties with `example: 10` (parsed as number)
+        // we still want `"10"` in generated object examples.
+        if (type === 'string' && typeof direct !== 'string') {
+            return String(direct);
+        }
+
+        if ((type === 'number' || type === 'integer') && typeof direct === 'string') {
+            const numeric = Number(direct);
+            if (!Number.isNaN(numeric)) {
+                return numeric;
+            }
+        }
+
         return direct;
     }
 
@@ -452,6 +489,10 @@ function generateExample(schema: JSONSchema, context: RenderContext): unknown {
     return generateExampleInternal(schema, context, {
         depth: 0,
         seenRefs: new Set<string>(),
+        // For top-level examples (including scalar schemas) we don't want
+        // to treat default/const as separate examples – they already have
+        // their own blocks. They are only used when composing object examples.
+        useDefaultConst: false,
     });
 }
 
@@ -495,6 +536,14 @@ export function collectExamples(context: RenderContext, schema: JSONSchema) {
     });
 
     if (collector.list.length === 0) {
+        const schemaType = inferType(schema);
+
+        // For simple scalar schemas that only have `default`, we don't want to
+        // synthesize an additional example – the default block is enough.
+        if (schema.default !== undefined && schemaType !== 'object' && schemaType !== 'array') {
+            return collector.list;
+        }
+
         const generated = generateExample(schema, context);
         if (generated !== undefined) {
             addExample(collector, generated);

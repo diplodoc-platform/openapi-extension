@@ -9,5 +9,13 @@ declare module 'openapi-types' {
         interface ParameterBaseObject {
             'x-hidden'?: boolean;
         }
+
+        interface OperationObject {
+            'x-navtitle'?: string;
+        }
+
+        interface OAuth2SecurityScheme {
+            'x-inline'?: boolean;
+        }
     }
 }

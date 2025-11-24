@@ -5,12 +5,12 @@ import {useCallback, useState} from 'react';
 import {getSelectedAuth, setAuth as setAuthFromUtils} from '../utils';
 
 type UseAuthSessionStorageProps = {
-    initialType: V3SecurityType;
+    initialType: V3SecurityType | undefined;
     projectName: string;
 };
 
 type UseAuthSessionStorageResult = [
-    {type: V3SecurityType; value: string},
+    {type: V3SecurityType | undefined; value: string},
     (params: {type: V3SecurityType; value: string}) => void,
 ];
 
@@ -18,7 +18,7 @@ export const useAuthSessionStorage = (
     props: UseAuthSessionStorageProps,
 ): UseAuthSessionStorageResult => {
     const {projectName} = props;
-    const [state, setState] = useState<{type: V3SecurityType; value: string}>(
+    const [state, setState] = useState<{type: V3SecurityType | undefined; value: string}>(
         createGetInitialAuthFunction(props),
     );
 
@@ -38,7 +38,7 @@ function createGetInitialAuthFunction({projectName, initialType}: UseAuthSession
         const hash = window.location.hash;
         if (hash.includes('access_token=')) {
             const searchParams = new URLSearchParams(hash.slice(1));
-            const tokenValue = searchParams.get('access_token');
+            const tokenValue = searchParams.get('access_token') as V3SecurityType;
             if (tokenValue) {
                 document
                     .querySelector('.openapi')
@@ -47,7 +47,7 @@ function createGetInitialAuthFunction({projectName, initialType}: UseAuthSession
                 const newUrl = new URL(window.location.toString());
                 newUrl.hash = '';
                 window.history.replaceState(null, document.title, newUrl);
-                const auth = {type: 'oauth2', value: tokenValue};
+                const auth = {type: 'oauth2' as const, value: tokenValue};
                 setAuthFromUtils(projectName, auth);
                 return auth;
             }

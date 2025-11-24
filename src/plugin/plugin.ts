@@ -26,7 +26,7 @@ function applyTransforms({tokens}: {tokens: Token[]}) {
 const openapiSandboxPlugin = (md: MarkdownIt) => {
     try {
         md.core.ruler.after('fence', 'openapi-sandbox', applyTransforms);
-    } catch (e) {
+    } catch {
         md.core.ruler.push('openapi-sandbox', applyTransforms);
     }
 };

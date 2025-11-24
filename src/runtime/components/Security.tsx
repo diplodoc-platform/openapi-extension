@@ -1,7 +1,7 @@
 import type {V3Security} from '../../includer/models';
 
 import React, {useCallback, useMemo, useState} from 'react';
-import {Box, Button, Dialog, RadioButton, Text} from '@gravity-ui/uikit';
+import {Box, Button, Dialog, RadioGroup, Text} from '@gravity-ui/uikit';
 import {CircleCheck} from '@gravity-ui/icons';
 
 import {isV3SecurityApiKey, isV3SecurityOAuthImplicit, isV3SecurityOAuthInline} from '../utils';
@@ -44,7 +44,7 @@ export const Security: React.FC<SecurityProps> = (props) => {
                 <Dialog.Body>
                     <Column gap={0} minWidth={400}>
                         <Box>
-                            <RadioButton
+                            <RadioGroup
                                 onChange={(event) => {
                                     setActiveType(event.currentTarget.value);
                                 }}
@@ -53,7 +53,7 @@ export const Security: React.FC<SecurityProps> = (props) => {
                                     value: item.type,
                                     content: item.type,
                                 }))}
-                                size="s"
+                                size="m"
                             />
                         </Box>
                         <Box spacing={{pt: '4'}}>

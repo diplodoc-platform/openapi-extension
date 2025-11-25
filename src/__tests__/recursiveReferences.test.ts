@@ -1,3 +1,5 @@
+import {describe, expect, it} from 'vitest';
+
 import {DocumentBuilder, run} from './__helpers__/run';
 
 const name = 'recursiveReferences';
@@ -49,7 +51,7 @@ describe('Recursive references in schemas', () => {
         expect(page).toMatchSnapshot();
     });
 
-    test('where the cycle itself is not trivially referenced are able to be handled by the includer', async () => {
+    it('where the cycle itself is not trivially referenced are able to be handled by the includer', async () => {
         const spec = new DocumentBuilder(name)
             .component('RecurseTop', {
                 type: 'object',

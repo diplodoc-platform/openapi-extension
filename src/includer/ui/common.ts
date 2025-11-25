@@ -1,35 +1,37 @@
-import type {TitleDepth, V3Server} from '../models';
+import type {OpenAPIV3} from 'openapi-types';
+import type {Dereference} from '../models';
 
 import slugify from 'slugify';
-import bem from 'bem-cn-lite';
 
-import {
-    BLOCK,
-    DISABLE_LINTER_DIRECTIVE,
-    EOL,
-    HTML_COMMENTS_CLOSE_DIRECTIVE,
-    HTML_COMMENTS_OPEN_DIRECTIVE,
-} from '../constants';
+import {DEPRECATED_ANNOTATION, DEPRECATED_POPUP_TEXT} from '../constants';
 
-import {popups} from './popups';
+export const EOL = '\n';
 
-const openapiBlock = bem('openapi');
+export const BLOCK = EOL.repeat(2);
 
-function meta(content: (string | boolean | undefined)[]) {
+export function openapi(content: string) {
+    return block([`<div class="openapi">`, content, '</div>']);
+}
+
+export function meta(content: (string | boolean | undefined)[]) {
     const entries = content.filter(Boolean);
 
     if (!entries.length) {
         return [];
     }
 
-    return EOL + ['---', ...content.filter(Boolean), '---'].join(EOL) + EOL;
+    return ['---', ...content.filter(Boolean), '---'].join(EOL);
 }
 
-function list(items: string[]) {
+export function list(items: string[]) {
     return items.map((item) => `- ${item}`).join(EOL) + EOL;
 }
 
-function link(text: string, src: string, className?: string) {
+export function link(text: string, src: string | undefined, className?: string) {
+    if (!src) {
+        return '';
+    }
+
     let md = `[${text}](${src})`;
 
     if (className) {
@@ -39,76 +41,58 @@ function link(text: string, src: string, className?: string) {
     return md;
 }
 
-function title(depth: TitleDepth) {
-    return (content?: string) => (content?.length ? '#'.repeat(depth) + ` ${content}` : '');
+export function title(depth: 1 | 2 | 3 | 4 | 5 | 6) {
+    const markup = '#'.repeat(depth) + ' ';
+    return (content?: string, anchor?: string) => {
+        anchor = (anchor || '').trim();
+        anchor = anchor ? ' {' + anchor + '}' : '';
+        return content?.length ? `${markup}${content}${anchor}` : '';
+    };
 }
 
-function body(text?: string) {
-    return text?.length && text;
-}
-
-function mono(text: string) {
+export function mono(text: string) {
     return `##${text}##`;
 }
 
-function bold(text: string) {
+export function bold(text: string) {
     return `**${text}**`;
 }
 
-function code(text: string, type = 'text', translate = false) {
+export function code(text: string, type = 'text', translate = false) {
     const appliedType = type && text.length <= 2000 ? type : 'text';
-    return (
-        EOL +
-        ['```' + appliedType + ` ${translate ? '' : 'translate=no'}`, text, '```'].join(EOL) +
-        EOL
-    );
+    return ['```' + appliedType + ` ${translate ? '' : 'translate=no'}`, text, '```'].join(EOL);
 }
 
-function method(text: string, path: string, server: V3Server) {
-    let result = `${text.toUpperCase()} {.openapi__method}`;
+export function method(text: string, path: string, server: Dereference<OpenAPIV3.ServerObject>) {
+    const method = `${text.toUpperCase()} {.openapi__method}`;
+    const link = code(server.url + '/' + path);
 
-    result += ` ${code(server.url + '/' + path)}` + EOL;
-
-    return result;
+    return [method, link].join(EOL);
 }
 
-/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-function table(data: any[][]) {
-    const sep = '__masked(&#124;)';
+export function cut(text: string, heading = '', attrs: string | string[] = '') {
+    if (Array.isArray(attrs)) {
+        attrs = attrs.join(' ');
+    }
 
-    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-    const colgen = (col: any) => {
-        const content = Array.isArray(col) ? table(col) : escapeTableColContent(` ${col} `);
-
-        return `${EOL}${content}${EOL}`;
-    };
-    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-    const rowgen = (row: any) => `${sep}${sep}${row.map(colgen).join(sep)}${sep}${sep}`;
-
-    return `#${sep}${block(data.map(rowgen))}${sep}#{.openapi-table}`;
+    return block([`{% cut "${heading}" %}${attrs ? `{${attrs}}` : ''}`, text, '{% endcut %}']);
 }
 
-function cut(text: string, heading = '', attrs = '') {
-    return (
-        block([`{% cut "${heading}" %}${attrs ? `{${attrs}}` : ''}`, text, '{% endcut %}']) + EOL
-    );
+export function block(elements: unknown[]) {
+    return elements
+        .filter((part) => typeof part === 'string' && part.trim().length > 0)
+        .join(BLOCK);
 }
 
-/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-function block(elements: any[]) {
-    return elements.filter(Boolean).join(BLOCK);
+export function nolint() {
+    return `<!-- markdownlint-disable-file -->`;
 }
 
-// https://stackoverflow.com/a/49834158
-function escapeTableColContent(cellContent: string) {
-    return cellContent.replace(/\|/gi, '<code>&#124;</code>');
+export function entity(content: string) {
+    return block(['<div class="openapi-entity">', content, '</div>']);
 }
 
-function page(content: string) {
-    return `${content}\n${HTML_COMMENTS_OPEN_DIRECTIVE} ${DISABLE_LINTER_DIRECTIVE} ${HTML_COMMENTS_CLOSE_DIRECTIVE}`;
-}
-
-function tabs(tabsObj: Record<string, string>) {
+export function tabs(tabsObj: Record<string, string>) {
     return block([
         '{% list tabs %}',
         Object.entries(tabsObj)
@@ -123,63 +107,30 @@ function tabs(tabsObj: Record<string, string>) {
     ]);
 }
 
-function anchor(ref: string, name?: string) {
+export function anchor(ref: string, name?: string) {
     return link(name || ref, `#${slugify(ref).toLowerCase()}`);
 }
 
-type ParameterNameProps = Partial<{
-    required: boolean;
-    deprecated: boolean;
-}>;
-function tableParameterName(key: string, {required, deprecated}: ParameterNameProps) {
-    let tableName = key;
+const content: Record<string, string> = {
+    [DEPRECATED_ANNOTATION]: DEPRECATED_POPUP_TEXT,
+};
 
-    if (required) {
-        tableName += `<span class="${openapiBlock('required')}">*</span>`;
+export function deprecated({compact = false} = {}) {
+    const classes = ['.openapi-deprecated', compact ? '.openapi-deprecated-compact' : ''].filter(
+        Boolean,
+    );
+
+    if (compact) {
+        return `_[ ](*${DEPRECATED_ANNOTATION})_{${classes.join(' ')}}`;
     }
 
-    if (deprecated) {
-        tableName += popups.deprecated({compact: true});
-    }
-
-    return tableName + ' {.openapi-table-parameter-name}';
+    return `[${DEPRECATED_ANNOTATION}](*${DEPRECATED_ANNOTATION}){${classes.join(' ')}}`;
 }
 
-export {
-    meta,
-    list,
-    link,
-    title,
-    body,
-    mono,
-    bold,
-    table,
-    code,
-    cut,
-    block,
-    page,
-    tabs,
-    anchor,
-    method,
-    tableParameterName,
-    openapiBlock,
-};
-
-export default {
-    meta,
-    list,
-    link,
-    title,
-    body,
-    mono,
-    bold,
-    table,
-    code,
-    cut,
-    block,
-    tabs,
-    anchor,
-    method,
-    tableParameterName,
-    openapiBlock,
-};
+export function terms(list: (keyof typeof content)[]) {
+    return block(
+        Object.entries(content)
+            .filter(([name]) => list.includes(name))
+            .map(([name, content]) => `[*${name}]: ${content}`),
+    );
+}

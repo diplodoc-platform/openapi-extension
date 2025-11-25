@@ -1,0 +1,145 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Endpoint parameter tables > should be omitted if all of their respective parameters are marked with \`x-hidden\` 1`] = `
+"<!-- markdownlint-disable-file -->
+
+<div class="openapi">
+
+# HiddenEndpointParameters
+
+## Request
+
+<div class="openapi__requests">
+
+<div class="openapi__request__wrapper" style="--method: var(--dc-openapi-methods-post);margin-bottom: 12px">
+
+<div class="openapi__request">
+
+POST {.openapi__method}
+\`\`\`text translate=no
+http://localhost:8080/test
+\`\`\`
+
+</div>
+
+Generated server url
+
+</div>
+
+</div>
+
+### Cookies
+
+#|
+|| **Name** | **Description** ||
+||
+
+_accessToken_{.json-schema-reset .json-schema-property}
+{.table-cell}|
+**Type**: string
+
+Access token
+
+_Example:_{.json-schema-reset .json-schema-example} \`\`
+{.table-cell}
+||
+|#{.json-schema-properties}
+
+## Responses
+
+<div class="openapi__response__code__204">
+
+## 204 No Content
+
+<div class="openapi-entity">
+
+### Body
+
+{% cut "application/json" %}
+
+\`null\`
+
+{% endcut %}
+
+**Type**: unknown
+
+</div>
+
+</div>
+
+</div>
+
+[*Deprecated]: No longer supported, please use an alternative and newer version."
+`;
+
+exports[`Endpoint parameter tables > should not include parameters marked with \`x-hidden\` in the spec 1`] = `
+"<!-- markdownlint-disable-file -->
+
+<div class="openapi">
+
+# HiddenEndpointParameters
+
+## Request
+
+<div class="openapi__requests">
+
+<div class="openapi__request__wrapper" style="--method: var(--dc-openapi-methods-post);margin-bottom: 12px">
+
+<div class="openapi__request">
+
+POST {.openapi__method}
+\`\`\`text translate=no
+http://localhost:8080/test
+\`\`\`
+
+</div>
+
+Generated server url
+
+</div>
+
+</div>
+
+### Query parameters
+
+#|
+|| **Name** | **Description** ||
+||
+
+_name_{.json-schema-reset .json-schema-property}
+{.table-cell}|
+**Type**: string
+
+Name for the requested star
+
+_Example:_{.json-schema-reset .json-schema-example} \`\`
+{.table-cell}
+||
+|#{.json-schema-properties}
+
+## Responses
+
+<div class="openapi__response__code__204">
+
+## 204 No Content
+
+<div class="openapi-entity">
+
+### Body
+
+{% cut "application/json" %}
+
+\`null\`
+
+{% endcut %}
+
+**Type**: unknown
+
+</div>
+
+</div>
+
+</div>
+
+[*Deprecated]: No longer supported, please use an alternative and newer version."
+`;

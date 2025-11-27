@@ -1,5 +1,16 @@
 # Changelog
 
+## [4.0.0](https://github.com/diplodoc-platform/openapi-extension/compare/v3.1.0...v4.0.0) (2025-11-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* updated to UIKit 7.26.0 ([#101](https://github.com/diplodoc-platform/openapi-extension/issues/101))
+
+### Features
+
+* updated to UIKit 7.26.0 ([#101](https://github.com/diplodoc-platform/openapi-extension/issues/101)) ([a7bebc9](https://github.com/diplodoc-platform/openapi-extension/commit/a7bebc91aaaa297a71d18ec6edcac0a2219f20b9))
+
 ## [3.1.0](https://github.com/diplodoc-platform/openapi-extension/compare/v3.0.0...v3.1.0) (2025-11-01)
 
 

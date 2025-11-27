@@ -109,6 +109,6 @@
   "homepage": "https://github.com/diplodoc-platform/openapi-extension#readme",
   "repository": {
     "type": "git",
-    "url": "git@https://github.com/diplodoc-platform/openapi-extension.git"
+    "url": "git@github.com:diplodoc-platform/openapi-extension.git"
   }
 }

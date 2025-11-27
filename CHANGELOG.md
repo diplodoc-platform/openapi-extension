@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.0](https://github.com/diplodoc-platform/openapi-extension/compare/v4.0.0...v4.0.0) (2025-11-27)
+
+
+### chore
+
+* trigger release 4.0.0 ([#109](https://github.com/diplodoc-platform/openapi-extension/issues/109)) ([eb7835b](https://github.com/diplodoc-platform/openapi-extension/commit/eb7835b83d30cf350b9a04dcf65f43b0d07dc7e3))
+
 ## [4.0.0](https://github.com/diplodoc-platform/openapi-extension/compare/v3.1.0...v4.0.0) (2025-11-27)
 
 

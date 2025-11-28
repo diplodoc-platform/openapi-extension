@@ -149,6 +149,32 @@ describe('renderExamples', () => {
         `);
     });
 
+    it('coerces property example to match string type when building object example', () => {
+        const schema: JSONSchema = {
+            type: 'object',
+            properties: {
+                field: {
+                    type: 'string',
+                    // YAML parser could parse `example: 10` as number
+                    // but resulting object example should still contain a string.
+                    example: 10 as unknown as string,
+                },
+            },
+        };
+
+        expect(renderExamples(schema, createContext())).toBe(dedent`
+          {% cut "**Example**" %}{.json-schema-example}
+
+          \`\`\`json translate=no
+          {
+            "field": "10"
+          }
+          \`\`\`
+
+          {% endcut %}
+        `);
+    });
+
     it('skips examples for boolean schemas', () => {
         const schema: JSONSchema = {type: 'boolean'};
 

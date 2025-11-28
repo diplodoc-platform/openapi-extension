@@ -432,6 +432,22 @@ function generateExampleInternal(
 
     const direct = pickDirectExample(schema);
     if (direct !== undefined) {
+        const type = inferType(schema);
+
+        // Respect declared type when direct example has different JS type.
+        // For example, for string properties with `example: 10` (parsed as number)
+        // we still want `"10"` in generated object examples.
+        if (type === 'string' && typeof direct !== 'string') {
+            return String(direct);
+        }
+
+        if ((type === 'number' || type === 'integer') && typeof direct === 'string') {
+            const numeric = Number(direct);
+            if (!Number.isNaN(numeric)) {
+                return numeric;
+            }
+        }
+
         return direct;
     }
 

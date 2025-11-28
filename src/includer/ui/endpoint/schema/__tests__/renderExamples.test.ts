@@ -193,6 +193,15 @@ describe('renderExamples', () => {
         expect(renderExamples(schema, createContext())).toBe('');
     });
 
+    it('skips examples for defaults', () => {
+        const schema: JSONSchema = {
+            type: 'string',
+            default: 'test',
+        };
+
+        expect(renderExamples(schema, createContext())).toBe('');
+    });
+
     it('skips examples for string enums', () => {
         const schema: JSONSchema = {
             type: 'string',
@@ -200,5 +209,58 @@ describe('renderExamples', () => {
         };
 
         expect(renderExamples(schema, createContext())).toBe('');
+    });
+
+    it('uses default when generating example for object', () => {
+        const schema: JSONSchema = {
+            type: 'object',
+            properties: {
+                name: {
+                    type: 'string',
+                    default: 'John',
+                },
+                age: {
+                    type: 'integer',
+                    default: 42,
+                },
+            },
+        };
+
+        expect(renderExamples(schema, createContext())).toBe(dedent`
+          {% cut "**Example**" %}{.json-schema-example}
+
+          \`\`\`json translate=no
+          {
+            "name": "John",
+            "age": 42
+          }
+          \`\`\`
+
+          {% endcut %}
+        `);
+    });
+
+    it('uses const when generating example for object', () => {
+        const schema: JSONSchema = {
+            type: 'object',
+            properties: {
+                status: {
+                    type: 'string',
+                    const: 'fixed',
+                },
+            },
+        };
+
+        expect(renderExamples(schema, createContext())).toBe(dedent`
+          {% cut "**Example**" %}{.json-schema-example}
+
+          \`\`\`json translate=no
+          {
+            "status": "fixed"
+          }
+          \`\`\`
+
+          {% endcut %}
+        `);
     });
 });

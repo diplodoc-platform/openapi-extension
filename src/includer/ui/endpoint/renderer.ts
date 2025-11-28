@@ -66,6 +66,8 @@ export class Renderer {
         const results = [];
 
         let refs = this._pendingRefs(mode);
+        this.linkedRefs = new Set();
+
         while (refs.length) {
             for (const refId of refs) {
                 const ref = this._resolveRef(refId);

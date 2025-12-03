@@ -80,8 +80,8 @@ export function renderAnyOf(schema: JSONSchema, context: RenderContext): string 
 export function hasCombinators(schema: JSONSchema): boolean {
     return Boolean(
         (schema.oneOf && schema.oneOf.length > 0) ||
-            (schema.allOf && schema.allOf.length > 0) ||
-            (schema.anyOf && schema.anyOf.length > 0),
+        (schema.allOf && schema.allOf.length > 0) ||
+        (schema.anyOf && schema.anyOf.length > 0),
     );
 }
 

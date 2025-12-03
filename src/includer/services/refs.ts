@@ -189,20 +189,15 @@ export class RefsService {
     private async load(refId: string, root: string) {
         const [path, anchor] = refId.split('#');
         const file = path ? join(dirname(root), path) : root;
-        const key = file.replace(this._root, '');
 
-        if (!path || path === root) {
-            assertAccessible(root, key, this._files[key] as Record<string, unknown>, anchor);
-            return `${key}#${anchor}`;
+        if (!this._files[file]) {
+            this._files[file] = load(await this._run.read(file));
+            await this.resolve(this._files[file] as object, file);
         }
 
-        if (!this._files[key]) {
-            this._files[key] = load(await this._run.read(file));
-            await this.resolve(this._files[key] as object, file);
-            assertAccessible(root, key, this._files[key] as Record<string, unknown>, anchor);
-        }
+        assertAccessible(root, file, this._files[file] as Record<string, unknown>, anchor);
 
-        return `${key}#${anchor}`;
+        return `${file}#${anchor}`;
     }
 }
 

@@ -1,5 +1,28 @@
 # Changelog
 
+## [4.0.0](https://github.com/diplodoc-platform/openapi-extension/compare/v4.0.0...v4.0.0) (2025-12-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* Replace json schema renderer
+
+### chore
+
+* trigger release 4.0.0 ([#109](https://github.com/diplodoc-platform/openapi-extension/issues/109)) ([eb7835b](https://github.com/diplodoc-platform/openapi-extension/commit/eb7835b83d30cf350b9a04dcf65f43b0d07dc7e3))
+
+
+### Features
+
+* Replace json schema renderer ([553d38f](https://github.com/diplodoc-platform/openapi-extension/commit/553d38f7b3bdf74461a922d6c475054ab68706c4))
+
+
+### Bug Fixes
+
+* Fix deps ([85c670d](https://github.com/diplodoc-platform/openapi-extension/commit/85c670de023a21fa96dce4be74d201e67bf618d5))
+* Fix rendering shcema bugs ([de24461](https://github.com/diplodoc-platform/openapi-extension/commit/de24461ad8357243fbc1bb3245decfae35a51d4e))
+* Fix sandbox empty security rendering ([eee6d22](https://github.com/diplodoc-platform/openapi-extension/commit/eee6d2271df6365af7a8a5d6d260bec39ab58a05))
+
 ## [4.0.0](https://github.com/diplodoc-platform/openapi-extension/compare/v3.1.0...v4.0.0) (2025-11-27)
 
 

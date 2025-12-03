@@ -69,7 +69,7 @@ export class RefsService {
 
             if ($ref in item) {
                 const [path] = (item[$ref] as string).split('#');
-                root = join(dirname(root), path);
+                root = path ? join(dirname(root), path) : root;
             }
 
             if (Array.isArray(item)) {

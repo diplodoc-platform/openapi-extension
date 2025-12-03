@@ -35,13 +35,13 @@ export function endpoint(
 
     const endpointPage = block([
         title(1)(data.summary ?? data.id),
+        nolint(),
         data.deprecated && deprecated(),
         contentWrapper(block([data.description, render.request(data), render.responses(data)])),
     ]);
 
     return block([
         meta([data.noindex && 'noIndex: true']),
-        nolint(),
         openapi(endpointPage),
         terms(['Deprecated']),
     ]).trim();

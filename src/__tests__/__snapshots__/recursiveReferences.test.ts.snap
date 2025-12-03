@@ -1,11 +1,11 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Recursive references in schemas > resulting in a cycle between two components are able to be handled by the includer 1`] = `
-"<!-- markdownlint-disable-file -->
-
-<div class="openapi">
+"<div class="openapi">
 
 # recursiveReferences
+
+<!-- markdownlint-disable-file -->
 
 ## Request
 
@@ -126,11 +126,11 @@ _B_{.json-schema-reset .json-schema-property}
 `;
 
 exports[`Recursive references in schemas > resulting in a trivial self-referential cycle are able to be handled by the includer 1`] = `
-"<!-- markdownlint-disable-file -->
-
-<div class="openapi">
+"<div class="openapi">
 
 # recursiveReferences
+
+<!-- markdownlint-disable-file -->
 
 ## Request
 
@@ -204,11 +204,11 @@ _A_{.json-schema-reset .json-schema-property}
 `;
 
 exports[`Recursive references in schemas > where the cycle itself is not trivially referenced are able to be handled by the includer 1`] = `
-"<!-- markdownlint-disable-file -->
-
-<div class="openapi">
+"<div class="openapi">
 
 # recursiveReferences
+
+<!-- markdownlint-disable-file -->
 
 ## Request
 

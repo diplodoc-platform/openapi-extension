@@ -1,11 +1,11 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Endpoint parameter tables > should be omitted if all of their respective parameters are marked with \`x-hidden\` 1`] = `
-"<!-- markdownlint-disable-file -->
-
-<div class="openapi">
+"<div class="openapi">
 
 # HiddenEndpointParameters
+
+<!-- markdownlint-disable-file -->
 
 ## Request
 
@@ -73,11 +73,11 @@ _Example:_{.json-schema-reset .json-schema-example} \`\`
 `;
 
 exports[`Endpoint parameter tables > should not include parameters marked with \`x-hidden\` in the spec 1`] = `
-"<!-- markdownlint-disable-file -->
-
-<div class="openapi">
+"<div class="openapi">
 
 # HiddenEndpointParameters
+
+<!-- markdownlint-disable-file -->
 
 ## Request
 

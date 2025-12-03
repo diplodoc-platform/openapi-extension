@@ -1,11 +1,11 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`required > renders correct required 1`] = `
-"<!-- markdownlint-disable-file -->
-
-<div class="openapi">
+"<div class="openapi">
 
 # required
+
+<!-- markdownlint-disable-file -->
 
 ## Request
 

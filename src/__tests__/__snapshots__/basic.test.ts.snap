@@ -1,11 +1,11 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`basic openapi project > renders description 1`] = `
-"<!-- markdownlint-disable-file -->
-
-<div class="openapi">
+"<div class="openapi">
 
 # basic
+
+<!-- markdownlint-disable-file -->
 
 ## Request
 

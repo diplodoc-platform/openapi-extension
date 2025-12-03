@@ -1,11 +1,11 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Properties in object schemas marked with \`x-hidden\` > should not be rendered in the resulting markdown 1`] = `
-"<!-- markdownlint-disable-file -->
-
-<div class="openapi">
+"<div class="openapi">
 
 # HiddenObjectProperties
+
+<!-- markdownlint-disable-file -->
 
 ## Request
 
@@ -123,11 +123,11 @@ _Example:_{.json-schema-reset .json-schema-example} \`example\`
 `;
 
 exports[`Properties in object schemas marked with readOnly/writeOnly > should be filtered in request/response 1`] = `
-"<!-- markdownlint-disable-file -->
-
-<div class="openapi">
+"<div class="openapi">
 
 # HiddenObjectProperties
+
+<!-- markdownlint-disable-file -->
 
 ## Request
 

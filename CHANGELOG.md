@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.0.2](https://github.com/diplodoc-platform/openapi-extension/compare/v5.0.1...v5.0.2) (2025-12-03)
+
+
+### Bug Fixes
+
+* Fix ref file loading ([6908624](https://github.com/diplodoc-platform/openapi-extension/commit/690862462f605c427f0d092af8298b7b391141e3))
+* Fix transform autotitle resolfing ([e2511c3](https://github.com/diplodoc-platform/openapi-extension/commit/e2511c3bdad8456fd9c14a3a00ea0496f1000aac))
+
 ## [5.0.1](https://github.com/diplodoc-platform/openapi-extension/compare/v5.0.0...v5.0.1) (2025-12-03)
 
 

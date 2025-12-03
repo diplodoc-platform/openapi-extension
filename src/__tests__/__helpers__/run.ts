@@ -147,7 +147,7 @@ export async function run(spec: string, options: Partial<OpenApiIncluderParams> 
     } catch (error) {
         try {
             nodeFS.unlinkSync(tempFilePath);
-        } catch (e) {}
+        } catch {}
         throw error;
     }
 

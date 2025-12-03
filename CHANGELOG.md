@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.0.1](https://github.com/diplodoc-platform/openapi-extension/compare/v5.0.0...v5.0.1) (2025-12-03)
+
+
+### Bug Fixes
+
+* Normalize local $ref paths ([0bdfd39](https://github.com/diplodoc-platform/openapi-extension/commit/0bdfd3913aa93dfcbc14674ab0910a3ac0798cf0))
+
 ## [5.0.0](https://github.com/diplodoc-platform/openapi-extension/compare/v4.0.0...v5.0.0) (2025-12-03)
 
 

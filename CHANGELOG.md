@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.0.3](https://github.com/diplodoc-platform/openapi-extension/compare/v5.0.2...v5.0.3) (2025-12-05)
+
+
+### Bug Fixes
+
+* Split main page rendering ([3fcdd2d](https://github.com/diplodoc-platform/openapi-extension/commit/3fcdd2de7ec89abeecfc7b2f5e54f57e66a24bc2))
+
 ## [5.0.2](https://github.com/diplodoc-platform/openapi-extension/compare/v5.0.1...v5.0.2) (2025-12-03)
 
 

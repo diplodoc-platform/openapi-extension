@@ -3,7 +3,9 @@ import type {
     Dereference,
     OpenApiIncluderParams,
     Run,
+    Specification,
     V3Endpoint,
+    V3Info,
     YfmPreset,
     YfmTocItem,
 } from './models';
@@ -91,6 +93,11 @@ export async function includer(run: Run, params: OpenApiIncluderParams, tocPath:
             },
         })) as Dereference<OpenAPIV3.Document>;
 
+        const mergedData = (await parser.validate(contentPath, {
+            validate: {spec: true},
+            mutateInputSchema: false,
+        })) as OpenAPIV3.Document;
+
         const ctx: Context = {
             params,
             vars,
@@ -103,8 +110,13 @@ export async function includer(run: Run, params: OpenApiIncluderParams, tocPath:
 
         await ctx.refs.resolve(data);
 
+        const spec = filterSpec(data, ctx);
+        const info = parsers.info(data);
         const toc = generateToc(data, ctx);
-        const files = generateContent(data, ctx);
+        const files = [
+            generateMainPage(mergedData, spec, info, ctx),
+            ...generateContent(spec, ctx),
+        ].filter(Boolean) as {path: string; content: string}[];
 
         return {toc, files};
     } catch (error) {
@@ -213,17 +225,9 @@ type EndpointRoute = {
     content: string;
 };
 
-/**
- * Produces a flat list of Markdown files for:
- * - main (root) page,
- * - tag section pages,
- * - individual endpoint pages (tagged and untagged).
- */
-function generateContent(data: Dereference<OpenAPIV3.Document>, ctx: Context): EndpointRoute[] {
+function filterSpec(data: Dereference<OpenAPIV3.Document>, ctx: Context) {
     const {vars, params} = ctx;
-    const {input, leadingPage, filter, noindex, hidden, sandbox} = params;
-    const contentPath = ctx.relative(input);
-    const customLeadingPageDir = dirname(contentPath);
+    const {filter, noindex, hidden} = params;
 
     const filterContent = filterUsefulContent(filter, vars);
     const applyNoindex = matchFilter(noindex || {}, vars, (endpoint) => {
@@ -234,13 +238,7 @@ function generateContent(data: Dereference<OpenAPIV3.Document>, ctx: Context): E
         endpoint.hidden = true;
     });
 
-    const leadingPageSpecRenderMode = leadingPage?.spec?.renderMode ?? SPEC_RENDER_MODE_DEFAULT;
-    assertSpecRenderMode(leadingPageSpecRenderMode);
-
-    const results: EndpointRoute[] = [];
-
-    const info = parsers.info(data);
-    let spec = parsers.paths(data, parsers.tags(data));
+    const spec = parsers.paths(data, parsers.tags(data));
 
     if (noindex) {
         applyNoindex(spec);
@@ -250,20 +248,51 @@ function generateContent(data: Dereference<OpenAPIV3.Document>, ctx: Context): E
         applyHidden(spec);
     }
 
-    spec = filterContent(spec);
+    return filterContent(spec);
+}
+
+function generateMainPage(
+    data: OpenAPIV3.Document,
+    spec: Specification,
+    info: V3Info,
+    ctx: Context,
+) {
+    const {params} = ctx;
+    const {input, leadingPage} = params;
+    const customLeadingPageDir = dirname(ctx.relative(input));
+
+    const leadingPageSpecRenderMode = leadingPage?.spec?.renderMode ?? SPEC_RENDER_MODE_DEFAULT;
+    assertSpecRenderMode(leadingPageSpecRenderMode);
 
     const root = ctx.tag('__root__');
 
-    if (!root?.hidden) {
-        const mainContent = root?.path
-            ? readFileSync(join(customLeadingPageDir, root.path)).toString()
-            : generators.main({data, info, spec, leadingPageSpecRenderMode}, ctx);
-
-        results.push({
-            path: 'index.md',
-            content: mainContent,
-        });
+    if (root?.hidden) {
+        return;
     }
+
+    const mainContent = root?.path
+        ? readFileSync(join(customLeadingPageDir, root.path)).toString()
+        : generators.main({data, info, spec, leadingPageSpecRenderMode}, ctx);
+
+    return {
+        path: 'index.md',
+        content: mainContent,
+    };
+}
+
+/**
+ * Produces a flat list of Markdown files for:
+ * - main (root) page,
+ * - tag section pages,
+ * - individual endpoint pages (tagged and untagged).
+ */
+function generateContent(spec: Specification, ctx: Context): EndpointRoute[] {
+    const {params} = ctx;
+    const {input, sandbox} = params;
+    const contentPath = ctx.relative(input);
+    const customLeadingPageDir = dirname(contentPath);
+
+    const results: EndpointRoute[] = [];
 
     spec.tags.forEach((tag, id) => {
         const {endpoints} = tag;

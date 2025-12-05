@@ -81,6 +81,10 @@ export class RefsService {
                     item.$ref = await this.load(item.$ref, root);
                 }
 
+                if ('$ref' in item && typeof item.$ref !== 'string') {
+                    delete item.$ref;
+                }
+
                 for (const value of Object.values(item)) {
                     await visit(value, root);
                 }

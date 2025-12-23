@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.0.4](https://github.com/diplodoc-platform/openapi-extension/compare/v5.0.3...v5.0.4) (2025-12-23)
+
+
+### Bug Fixes
+
+* Infer object and array types in normalizeSchema ([6e3185b](https://github.com/diplodoc-platform/openapi-extension/commit/6e3185b83a17a672ee09aac3b54006db71e43e9f))
+
 ## [5.0.3](https://github.com/diplodoc-platform/openapi-extension/compare/v5.0.2...v5.0.3) (2025-12-05)
 
 

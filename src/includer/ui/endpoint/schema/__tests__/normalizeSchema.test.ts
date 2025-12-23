@@ -280,4 +280,60 @@ describe('normalizeSchema', () => {
 
         expect(normalized.deprecated).toBeUndefined();
     });
+
+    it('infers object type when schema has properties but no explicit type', () => {
+        const schema: JSONSchema = {
+            description: 'Обёртка над геосегментом',
+            properties: {
+                segment: {
+                    $ref: '#/components/schemas/CircleGeoSegment',
+                },
+            },
+        };
+
+        const normalized = normalizeSchema(schema);
+
+        expect(normalized.type).toBe('object');
+        expect(normalized.properties).toEqual(schema.properties);
+    });
+
+    it('infers object type when schema only defines additionalProperties', () => {
+        const schema: JSONSchema = {
+            description: 'Карта произвольных значений',
+            additionalProperties: {
+                type: 'string',
+            },
+        };
+
+        const normalized = normalizeSchema(schema);
+
+        expect(normalized.type).toBe('object');
+        expect(normalized.additionalProperties).toEqual(schema.additionalProperties);
+    });
+
+    it('infers array type when schema has items but no explicit type', () => {
+        const schema: JSONSchema = {
+            description: 'Массив строк',
+            items: {
+                type: 'string',
+            },
+        };
+
+        const normalized = normalizeSchema(schema);
+
+        expect(normalized.type).toBe('array');
+        expect(normalized.items).toEqual(schema.items);
+    });
+
+    it('infers array type when schema defines tuple items but no explicit type', () => {
+        const schema: JSONSchema = {
+            description: 'Кортеж значений',
+            items: [{type: 'string'}, {type: 'integer'}],
+        };
+
+        const normalized = normalizeSchema(schema);
+
+        expect(normalized.type).toBe('array');
+        expect(normalized.items).toEqual(schema.items);
+    });
 });

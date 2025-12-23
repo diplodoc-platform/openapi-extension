@@ -326,6 +326,27 @@ export function normalizeSchema(schema: JSONSchema, options: NormalizeOptions = 
     normalized = normalizeCombinators(normalized, options);
     normalized = normalizeNestedSchemas(normalized, options);
 
+    // Softly infer `type: 'object'` for schemas that clearly behave like objects
+    // but do not declare the type explicitly (common in some OpenAPI specs).
+    if (
+        normalized.type === undefined &&
+        (normalized.properties || normalized.additionalProperties || normalized.patternProperties)
+    ) {
+        normalized = {
+            ...normalized,
+            type: 'object',
+        };
+    }
+
+    // Softly infer `type: 'array'` for schemas that define `items` but do not
+    // declare the type explicitly.
+    if (normalized.type === undefined && normalized.items !== undefined) {
+        normalized = {
+            ...normalized,
+            type: 'array',
+        };
+    }
+
     if (!normalized.deprecated && allCombinatorVariantsDeprecated(normalized)) {
         normalized = {
             ...normalized,

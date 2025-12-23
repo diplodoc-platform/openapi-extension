@@ -26,10 +26,12 @@ Without clear boundaries, it becomes easy to:
 We explicitly separate processing into **independent stages** and **independent modules**:
 
 1. **Specification loading & parsing**
+
    - Responsibility: read raw OpenAPI documents (YAML/JSON), resolve includes/refs on the file level where applicable.
    - Output: an in-memory representation close to the original spec (including version info and vendor extensions).
 
 2. **Normalization layer**
+
    - Responsibility: convert raw OpenAPI data into internal, normalized structures that are:
      - version-agnostic where possible (OpenAPI 3.x vs 2.0),
      - consistent in how operations, parameters, request/response bodies, and components are represented,
@@ -37,6 +39,7 @@ We explicitly separate processing into **independent stages** and **independent 
    - This layer **does not render** anything. It prepares data for both OpenAPI and JSON Schema renderers.
 
 3. **OpenAPI rendering**
+
    - Responsibility: render high-level OpenAPI concepts:
      - operations/endpoints (method + path),
      - tags and groups,
@@ -46,6 +49,7 @@ We explicitly separate processing into **independent stages** and **independent 
    - Rendering uses normalized data from step 2 and is **independent** from the JSON Schema rendering module.
 
 4. **JSON Schema rendering**
+
    - Responsibility: render JSON Schemas referenced from the OpenAPI document:
      - request/response bodies,
      - parameters with schema,
@@ -62,6 +66,7 @@ We explicitly separate processing into **independent stages** and **independent 
   Rendering functions and React components may assume that data has already been normalized according to this ADR.
 
 - **OpenAPI renderer and JSON Schema renderer are independent modules.**
+
   - JSON Schema rendering must stay reusable outside of OpenAPI context.
   - OpenAPI rendering should treat JSON Schema rendering as a black box with a clear interface.
 

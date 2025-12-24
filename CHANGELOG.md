@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.0.5](https://github.com/diplodoc-platform/openapi-extension/compare/v5.0.4...v5.0.5) (2025-12-24)
+
+
+### Bug Fixes
+
+* **config:** exclude build and esbuild directories from TypeScript compilation ([70f0434](https://github.com/diplodoc-platform/openapi-extension/commit/70f0434b191d4ca2f5197b9122b69b58cda0fba4))
+* **schema:** prevent duplicate examples and description in combinator-based arrays ([ffa55bd](https://github.com/diplodoc-platform/openapi-extension/commit/ffa55bd018d382dda88e72558c91d8e798b3b98a))
+* **schema:** render type labels in combinator variants ([4e7fefa](https://github.com/diplodoc-platform/openapi-extension/commit/4e7fefa93b20e5fadd293ee93f2aa45f9577418d))
+
 ## [5.0.4](https://github.com/diplodoc-platform/openapi-extension/compare/v5.0.3...v5.0.4) (2025-12-23)
 
 

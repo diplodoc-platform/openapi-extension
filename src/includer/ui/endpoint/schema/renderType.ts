@@ -1,5 +1,7 @@
 import type {JSONSchema, OrderedProperty, PrimitiveType, RenderContext} from './jsonSchema';
 
+import omit from 'lodash/omit';
+
 import {block, cut, deprecated} from '../../common';
 import {isPrimitiveType} from '../utils';
 
@@ -266,6 +268,7 @@ function renderArrayType(
     context: RenderContext,
     typeOptions: RenderTypeOptions,
 ): string {
+    const {i18n} = context;
     let suffix = typeOptions.suffix || '';
     let target: JSONSchema | undefined = schema;
     let depth = 0;
@@ -285,11 +288,49 @@ function renderArrayType(
     suffix += '[]'.repeat(depth);
 
     if (encounteredTuple) {
-        const {i18n} = context;
         const typeValue = formatTypeValue('unknown', schema, suffix);
         return `**${i18n.type}**: ${typeValue}`;
     }
 
     const rendered = renderType(target, context, {suffix});
+
+    if (rendered.trim() === '') {
+        // Fallback for arrays whose items are defined only via combinators (`oneOf`/`allOf`/`anyOf`)
+        // without an explicit type: render a cut block with a generic `array` label
+        // and delegate detailed rendering of the array schema (excluding type block) to show
+        // combinators, description, examples, etc. Examples will be shown once inside the cut,
+        // not duplicated on the top level or in each combinator variant.
+        const baseTypeLabel = addNullableVariant('array', schema);
+        const typeLabel = `**${i18n.type}**: ${baseTypeLabel}`;
+
+        const nestedContext = context.clone({
+            suppressTitle: true,
+            expandType: 'titled',
+        });
+
+        // Render the full array schema, but skip the type block (already rendered in cut title)
+        // Examples and description should NOT be rendered at the array cut level for combinator-based arrays
+        // They should be rendered at the table cell level (when array is a property) or in variants
+        // We need to render items.oneOf as if it were schema.oneOf for combinators to work
+        // Remove type, example, examples, and description to avoid rendering them at the array level
+        const schemaWithCombinators = {
+            ...omit(schema, ['type', 'example', 'examples', 'description']),
+            oneOf: target?.oneOf,
+            allOf: target?.allOf,
+            anyOf: target?.anyOf,
+        };
+
+        // Render combinators, values, assertions, but NOT examples and description
+        // Examples and description should be rendered at the table cell level (when array is a property)
+        // or within each oneOf variant, not at the array cut level
+        const nestedOptions = nestedContext.toOptions();
+        const content = context.renderSchema(schemaWithCombinators, {
+            ...nestedOptions,
+            blocks: ['combinators', 'values', 'assertions'],
+        });
+
+        return cut(content, typeLabel);
+    }
+
     return applyNullableToRenderedOutput(rendered, schema);
 }

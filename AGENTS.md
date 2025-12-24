@@ -47,11 +47,13 @@ The `src/` directory is split into three main areas with different responsibilit
 ## TypeScript & React specifics
 
 - **Follow existing structure**
+
   - Keep one main responsibility per file.
   - Prefer pure functions and early returns.
   - Use descriptive variable names; avoid single‑letter names except for trivial loop indices.
 
 - **Types**
+
   - Prefer explicit `import type { ... }` for types.
   - Avoid `any`, prefer `unknown` + narrowing.
   - Extract named interfaces/types for non‑trivial shapes.
@@ -84,6 +86,12 @@ The `src/` directory is split into three main areas with different responsibilit
 - **No network or external API assumptions**  
   Do not add logic that relies on external network calls from this package.
 
+- **Use lodash utilities when available**  
+  The package includes `lodash`. Prefer importing specific functions (e.g., `import omit from 'lodash/omit'`) rather than the full library. Use lodash utilities for common operations like object manipulation instead of manual destructuring when it improves readability.
+
+- **Control rendering blocks explicitly**  
+  When using `renderSchema`, use the `blocks` parameter to explicitly control which blocks are rendered (e.g., `['combinators', 'values', 'assertions']`). This prevents unwanted duplication of content like examples or descriptions at different nesting levels.
+
 ## Documentation
 
 - **Update docs when behavior changes**  
@@ -91,6 +99,11 @@ The `src/` directory is split into three main areas with different responsibilit
 
 - **Explain non‑obvious decisions**  
   When adding complex logic, include a short English comment focusing on _why_ the decision is made, not _what_ the code does.
+
+## Git & commits
+
+- **Use conventional commits format**  
+  Commit messages should follow the conventional commits format: `type(scope): subject`. Use `fix` for bug fixes, `feat` for new features, `refactor` for code improvements, etc. Include scope when it helps clarify the area of change (e.g., `fix(schema): ...`).
 
 ## Safety checklist for agents
 

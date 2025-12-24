@@ -39,11 +39,11 @@ function renderCombinatorList(
         .map((variant) => {
             // Suppress title and table headers in variant rendering
             // Examples should be rendered for each variant (and in nested schemas)
-            // Use expandType: true to fully expand variant schemas including examples
+            // Use expandType: 'titled' to render type label before expanded content
             const variantContext = context.clone({
                 suppressTitle: false,
                 suppressTableHeaders: true,
-                expandType: true,
+                expandType: 'titled',
             });
             const rendered = context.renderSchema(variant, variantContext.toOptions());
             const lines = rendered.trimEnd().split('\n');
@@ -82,8 +82,8 @@ export function renderAnyOf(schema: JSONSchema, context: RenderContext): string 
 export function hasCombinators(schema: JSONSchema): boolean {
     return Boolean(
         (schema.oneOf && schema.oneOf.length > 0) ||
-            (schema.allOf && schema.allOf.length > 0) ||
-            (schema.anyOf && schema.anyOf.length > 0),
+        (schema.allOf && schema.allOf.length > 0) ||
+        (schema.anyOf && schema.anyOf.length > 0),
     );
 }
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.0.6](https://github.com/diplodoc-platform/openapi-extension/compare/v5.0.5...v5.0.6) (2025-12-25)
+
+
+### Bug Fixes
+
+* **renderer:** render combinators (allOf/oneOf/anyOf) in response body schemas ([138f281](https://github.com/diplodoc-platform/openapi-extension/commit/138f281e28473863912379b2fad0c3bdf1148d13))
+
 ## [5.0.5](https://github.com/diplodoc-platform/openapi-extension/compare/v5.0.4...v5.0.5) (2025-12-24)
 
 

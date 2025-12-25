@@ -124,7 +124,7 @@ function normalizeSchemaMap(
 
     const filtered = Object.fromEntries(
         Object.entries(map)
-            .filter(([, value]) => !(value as JSONSchema & {'x-hidden'?: boolean})['x-hidden'])
+            .filter(([, value]) => !value['x-hidden'])
             .map(([key, value]) => [key, normalizeSchema(value, options)]),
     );
 

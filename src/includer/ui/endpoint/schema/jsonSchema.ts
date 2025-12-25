@@ -13,6 +13,7 @@ export interface JSONSchema {
     nullable?: boolean;
     readOnly?: boolean;
     writeOnly?: boolean;
+    'x-hidden'?: boolean;
     properties?: Record<string, JSONSchema>;
     additionalProperties?: boolean | JSONSchema;
     patternProperties?: Record<string, JSONSchema>;

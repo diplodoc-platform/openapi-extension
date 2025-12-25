@@ -1,5 +1,18 @@
 # Changelog
 
+## [5.1.0](https://github.com/diplodoc-platform/openapi-extension/compare/v5.0.7...v5.1.0) (2025-12-25)
+
+
+### Features
+
+* **normalize:** filter out properties with x-hidden during normalization ([91c44e0](https://github.com/diplodoc-platform/openapi-extension/commit/91c44e0dc9e9fae66c52180f0751a6ad2125353c))
+
+
+### Bug Fixes
+
+* **examples:** combine examples from all allOf variants ([01c8ee4](https://github.com/diplodoc-platform/openapi-extension/commit/01c8ee4a50812a55e08838987212287a7d91f3b1))
+* **types:** add x-hidden property to JSONSchema interface ([2befd35](https://github.com/diplodoc-platform/openapi-extension/commit/2befd353f4eb1e83f0e1057694f94566cea3a08e))
+
 ## [5.0.8](https://github.com/diplodoc-platform/openapi-extension/compare/v5.0.7...v5.0.8) (2025-12-25)
 
 

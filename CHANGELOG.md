@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.0.7](https://github.com/diplodoc-platform/openapi-extension/compare/v5.0.6...v5.0.7) (2025-12-25)
+
+
+### Bug Fixes
+
+* update common.ts formatting ([c689617](https://github.com/diplodoc-platform/openapi-extension/commit/c689617f31e6c9d33ec6f2030fddcf34b5b9f0f1))
+
 ## [5.0.6](https://github.com/diplodoc-platform/openapi-extension/compare/v5.0.5...v5.0.6) (2025-12-25)
 
 

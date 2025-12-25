@@ -263,4 +263,52 @@ describe('renderExamples', () => {
           {% endcut %}
         `);
     });
+
+    it('combines examples from all allOf variants', () => {
+        const schema: JSONSchema = {
+            type: 'object',
+            allOf: [
+                {
+                    type: 'object',
+                    properties: {
+                        type: {
+                            type: 'string',
+                            enum: ['SUPPLY', 'WITHDRAW'],
+                        },
+                    },
+                },
+                {
+                    type: 'object',
+                    properties: {
+                        result: {
+                            type: 'object',
+                            properties: {
+                                requests: {
+                                    type: 'array',
+                                    items: {type: 'string'},
+                                },
+                            },
+                        },
+                    },
+                },
+            ],
+        };
+
+        expect(renderExamples(schema, createContext())).toBe(dedent`
+          {% cut "**Example**" %}{.json-schema-example}
+
+          \`\`\`json translate=no
+          {
+            "type": "SUPPLY",
+            "result": {
+              "requests": [
+                "example"
+              ]
+            }
+          }
+          \`\`\`
+
+          {% endcut %}
+        `);
+    });
 });

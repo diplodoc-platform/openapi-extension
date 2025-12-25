@@ -277,12 +277,39 @@ function generateFromCombinators(
     state: GenerationState,
 ): unknown | undefined {
     if (Array.isArray(schema.allOf)) {
+        // For allOf, we need to combine all variants
+        // If all variants are objects, merge their properties
+        const examples: unknown[] = [];
+        let allObjects = true;
+
         for (const variant of schema.allOf) {
             const value = generateExampleInternal(variant, context, incrementDepth(state));
             if (value !== undefined) {
-                return value;
+                examples.push(value);
+                if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+                    allObjects = false;
+                }
             }
         }
+
+        if (examples.length === 0) {
+            return undefined;
+        }
+
+        // If all examples are objects, merge them
+        if (allObjects && examples.length > 0) {
+            const merged: Record<string, unknown> = {};
+            for (const example of examples) {
+                if (example && typeof example === 'object' && !Array.isArray(example)) {
+                    Object.assign(merged, example as Record<string, unknown>);
+                }
+            }
+            return Object.keys(merged).length > 0 ? merged : undefined;
+        }
+
+        // If not all objects, return the first non-undefined example
+        // (fallback behavior for mixed types)
+        return examples[0];
     }
 
     if (Array.isArray(schema.oneOf)) {

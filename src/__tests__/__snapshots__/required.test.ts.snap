@@ -95,6 +95,42 @@ _c_{.json-schema-reset .json-schema-property}
 ||
 |#{.json-schema-properties}
 
+{% cut "**All of 1 type**" %}{.json-schema-combinators data-marker=and}
+
+- {% cut "**Type**: object" %}
+
+  #|
+  ||
+
+  _d_{.json-schema-reset .json-schema-property .json-schema-required}
+  {.table-cell}|
+  **Type**: number
+  {.table-cell}
+  ||
+  ||
+
+  _e_{.json-schema-reset .json-schema-property}
+  {.table-cell}|
+  **Type**: number
+  {.table-cell}
+  ||
+  |#{.json-schema-properties}
+
+  {% endcut %}
+
+  {% cut "**Example**" %}{.json-schema-example}
+
+  \`\`\`json translate=no
+  {
+    "d": 0.5,
+    "e": 0.5
+  }
+  \`\`\`
+
+  {% endcut %}
+
+{% endcut %}
+
 </div>
 
 ## Responses

@@ -60,7 +60,7 @@ export class Renderer {
                 });
             },
             expandType: true,
-            blocks: ['type'],
+            blocks: ['type', 'combinators'],
         });
     };
 

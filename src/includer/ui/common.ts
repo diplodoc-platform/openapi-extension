@@ -59,7 +59,7 @@ export function bold(text: string) {
 }
 
 export function code(text: string, type = 'text', translate = false) {
-    const appliedType = type && text.length <= 2000 ? type : 'text';
+    const appliedType = type && (text.length <= 2000 || type === 'openapi-sandbox') ? type : 'text';
     return ['```' + appliedType + ` ${translate ? '' : 'translate=no'}`, text, '```'].join(EOL);
 }
 

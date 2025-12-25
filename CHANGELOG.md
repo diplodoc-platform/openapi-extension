@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.0.8](https://github.com/diplodoc-platform/openapi-extension/compare/v5.0.7...v5.0.8) (2025-12-25)
+
+
+### Bug Fixes
+
+* **examples:** combine examples from all allOf variants ([01c8ee4](https://github.com/diplodoc-platform/openapi-extension/commit/01c8ee4a50812a55e08838987212287a7d91f3b1))
+
 ## [5.0.7](https://github.com/diplodoc-platform/openapi-extension/compare/v5.0.6...v5.0.7) (2025-12-25)
 
 

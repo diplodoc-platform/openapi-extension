@@ -297,6 +297,44 @@ describe('normalizeSchema', () => {
         expect(normalized.properties).toEqual(schema.properties);
     });
 
+    it('filters out properties with x-hidden: true', () => {
+        const schema: JSONSchema = {
+            type: 'object',
+            properties: {
+                visible: {type: 'string'},
+                hidden: {type: 'string', 'x-hidden': true},
+                anotherVisible: {type: 'number'},
+            },
+        };
+
+        const normalized = normalizeSchema(schema);
+
+        expect(normalized.properties).toBeDefined();
+        expect(normalized.properties?.visible).toBeDefined();
+        expect(normalized.properties?.anotherVisible).toBeDefined();
+        expect(normalized.properties?.hidden).toBeUndefined();
+        expect(Object.keys(normalized.properties || {})).toHaveLength(2);
+        expect(Object.keys(normalized.properties || {})).toContain('visible');
+        expect(Object.keys(normalized.properties || {})).toContain('anotherVisible');
+    });
+
+    it('filters out patternProperties with x-hidden: true', () => {
+        const schema: JSONSchema = {
+            type: 'object',
+            patternProperties: {
+                '^visible': {type: 'string'},
+                '^hidden': {type: 'string', 'x-hidden': true},
+            },
+        };
+
+        const normalized = normalizeSchema(schema);
+
+        expect(normalized.patternProperties).toBeDefined();
+        expect(normalized.patternProperties?.['^visible']).toBeDefined();
+        expect(normalized.patternProperties?.['^hidden']).toBeUndefined();
+        expect(Object.keys(normalized.patternProperties || {})).toEqual(['^visible']);
+    });
+
     it('infers object type when schema only defines additionalProperties', () => {
         const schema: JSONSchema = {
             description: 'Карта произвольных значений',

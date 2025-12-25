@@ -49,28 +49,6 @@ Generated server url
 || **Name** | **Description** ||
 ||
 
-_catalogueDesignationCCDM_{.json-schema-reset .json-schema-property}
-{.table-cell}|
-**Type**: string
-
-CCDM catalogue designation for this star
-
-_Example:_{.json-schema-reset .json-schema-example} \`example\`
-{.table-cell}
-||
-||
-
-_id_{.json-schema-reset .json-schema-property}
-{.table-cell}|
-**Type**: string&lt;uuid&gt;
-
-Internal ID for this star
-
-_Example:_{.json-schema-reset .json-schema-example} \`123e4567-e89b-12d3-a456-426614174000\`
-{.table-cell}
-||
-||
-
 _luminosityClass_{.json-schema-reset .json-schema-property}
 {.table-cell}|
 **Type**: string

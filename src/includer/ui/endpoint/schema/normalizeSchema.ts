@@ -112,6 +112,7 @@ function normalizeConditional(schema: JSONSchema): JSONSchema {
 
 /**
  * Applies normalization to each entry of a schema map (e.g., `properties`, `patternProperties`).
+ * Filters out entries with `x-hidden: true`.
  */
 function normalizeSchemaMap(
     map: Record<string, JSONSchema> | undefined,
@@ -121,9 +122,13 @@ function normalizeSchemaMap(
         return undefined;
     }
 
-    return Object.fromEntries(
-        Object.entries(map).map(([key, value]) => [key, normalizeSchema(value, options)]),
+    const filtered = Object.fromEntries(
+        Object.entries(map)
+            .filter(([, value]) => !(value as JSONSchema & {'x-hidden'?: boolean})['x-hidden'])
+            .map(([key, value]) => [key, normalizeSchema(value, options)]),
     );
+
+    return Object.keys(filtered).length > 0 ? filtered : undefined;
 }
 
 /**

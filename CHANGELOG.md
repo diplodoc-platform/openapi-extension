@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.1.1](https://github.com/diplodoc-platform/openapi-extension/compare/v5.1.0...v5.1.1) (2026-01-20)
+
+
+### Bug Fixes
+
+* Extend syntax highlight chars limit ([5227eec](https://github.com/diplodoc-platform/openapi-extension/commit/5227eec219b64723b5da4f02f54c6749eec19e7d))
+* **schema:** respect x-hidden in refs and examples ([690117a](https://github.com/diplodoc-platform/openapi-extension/commit/690117a98808e57e9104551f6bff3faa2f5e0d63))
+* **tests:** make temp paths and refs cross-platform ([133d03b](https://github.com/diplodoc-platform/openapi-extension/commit/133d03ba33d5bd5e453ad2a78c01ec80bd460477))
+
 ## [5.1.0](https://github.com/diplodoc-platform/openapi-extension/compare/v5.0.7...v5.1.0) (2025-12-25)
 
 

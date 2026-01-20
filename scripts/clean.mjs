@@ -22,3 +22,6 @@ function removeIfExists(relativePath) {
 removeIfExists('plugin');
 removeIfExists('includer');
 removeIfExists('runtime');
+
+// Current build output directory.
+removeIfExists('build');

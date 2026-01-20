@@ -6,6 +6,10 @@ import {load} from 'js-yaml';
 
 export const $ref = Symbol('$ref');
 
+function normalizePath(filePath: string) {
+    return filePath.replace(/\\/g, '/');
+}
+
 /**
  * Utility that keeps track of OpenAPI references during includer rendering.
  * - Holds already loaded files and their parsed specs.
@@ -25,9 +29,10 @@ export class RefsService {
      * @param root – absolute path to the original spec file; used as base for rebasing `$ref`s.
      */
     constructor(run: Run, spec: object, root: string) {
+        const canonicalRoot = normalizePath(root);
         this._run = run;
-        this._files[root] = spec;
-        this._root = root;
+        this._files[canonicalRoot] = spec;
+        this._root = canonicalRoot;
     }
 
     /**
@@ -69,7 +74,7 @@ export class RefsService {
 
             if ($ref in item) {
                 const [path] = (item[$ref] as string).split('#');
-                root = path ? join(dirname(root), path) : root;
+                root = path ? normalizePath(join(dirname(root), path)) : root;
             }
 
             if (Array.isArray(item)) {
@@ -192,14 +197,15 @@ export class RefsService {
      */
     private async load(refId: string, root: string) {
         const [path, anchor] = refId.split('#');
-        const file = path ? join(dirname(root), path) : root;
+        const canonicalRoot = normalizePath(root);
+        const file = normalizePath(path ? join(dirname(root), path) : root);
 
         if (!this._files[file]) {
             this._files[file] = load(await this._run.read(file));
             await this.resolve(this._files[file] as object, file);
         }
 
-        assertAccessible(root, file, this._files[file] as Record<string, unknown>, anchor);
+        assertAccessible(canonicalRoot, file, this._files[file] as Record<string, unknown>, anchor);
 
         return `${file}#${anchor}`;
     }

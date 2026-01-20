@@ -3,7 +3,9 @@ import type {OpenAPIV3} from 'openapi-types';
 
 import {vi} from 'vitest';
 import {dump} from 'js-yaml';
-import nodeFS from 'fs';
+import nodeFS from 'node:fs';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
 
 import {includer} from '../../includer';
 
@@ -118,12 +120,13 @@ export class DocumentBuilder {
 
 export async function run(spec: string, options: Partial<OpenApiIncluderParams> = {}) {
     const id = Math.ceil(Math.random() * 10000000);
+    const tempRoot = nodeFS.mkdtempSync(join(tmpdir(), 'openapi-test-'));
     const params = {
         input: `openapi-test-${id}.yaml`,
         ...options,
     };
     const run = {
-        input: '/tmp',
+        input: tempRoot,
         read: async () => '',
         vars: {
             for: vi.fn(),
@@ -132,23 +135,21 @@ export async function run(spec: string, options: Partial<OpenApiIncluderParams> 
 
     const fs = virtualFS();
 
-    const tempFilePath = `/tmp/openapi-test-${id}.yaml`;
+    const tempFilePath = join(tempRoot, `openapi-test-${id}.yaml`);
+    const tocPath = join(tempRoot, 'toc.yaml');
 
     nodeFS.writeFileSync(tempFilePath, spec);
 
     try {
-        const {files} = await includer(run, params, '/tmp/toc.yaml');
+        const {files} = await includer(run, params, tocPath);
 
         for (const {path, content} of files) {
             await fs.writeFile(path, content);
         }
-
-        nodeFS.unlinkSync(tempFilePath);
-    } catch (error) {
+    } finally {
         try {
-            nodeFS.unlinkSync(tempFilePath);
+            nodeFS.rmSync(tempRoot, {recursive: true, force: true});
         } catch {}
-        throw error;
     }
 
     return fs;

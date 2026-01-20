@@ -37,3 +37,4 @@ export const SPEC_RENDER_MODES = new Set<string>([
     SPEC_RENDER_MODE_HIDDEN,
 ]);
 export const LEADING_PAGE_MODES = new Set<string>([LeadingPageMode.Leaf, LeadingPageMode.Section]);
+export const SYNTAX_HIGHLIGHT_LIMIT = 10000;

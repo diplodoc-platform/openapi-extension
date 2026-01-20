@@ -3,7 +3,7 @@ import type {Dereference} from '../models';
 
 import slugify from 'slugify';
 
-import {DEPRECATED_ANNOTATION, DEPRECATED_POPUP_TEXT} from '../constants';
+import {DEPRECATED_ANNOTATION, DEPRECATED_POPUP_TEXT, SYNTAX_HIGHLIGHT_LIMIT} from '../constants';
 
 export const EOL = '\n';
 
@@ -59,7 +59,10 @@ export function bold(text: string) {
 }
 
 export function code(text: string, type = 'text', translate = false) {
-    const appliedType = type && (text.length <= 2000 || type === 'openapi-sandbox') ? type : 'text';
+    const appliedType =
+        type && (text.length <= SYNTAX_HIGHLIGHT_LIMIT || type === 'openapi-sandbox')
+            ? type
+            : 'text';
     return ['```' + appliedType + ` ${translate ? '' : 'translate=no'}`, text, '```'].join(EOL);
 }
 

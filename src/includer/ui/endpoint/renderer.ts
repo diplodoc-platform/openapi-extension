@@ -11,6 +11,7 @@ import {block, entity, title} from '../common';
 
 import {RenderContext} from './schema/jsonSchema';
 import {renderSchema} from './schema';
+import {normalizeSchema} from './schema/normalizeSchema';
 import {renderBody} from './openapi/renderBody';
 import {renderRequest} from './openapi/renderRequest';
 import {renderParameters} from './openapi/renderParameters';
@@ -116,7 +117,10 @@ export class Renderer {
             isRoot: true,
             [mode + 'Only']: true,
         });
-        const examples = collectExamples(context, schema as JSONSchema);
+        const normalized = normalizeSchema(schema as JSONSchema, {
+            resolveRef: (refId) => this._resolveRef(refId, mode),
+        });
+        const examples = collectExamples(context, normalized);
 
         return (format ? formatExample(examples[0]) : examples[0]) || '';
     };

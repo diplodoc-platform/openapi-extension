@@ -318,6 +318,63 @@ describe('normalizeSchema', () => {
         expect(Object.keys(normalized.properties || {})).toContain('anotherVisible');
     });
 
+    it('filters out properties whose $ref target has x-hidden: true', () => {
+        const refs: Record<string, JSONSchema> = {
+            '#/defs/Hidden': {type: 'string', 'x-hidden': true},
+        };
+
+        const schema: JSONSchema = {
+            type: 'object',
+            properties: {
+                visible: {type: 'string'},
+                hidden: {$ref: '#/defs/Hidden'},
+            },
+        };
+
+        const normalized = normalizeSchema(schema, {
+            resolveRef: (refId) => {
+                const resolved = refs[refId];
+                if (!resolved) {
+                    return undefined;
+                }
+                return {href: '#', schema: resolved};
+            },
+        });
+
+        expect(normalized.properties).toBeDefined();
+        expect(normalized.properties?.visible).toBeDefined();
+        expect(normalized.properties?.hidden).toBeUndefined();
+        expect(Object.keys(normalized.properties || {})).toEqual(['visible']);
+    });
+
+    it('propagates readOnly/writeOnly from $ref targets', () => {
+        const refs: Record<string, JSONSchema> = {
+            '#/defs/ReadOnly': {type: 'string', readOnly: true},
+            '#/defs/WriteOnly': {type: 'string', writeOnly: true},
+        };
+
+        const schema: JSONSchema = {
+            type: 'object',
+            properties: {
+                ro: {$ref: '#/defs/ReadOnly'},
+                wo: {$ref: '#/defs/WriteOnly'},
+            },
+        };
+
+        const normalized = normalizeSchema(schema, {
+            resolveRef: (refId) => {
+                const resolved = refs[refId];
+                if (!resolved) {
+                    return undefined;
+                }
+                return {href: '#', schema: resolved};
+            },
+        });
+
+        expect(normalized.properties?.ro?.readOnly).toBe(true);
+        expect(normalized.properties?.wo?.writeOnly).toBe(true);
+    });
+
     it('filters out patternProperties with x-hidden: true', () => {
         const schema: JSONSchema = {
             type: 'object',

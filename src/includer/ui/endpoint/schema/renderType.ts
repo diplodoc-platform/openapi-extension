@@ -139,6 +139,10 @@ function shouldRenderProperty(property: JSONSchema | undefined, context: RenderC
         return true;
     }
 
+    if (property['x-hidden'] === true) {
+        return false;
+    }
+
     if (context.writeOnly && property.readOnly === true) {
         return false;
     }

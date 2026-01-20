@@ -3,6 +3,7 @@ import type {JSONSchema, RenderContext} from './jsonSchema';
 import {block, code, cut} from '../../common';
 
 import {decorate, traverseSchemaRefs} from './utils';
+import {normalizeSchema} from './normalizeSchema';
 
 const FORMAT_SAMPLES: Record<string, string> = {
     email: 'user@example.com',
@@ -121,6 +122,10 @@ function addExample(collector: Collector, value: unknown): void {
 function isPropertyVisible(property: JSONSchema | undefined, context: RenderContext): boolean {
     if (!property) {
         return true;
+    }
+
+    if (property['x-hidden'] === true) {
+        return false;
     }
 
     if (context.writeOnly && property.readOnly === true) {
@@ -268,7 +273,8 @@ function resolveRefExample(
         return undefined;
     }
 
-    return generateExampleInternal(resolved.schema, context, state);
+    const normalized = normalizeSchema(resolved.schema, {resolveRef: context.ref});
+    return generateExampleInternal(normalized, context, state);
 }
 
 function generateFromCombinators(
@@ -440,6 +446,26 @@ function generateObjectExample(
     return Object.keys(result).length > 0 ? result : {};
 }
 
+function sanitizeObjectExample(
+    value: Record<string, unknown>,
+    schema: JSONSchema,
+    context: RenderContext,
+): Record<string, unknown> {
+    if (!schema.properties) {
+        return value;
+    }
+
+    const sanitized: Record<string, unknown> = {...value};
+
+    for (const [key, property] of Object.entries(schema.properties)) {
+        if (!isPropertyVisible(property, context)) {
+            delete sanitized[key];
+        }
+    }
+
+    return sanitized;
+}
+
 function generateExampleByType(
     schema: JSONSchema,
     context: RenderContext,
@@ -481,6 +507,10 @@ function generateExampleInternal(
     const direct = pickDirectExample(schema, state.useDefaultConst);
     if (direct !== undefined) {
         const type = inferType(schema);
+
+        if (type === 'object' && direct && typeof direct === 'object' && !Array.isArray(direct)) {
+            return sanitizeObjectExample(direct as Record<string, unknown>, schema, context);
+        }
 
         // Respect declared type when direct example has different JS type.
         // For example, for string properties with `example: 10` (parsed as number)
@@ -552,12 +582,40 @@ export function collectExamples(context: RenderContext, schema: JSONSchema) {
 
     traverseSchemaRefs(schema, context.ref, (current) => {
         if (current.example !== undefined) {
-            addExample(collector, current.example);
+            if (
+                inferType(current) === 'object' &&
+                current.example &&
+                typeof current.example === 'object' &&
+                !Array.isArray(current.example)
+            ) {
+                addExample(
+                    collector,
+                    sanitizeObjectExample(
+                        current.example as Record<string, unknown>,
+                        current,
+                        context,
+                    ),
+                );
+            } else {
+                addExample(collector, current.example);
+            }
         }
 
         if (Array.isArray(current.examples)) {
             for (const value of current.examples) {
-                addExample(collector, value);
+                if (
+                    inferType(current) === 'object' &&
+                    value &&
+                    typeof value === 'object' &&
+                    !Array.isArray(value)
+                ) {
+                    addExample(
+                        collector,
+                        sanitizeObjectExample(value as Record<string, unknown>, current, context),
+                    );
+                } else {
+                    addExample(collector, value);
+                }
             }
         }
     });

@@ -36,10 +36,8 @@ Generated server url
 
 \`\`\`json translate=no
 {
-  "id": "123e4567-e89b-12d3-a456-426614174000",
   "luminosityClass": "example",
-  "name": "example",
-  "catalogueDesignationCCDM": "example"
+  "name": "example"
 }
 \`\`\`
 
@@ -137,9 +135,7 @@ Generated server url
 \`\`\`json translate=no
 {
   "visibleField": "example",
-  "hiddenField": "example",
-  "requestField": "example",
-  "responseField": "example"
+  "requestField": "example"
 }
 \`\`\`
 
@@ -149,33 +145,11 @@ Generated server url
 || **Name** | **Description** ||
 ||
 
-_hiddenField_{.json-schema-reset .json-schema-property}
-{.table-cell}|
-**Type**: [hiddenField](#entity-hiddenField)
-
-Always hidden field
-
-_Example:_{.json-schema-reset .json-schema-example} \`example\`
-{.table-cell}
-||
-||
-
 _requestField_{.json-schema-reset .json-schema-property}
 {.table-cell}|
 **Type**: [requestField](#entity-requestField)
 
 Field visible only for request
-
-_Example:_{.json-schema-reset .json-schema-example} \`example\`
-{.table-cell}
-||
-||
-
-_responseField_{.json-schema-reset .json-schema-property}
-{.table-cell}|
-**Type**: [responseField](#entity-responseField)
-
-Field visible only for response
 
 _Example:_{.json-schema-reset .json-schema-example} \`example\`
 {.table-cell}
@@ -258,8 +232,6 @@ _Example:_{.json-schema-reset .json-schema-example} \`example\`
 \`\`\`json translate=no
 {
   "visibleField": "example",
-  "hiddenField": "example",
-  "requestField": "example",
   "responseField": "example"
 }
 \`\`\`
@@ -268,28 +240,6 @@ _Example:_{.json-schema-reset .json-schema-example} \`example\`
 
 #|
 || **Name** | **Description** ||
-||
-
-_hiddenField_{.json-schema-reset .json-schema-property}
-{.table-cell}|
-**Type**: [hiddenField](#entity-hiddenField)
-
-Always hidden field
-
-_Example:_{.json-schema-reset .json-schema-example} \`example\`
-{.table-cell}
-||
-||
-
-_requestField_{.json-schema-reset .json-schema-property}
-{.table-cell}|
-**Type**: [requestField](#entity-requestField)
-
-Field visible only for request
-
-_Example:_{.json-schema-reset .json-schema-example} \`example\`
-{.table-cell}
-||
 ||
 
 _responseField_{.json-schema-reset .json-schema-property}

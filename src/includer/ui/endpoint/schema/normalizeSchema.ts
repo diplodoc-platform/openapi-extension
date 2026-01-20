@@ -122,10 +122,12 @@ function normalizeSchemaMap(
         return undefined;
     }
 
+    const normalizedEntries = Object.entries(map).map(([key, value]) => {
+        return [key, normalizeSchema(value, options)] as const;
+    });
+
     const filtered = Object.fromEntries(
-        Object.entries(map)
-            .filter(([, value]) => !value['x-hidden'])
-            .map(([key, value]) => [key, normalizeSchema(value, options)]),
+        normalizedEntries.filter(([, value]) => value['x-hidden'] !== true),
     );
 
     return Object.keys(filtered).length > 0 ? filtered : undefined;
@@ -315,6 +317,49 @@ function markDeprecatedFromRefs(schema: JSONSchema, resolver: RefResolver | unde
     return schema;
 }
 
+function markVisibilityFromRefs(schema: JSONSchema, resolver: RefResolver | undefined): JSONSchema {
+    if (!resolver || !schema.$ref) {
+        return schema;
+    }
+
+    let isHidden = schema['x-hidden'] === true;
+    let isReadOnly = schema.readOnly === true;
+    let isWriteOnly = schema.writeOnly === true;
+
+    traverseSchemaRefs(schema, resolver, (current) => {
+        // `traverseSchemaRefs` visits the root node first; only propagate from referenced schemas
+        // to avoid unnecessary churn.
+        if (current === schema) {
+            return;
+        }
+
+        if (current['x-hidden'] === true) {
+            isHidden = true;
+        }
+        if (current.readOnly === true) {
+            isReadOnly = true;
+        }
+        if (current.writeOnly === true) {
+            isWriteOnly = true;
+        }
+    });
+
+    if (
+        isHidden === (schema['x-hidden'] === true) &&
+        isReadOnly === (schema.readOnly === true) &&
+        isWriteOnly === (schema.writeOnly === true)
+    ) {
+        return schema;
+    }
+
+    return {
+        ...schema,
+        ...(isHidden ? {'x-hidden': true} : null),
+        ...(isReadOnly ? {readOnly: true} : null),
+        ...(isWriteOnly ? {writeOnly: true} : null),
+    };
+}
+
 /**
  * Produces a normalized version of the provided schema:
  * - collapses single-value enums into `const`
@@ -360,6 +405,7 @@ export function normalizeSchema(schema: JSONSchema, options: NormalizeOptions = 
     }
 
     normalized = markDeprecatedFromRefs(normalized, options.resolveRef);
+    normalized = markVisibilityFromRefs(normalized, options.resolveRef);
 
     return normalized;
 }

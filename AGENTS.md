@@ -4,6 +4,14 @@ This package is edited not only by humans, but also by AI agents. This document 
 
 > If you are a human and disagree with any rule here, feel free to open a PR to adjust it.
 
+## Common rules (metapackage context)
+
+When working with this package inside the Diplodoc metapackage, also follow the root agent docs:
+
+- `../../.agents/style-and-testing.md` — import organization, testing rules, **English-only** docs/comments/commit messages
+- `../../.agents/monorepo.md` — workspace vs standalone dependency management (`--no-workspaces`)
+- `../../.agents/dev-infrastructure.md` — infra update recipes (lint/version bumps, CI conventions)
+
 ## General principles
 
 - **Prefer small, review‑friendly changes**  
@@ -47,13 +55,11 @@ The `src/` directory is split into three main areas with different responsibilit
 ## TypeScript & React specifics
 
 - **Follow existing structure**
-
   - Keep one main responsibility per file.
   - Prefer pure functions and early returns.
   - Use descriptive variable names; avoid single‑letter names except for trivial loop indices.
 
 - **Types**
-
   - Prefer explicit `import type { ... }` for types.
   - Avoid `any`, prefer `unknown` + narrowing.
   - Extract named interfaces/types for non‑trivial shapes.

@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.1.2](https://github.com/diplodoc-platform/openapi-extension/compare/v5.1.1...v5.1.2) (2026-01-25)
+
+
+### Bug Fixes
+
+* **test:** avoid running bundled CJS tests on release ([3efcafd](https://github.com/diplodoc-platform/openapi-extension/commit/3efcafd2b496dd8bd65abf3e663929954008f06e))
+
 ## [5.1.1](https://github.com/diplodoc-platform/openapi-extension/compare/v5.1.0...v5.1.1) (2026-01-20)
 
 

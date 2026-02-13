@@ -1,5 +1,4 @@
-const esbuild = require('@diplodoc/lint/esbuild');
-const {sassPlugin} = require('esbuild-sass-plugin');
+const {build, sassPlugin} = require('@diplodoc/lint/esbuild');
 const external = Object.keys(require('../package.json').peerDependencies || {});
 
 [
@@ -7,7 +6,7 @@ const external = Object.keys(require('../package.json').peerDependencies || {});
     {minify: true, outfile: 'build/plugin/index.min.js'},
     {minify: true, format: 'cjs', outfile: 'build/plugin/cjs/index.min.js'},
 ].forEach((options) =>
-    esbuild.build({
+    build({
         tsconfig: './tsconfig.json',
         packages: 'external',
         platform: 'node',
@@ -26,7 +25,7 @@ const external = Object.keys(require('../package.json').peerDependencies || {});
     {minify: true, outfile: 'build/runtime/index.min.js'},
     {minify: true, format: 'cjs', outfile: 'build/runtime/cjs/index.min.js'},
 ].forEach((options) =>
-    esbuild.build({
+    build({
         tsconfig: './tsconfig.json',
         platform: 'neutral',
         mainFields: ['module', 'main'],

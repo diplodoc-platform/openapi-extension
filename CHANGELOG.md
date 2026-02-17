@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.1.2](https://github.com/diplodoc-platform/openapi-extension/compare/v5.1.1...v5.1.2) (2026-02-17)
+
+
+### Bug Fixes
+
+* **runtime:** support diplodoc/transform v4.69.0 and higher ([#133](https://github.com/diplodoc-platform/openapi-extension/issues/133)) ([7b45696](https://github.com/diplodoc-platform/openapi-extension/commit/7b45696e44c894c797e28fd57b91aa36904bbcce))
+* **test:** avoid running bundled CJS tests on release ([3efcafd](https://github.com/diplodoc-platform/openapi-extension/commit/3efcafd2b496dd8bd65abf3e663929954008f06e))
+* Update infra to 1.14.1 ([6ef218b](https://github.com/diplodoc-platform/openapi-extension/commit/6ef218b3baac422abfbd333155b530ff68f1e295))
+
 ## [5.1.1](https://github.com/diplodoc-platform/openapi-extension/compare/v5.1.0...v5.1.1) (2026-01-20)
 
 

@@ -135,7 +135,10 @@
             border-radius: 5px 0 0 5px;
         }
 
-        & > .yfm-clipboard {
+        // for @diplodoc/transform <4.69.0
+        & > .yfm-clipboard,
+        // for @diplodoc/transform >=4.69.0
+        & > .yfm-code-floating-container {
             border: 2px solid var(--method);
             border-radius: 0 5px 5px 0;
             white-space: nowrap;

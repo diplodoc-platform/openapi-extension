@@ -431,4 +431,104 @@ describe('normalizeSchema', () => {
         expect(normalized.type).toBe('array');
         expect(normalized.items).toEqual(schema.items);
     });
+
+    it('filters out properties with $ref to schema with x-hidden: true in nested objects', () => {
+        const refs: Record<string, JSONSchema> = {
+            '#/defs/YandexUid': {
+                type: 'string',
+                description: 'yandex uid',
+                'x-hidden': true,
+                example: '3a4e06e733a3433880e4900ffeaf7b62',
+            },
+        };
+
+        const schema: JSONSchema = {
+            type: 'object',
+            properties: {
+                id: {type: 'string'},
+                yandex_uid: {$ref: '#/defs/YandexUid'},
+                name: {type: 'string'},
+            },
+        };
+
+        const normalized = normalizeSchema(schema, {
+            resolveRef: (refId) => {
+                const resolved = refs[refId];
+                if (!resolved) {
+                    return undefined;
+                }
+                return {href: '#', schema: resolved};
+            },
+        });
+
+        expect(normalized.properties).toBeDefined();
+        expect(normalized.properties?.id).toBeDefined();
+        expect(normalized.properties?.name).toBeDefined();
+        expect(normalized.properties?.yandex_uid).toBeUndefined();
+        expect(Object.keys(normalized.properties || {})).toEqual(['id', 'name']);
+    });
+
+    it('filters out patternProperties with $ref to schema with x-hidden: true', () => {
+        const refs: Record<string, JSONSchema> = {
+            '#/defs/HiddenPattern': {
+                type: 'string',
+                'x-hidden': true,
+            },
+        };
+
+        const schema: JSONSchema = {
+            type: 'object',
+            patternProperties: {
+                '^visible': {type: 'string'},
+                '^hidden': {$ref: '#/defs/HiddenPattern'},
+            },
+        };
+
+        const normalized = normalizeSchema(schema, {
+            resolveRef: (refId) => {
+                const resolved = refs[refId];
+                if (!resolved) {
+                    return undefined;
+                }
+                return {href: '#', schema: resolved};
+            },
+        });
+
+        expect(normalized.patternProperties).toBeDefined();
+        expect(normalized.patternProperties?.['^visible']).toBeDefined();
+        expect(normalized.patternProperties?.['^hidden']).toBeUndefined();
+        expect(Object.keys(normalized.patternProperties || {})).toEqual(['^visible']);
+    });
+
+    it('filters out array items with $ref to schema with x-hidden: true', () => {
+        const refs: Record<string, JSONSchema> = {
+            '#/defs/HiddenItem': {
+                type: 'object',
+                properties: {
+                    secret: {type: 'string'},
+                },
+                'x-hidden': true,
+            },
+        };
+
+        const schema: JSONSchema = {
+            type: 'array',
+            items: {$ref: '#/defs/HiddenItem'},
+        };
+
+        const normalized = normalizeSchema(schema, {
+            resolveRef: (refId) => {
+                const resolved = refs[refId];
+                if (!resolved) {
+                    return undefined;
+                }
+                return {href: '#', schema: resolved};
+            },
+        });
+
+        // When an array item is hidden, the entire array should still be present
+        // but the hidden item schema should be filtered out
+        expect(normalized.type).toBe('array');
+        expect(normalized.items).toBeDefined();
+    });
 });

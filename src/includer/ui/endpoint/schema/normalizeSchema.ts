@@ -374,6 +374,13 @@ export function normalizeSchema(schema: JSONSchema, options: NormalizeOptions = 
     // Normalize conditionals first (before combinators)
     normalized = normalizeConditional(normalized);
     normalized = normalizeCombinators(normalized, options);
+
+    // Propagate visibility attributes (x-hidden, readOnly, writeOnly) from $ref targets
+    // BEFORE normalizing nested schemas to ensure they are filtered correctly
+    normalized = markVisibilityFromRefs(normalized, options.resolveRef);
+
+    // Normalize nested schemas (properties, patternProperties, additionalProperties, items)
+    // This filters out properties with x-hidden: true
     normalized = normalizeNestedSchemas(normalized, options);
 
     // Softly infer `type: 'object'` for schemas that clearly behave like objects
@@ -405,7 +412,6 @@ export function normalizeSchema(schema: JSONSchema, options: NormalizeOptions = 
     }
 
     normalized = markDeprecatedFromRefs(normalized, options.resolveRef);
-    normalized = markVisibilityFromRefs(normalized, options.resolveRef);
 
     return normalized;
 }

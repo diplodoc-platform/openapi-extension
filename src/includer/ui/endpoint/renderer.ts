@@ -79,6 +79,12 @@ export class Renderer {
                     continue;
                 }
 
+                // Skip rendering entity definitions with x-hidden: true
+                if (ref.schema['x-hidden'] === true) {
+                    this.renderedRefs.add(refId + '-' + mode);
+                    continue;
+                }
+
                 const {href, label, content} = ref;
 
                 this.renderedRefs.add(refId + '-' + mode);

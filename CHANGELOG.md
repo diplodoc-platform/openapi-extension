@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.1.3](https://github.com/diplodoc-platform/openapi-extension/compare/v5.1.2...v5.1.3) (2026-03-18)
+
+
+### Bug Fixes
+
+* Hide entities and hide with ref links DOCSTOOLS-5202 ([7359e74](https://github.com/diplodoc-platform/openapi-extension/commit/7359e749805b22a8ce0ada6b305bc4036bf4a7e7))
+
 ## [5.1.2](https://github.com/diplodoc-platform/openapi-extension/compare/v5.1.1...v5.1.2) (2026-02-17)
 
 

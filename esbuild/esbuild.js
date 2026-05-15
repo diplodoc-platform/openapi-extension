@@ -1,4 +1,4 @@
-const {build, sassPlugin} = require('@diplodoc/lint/esbuild');
+const {build, sassPlugin} = require('@diplodoc/infra/esbuild');
 const external = Object.keys(require('../package.json').peerDependencies || {});
 
 [

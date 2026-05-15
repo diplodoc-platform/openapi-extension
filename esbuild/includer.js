@@ -1,6 +1,6 @@
 const glob = require('glob');
 const path = require('node:path');
-const esbuild = require('@diplodoc/lint/esbuild');
+const esbuild = require('@diplodoc/infra/esbuild');
 
 const IN_PATH = path.resolve('src', 'includer').replace(/\\/g, '/');
 const OUT_PATH = 'build/includer';

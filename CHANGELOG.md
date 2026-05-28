@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.1.5](https://github.com/diplodoc-platform/openapi-extension/compare/v5.1.4...v5.1.5) (2026-05-28)
+
+
+### Bug Fixes
+
+* **deps:** Update @diplodoc/liquid@1.5.2 ([#149](https://github.com/diplodoc-platform/openapi-extension/issues/149)) ([96db961](https://github.com/diplodoc-platform/openapi-extension/commit/96db961aa5e76bf4261b3d5b8693150b195f1c2f))
+
 ## [5.1.4](https://github.com/diplodoc-platform/openapi-extension/compare/v5.1.3...v5.1.4) (2026-05-28)
 
 

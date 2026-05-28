@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.1.4](https://github.com/diplodoc-platform/openapi-extension/compare/v5.1.3...v5.1.4) (2026-05-28)
+
+
+### Bug Fixes
+
+* **deps:** updated node to 24 ([#147](https://github.com/diplodoc-platform/openapi-extension/issues/147)) ([ecfb7b1](https://github.com/diplodoc-platform/openapi-extension/commit/ecfb7b13b88a74d1337daf7a3d09ed3da9883f48))
+
 ## [5.1.3](https://github.com/diplodoc-platform/openapi-extension/compare/v5.1.2...v5.1.3) (2026-03-18)
 
 

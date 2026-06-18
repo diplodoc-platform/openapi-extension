@@ -1,6 +1,7 @@
 import type {OpenAPIV3} from 'openapi-types';
 import type {
     Dereference,
+    LeadingPageSpecRenderMode,
     OpenApiIncluderParams,
     Run,
     Specification,
@@ -15,16 +16,22 @@ import {dirname, join} from 'path';
 import {readFileSync} from 'fs';
 import SwaggerParser from '@apidevtools/swagger-parser';
 
-import {filterUsefulContent, matchFilter, mdPath, sectionName} from './utils';
+import {companionFilename, filterUsefulContent, matchFilter, mdPath, sectionName} from './utils';
 import * as parsers from './parsers';
 import * as generators from './ui';
 import {$ref, RefsService} from './services/refs';
+import {buildCompanionDocument, serializeCompanionDocument} from './companion';
 import {
+    DEFAULT_MAX_OPENAPI_INCLUDE_INLINE_SIZE,
+    DEFAULT_OPENAPI_COMPANIONS_MODE,
     LEADING_PAGE_MODES,
     LEADING_PAGE_NAME_DEFAULT,
     LeadingPageMode,
+    MAX_OPENAPI_INCLUDE_INLINE_SIZE_LIMIT,
     SPEC_RENDER_MODES,
     SPEC_RENDER_MODE_DEFAULT,
+    SPEC_RENDER_MODE_HIDDEN,
+    SPEC_RENDER_MODE_LINK,
 } from './constants';
 
 class OpenApiIncluderError extends Error {
@@ -113,9 +120,13 @@ export async function includer(run: Run, params: OpenApiIncluderParams, tocPath:
         const spec = filterSpec(data, ctx);
         const info = parsers.info(data);
         const toc = generateToc(data, ctx);
+        const companionName = companionFilename(input);
+        const companion = resolveCompanion(data, spec, ctx, run, companionName);
+
         const files = [
-            generateMainPage(mergedData, spec, info, ctx),
+            generateMainPage(mergedData, spec, info, ctx, companion.renderMode, companionName),
             ...generateContent(spec, ctx),
+            companion.file,
         ].filter(Boolean) as {path: string; content: string}[];
 
         return {toc, files};
@@ -256,13 +267,12 @@ function generateMainPage(
     spec: Specification,
     info: V3Info,
     ctx: Context,
+    leadingPageSpecRenderMode: LeadingPageSpecRenderMode,
+    companionName: string,
 ) {
     const {params} = ctx;
-    const {input, leadingPage} = params;
+    const {input} = params;
     const customLeadingPageDir = dirname(ctx.relative(input));
-
-    const leadingPageSpecRenderMode = leadingPage?.spec?.renderMode ?? SPEC_RENDER_MODE_DEFAULT;
-    assertSpecRenderMode(leadingPageSpecRenderMode);
 
     const root = ctx.tag('__root__');
 
@@ -272,12 +282,115 @@ function generateMainPage(
 
     const mainContent = root?.path
         ? readFileSync(join(customLeadingPageDir, root.path)).toString()
-        : generators.main({data, info, spec, leadingPageSpecRenderMode}, ctx);
+        : generators.main(
+              {data, info, spec, leadingPageSpecRenderMode, companionFilename: companionName},
+              ctx,
+          );
 
     return {
         path: 'index.md',
         content: mainContent,
     };
+}
+
+type CompanionResult = {
+    renderMode: LeadingPageSpecRenderMode;
+    file?: {path: string; content: string};
+};
+
+/**
+ * Decides how the spec is exposed on the root leading page and whether the standalone
+ * `*.openapi.json` companion is emitted, taking into account:
+ *  - the configured `leadingPage.spec.renderMode`;
+ *  - `maxOpenapiIncludeInlineSize` (auto-switch `inline` -> `link` for large specs);
+ *  - `ai.openapiCompanions` and `outputFormat` (whether the file is produced at all);
+ *  - `maxOpenapiIncludeSize` (a too-large companion is not written).
+ *
+ * All of these knobs come from {@link Run.config} — i.e. they are passed in from the CLI
+ * build config (the single source where defaults are resolved). The fallbacks applied here
+ * ({@link DEFAULT_OPENAPI_COMPANIONS_MODE}, {@link resolveInlineLimit}) exist only for
+ * standalone includer consumers that call it without a fully-populated build config.
+ *
+ * This is the only place where companion emission is gated: the CLI extension simply writes
+ * whatever {@link CompanionResult.file} is returned, so there is no separate flag check there.
+ */
+function resolveCompanion(
+    data: Dereference<OpenAPIV3.Document>,
+    spec: Specification,
+    ctx: Context,
+    run: Run,
+    companionName: string,
+): CompanionResult {
+    const {params} = ctx;
+    const configured = params.leadingPage?.spec?.renderMode ?? SPEC_RENDER_MODE_DEFAULT;
+    assertSpecRenderMode(configured);
+
+    const root = ctx.tag('__root__');
+
+    // `hidden` never auto-changes and never emits a companion file.
+    if (configured === SPEC_RENDER_MODE_HIDDEN || root?.hidden) {
+        return {renderMode: SPEC_RENDER_MODE_HIDDEN};
+    }
+
+    const document = buildCompanionDocument(data as unknown as OpenAPIV3.Document, spec);
+    const content = serializeCompanionDocument(document);
+    const bytes = Buffer.byteLength(content, 'utf-8');
+
+    const config = run.config ?? {};
+    const willEmit = shouldEmitCompanion(config, bytes);
+    const inlineLimit = resolveInlineLimit(config.content?.maxOpenapiIncludeInlineSize);
+
+    let renderMode: LeadingPageSpecRenderMode = configured;
+    if (configured === SPEC_RENDER_MODE_DEFAULT && (inlineLimit === 0 || bytes > inlineLimit)) {
+        renderMode = SPEC_RENDER_MODE_LINK;
+    }
+
+    // Avoid a dead link: if no companion file will be written, fall back to embedding inline.
+    if (renderMode === SPEC_RENDER_MODE_LINK && !willEmit) {
+        renderMode = SPEC_RENDER_MODE_DEFAULT;
+    }
+
+    if (configured === SPEC_RENDER_MODE_DEFAULT && renderMode === SPEC_RENDER_MODE_LINK) {
+        run.logger?.info?.(
+            `OpenAPI leading page spec render mode changed from 'inline' to 'link': ` +
+                `specification size (${bytes} bytes) exceeds maxOpenapiIncludeInlineSize ` +
+                `(${inlineLimit} bytes).`,
+        );
+    }
+
+    return {
+        renderMode,
+        file: willEmit ? {path: companionName, content} : undefined,
+    };
+}
+
+function shouldEmitCompanion(config: NonNullable<Run['config']>, bytes: number): boolean {
+    const aiMode = config.ai?.openapiCompanions ?? DEFAULT_OPENAPI_COMPANIONS_MODE;
+    if (aiMode === false) {
+        return false;
+    }
+
+    // `'md'` -> only md2md; `true` -> both md2md and md2html.
+    const emitByOutputFormat = aiMode === true || config.outputFormat !== 'html';
+    if (!emitByOutputFormat) {
+        return false;
+    }
+
+    const maxFileSize = config.content?.maxOpenapiIncludeSize ?? 0;
+
+    return maxFileSize === 0 || bytes <= maxFileSize;
+}
+
+/** Resolves the effective inline-size limit: default when unset, clamped to the hard cap, 0 = always link. */
+function resolveInlineLimit(value?: number): number {
+    if (value === undefined) {
+        return DEFAULT_MAX_OPENAPI_INCLUDE_INLINE_SIZE;
+    }
+    if (value <= 0) {
+        return 0;
+    }
+
+    return Math.min(value, MAX_OPENAPI_INCLUDE_INLINE_SIZE_LIMIT);
 }
 
 /**

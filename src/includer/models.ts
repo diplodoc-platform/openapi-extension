@@ -4,6 +4,7 @@ import type {
     LeadingPageMode,
     SPEC_RENDER_MODE_DEFAULT,
     SPEC_RENDER_MODE_HIDDEN,
+    SPEC_RENDER_MODE_LINK,
 } from './constants';
 import type {V3Endpoint, V3Info, V3Response, V3Schema, V3Tag} from './parsers';
 
@@ -90,7 +91,8 @@ export type Primitive = string | number | boolean;
 
 export type LeadingPageSpecRenderMode =
     | typeof SPEC_RENDER_MODE_DEFAULT
-    | typeof SPEC_RENDER_MODE_HIDDEN;
+    | typeof SPEC_RENDER_MODE_HIDDEN
+    | typeof SPEC_RENDER_MODE_LINK;
 
 export type LeadingPageParams = {
     name?: string;
@@ -129,8 +131,26 @@ export type OpenApiIncluderParams = {
     };
 };
 
+export type OpenApiBuildConfig = {
+    outputFormat?: 'html' | 'md';
+    ai?: {
+        openapiCompanions?: boolean | 'md';
+    };
+    content?: {
+        /** If the companion JSON exceeds this size (bytes), the file is not created. 0 disables. */
+        maxOpenapiIncludeSize?: number;
+        /** If the spec exceeds this size (bytes), `inline` render mode auto-switches to `link`. */
+        maxOpenapiIncludeInlineSize?: number;
+    };
+};
+
 export type Run = {
     input: string;
+    config?: OpenApiBuildConfig;
+    logger?: {
+        info?(message: string): void;
+        warn?(message: string): void;
+    };
     vars: {
         for(path: string): YfmPreset;
     };

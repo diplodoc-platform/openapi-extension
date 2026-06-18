@@ -7,7 +7,9 @@ import {join} from 'path';
 import {
     CONTACTS_SECTION_NAME,
     ENDPOINTS_SECTION_NAME,
+    SPEC_LINK_TEXT,
     SPEC_RENDER_MODE_DEFAULT,
+    SPEC_RENDER_MODE_LINK,
     SPEC_SECTION_NAME,
     SPEC_SECTION_TYPE,
     TAGS_SECTION_NAME,
@@ -21,10 +23,12 @@ export type MainParams = {
     info: V3Info;
     spec: Specification;
     leadingPageSpecRenderMode: LeadingPageSpecRenderMode;
+    /** Companion file name used as the `link` target, e.g. `petstore.openapi.json`. */
+    companionFilename: string;
 };
 
 export function main(params: MainParams, ctx: Context) {
-    const {data, info, spec, leadingPageSpecRenderMode} = params;
+    const {data, info, spec, leadingPageSpecRenderMode, companionFilename} = params;
 
     return block([
         nolint(),
@@ -35,7 +39,7 @@ export function main(params: MainParams, ctx: Context) {
         info.description,
         contact(info.contact),
         sections(spec, ctx),
-        specification(data, leadingPageSpecRenderMode),
+        specification(data, leadingPageSpecRenderMode, companionFilename),
     ]);
 }
 
@@ -85,7 +89,15 @@ function sections({tags, endpoints}: Specification, ctx: Context) {
     return block(content);
 }
 
-function specification(data: unknown, renderMode: LeadingPageSpecRenderMode) {
+function specification(
+    data: unknown,
+    renderMode: LeadingPageSpecRenderMode,
+    companionFilename: string,
+) {
+    if (renderMode === SPEC_RENDER_MODE_LINK) {
+        return block([title(2)(SPEC_SECTION_NAME), link(SPEC_LINK_TEXT, companionFilename)]);
+    }
+
     return (
         renderMode === SPEC_RENDER_MODE_DEFAULT &&
         block([title(2)(SPEC_SECTION_NAME), cut(code(stringify(data, null, 4)), SPEC_SECTION_TYPE)])

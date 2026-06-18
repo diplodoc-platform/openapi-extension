@@ -5,6 +5,8 @@ import type {V3Tag} from './tags';
 import {getReasonPhrase} from 'http-status-codes';
 import slugify from 'slugify';
 
+import {trimSlashes} from '../utils';
+
 import {visitPaths} from './utils';
 
 export type V3Response = {
@@ -80,7 +82,7 @@ export function paths(
             summary,
             deprecated,
             description,
-            path: trimSlash(path),
+            path: trimSlashes(path),
             method,
             operationId,
             tags: tags.map((tag) => slugify(tag)),
@@ -126,7 +128,7 @@ function parseRequestBody(
 }
 
 function parseServer(server: OpenAPIV3.ServerObject): OpenAPIV3.ServerObject {
-    server.url = trimSlash(server.url);
+    server.url = trimSlashes(server.url);
 
     return server;
 }
@@ -157,8 +159,4 @@ function parseResponse([code, response]: [
     }
 
     return parsed;
-}
-
-function trimSlash(str: string) {
-    return str.replace(/^\/|\/$/g, '');
 }

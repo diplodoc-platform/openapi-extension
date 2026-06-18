@@ -1,6 +1,19 @@
 import type {OpenApiIncluderParams, Specification, V3Endpoint, V3Tag, YfmPreset} from './models';
 
+import {basename} from 'node:path';
 import {evaluate} from '@diplodoc/liquid';
+
+import {SPEC_COMPANION_SUFFIX} from './constants';
+
+export function trimSlashes(value: string): string {
+    return value.replace(/^\/+|\/+$/g, '');
+}
+
+export function companionFilename(input: string): string {
+    const base = basename(input).replace(/\.[^./\\]+$/, '');
+
+    return `${base}${SPEC_COMPANION_SUFFIX}`;
+}
 
 export function matchFilter(
     filter: OpenApiIncluderParams['filter'],

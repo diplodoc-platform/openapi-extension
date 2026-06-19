@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.2.0](https://github.com/diplodoc-platform/openapi-extension/compare/v5.1.5...v5.2.0) (2026-06-19)
+
+
+### Features
+
+* add openapi companion DOCSTOOLS-5791 ([31025f2](https://github.com/diplodoc-platform/openapi-extension/commit/31025f2c317dffcefb810b1ce273abebbd17acfb))
+
 ## [5.1.5](https://github.com/diplodoc-platform/openapi-extension/compare/v5.1.4...v5.1.5) (2026-05-28)
 
 

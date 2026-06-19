@@ -12,6 +12,7 @@ import {trimSlashes} from './utils';
  * narrowed down to exactly what the section actually exposes:
  *  - only operations that survived the includer `filter` are kept (taken from {@link Specification});
  *  - everything marked with `x-hidden: true` (parameters, schema properties, whole schemas) is removed;
+ *  - file-qualified self-`$ref`s are localized back to in-document fragments (`#/components/...`);
  *  - `components.schemas` that become unreachable after the above are pruned.
  *
  * It is intentionally derived from the processed document rather than the original source file,
@@ -26,6 +27,8 @@ export function buildCompanionDocument(
     const withoutHidden = stripXHidden(
         withFilteredPaths as unknown as JsonValue,
     ) as unknown as OpenAPIV3.Document;
+
+    localizeRefs(withoutHidden as unknown as JsonValue);
 
     return pruneSchemas(withoutHidden);
 }
@@ -165,6 +168,43 @@ function collectRefs(input: JsonValue, refs: Set<string>, seen: WeakSet<object> 
             refs.add(value);
         } else if (value !== undefined) {
             collectRefs(value, refs, seen);
+        }
+    }
+}
+
+/**
+ * Rewrites file-qualified `$ref`s into in-document fragment refs:
+ * `/abs/path/spec.yaml#/components/schemas/Foo` -> `#/components/schemas/Foo`.
+ *
+ * The partially dereferenced input can carry self-references as `<file>#<pointer>`, where `<file>`
+ * is the absolute path of the source spec. The companion is a single self-contained document, so
+ * those prefixes are both meaningless to consumers and environment-dependent (they break snapshot
+ * stability and, worse, prevent {@link pruneSchemas} from recognizing reachable schemas).
+ * Pure external refs without a fragment (`./other.yaml`) are left untouched. Mutates in place.
+ */
+function localizeRefs(input: JsonValue, seen: WeakSet<object> = new WeakSet()): void {
+    if (input === null || typeof input !== 'object') {
+        return;
+    }
+
+    if (seen.has(input)) {
+        return;
+    }
+    seen.add(input);
+
+    if (Array.isArray(input)) {
+        input.forEach((item) => localizeRefs(item, seen));
+        return;
+    }
+
+    for (const [key, value] of Object.entries(input)) {
+        if (key === '$ref' && typeof value === 'string') {
+            const hashIndex = value.indexOf('#');
+            if (hashIndex > 0) {
+                input[key] = value.slice(hashIndex);
+            }
+        } else if (value !== undefined) {
+            localizeRefs(value, seen);
         }
     }
 }

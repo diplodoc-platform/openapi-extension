@@ -172,6 +172,36 @@ describe('buildCompanionDocument', () => {
 
         expect(Object.keys(document.paths)).toEqual(['/a', '/b']);
     });
+
+    it('localizes file-qualified self-refs and keeps the referenced schema reachable', () => {
+        const document = baseDocument();
+        const absoluteRef =
+            '/Users/runner/work/cli/cli/.tmp_input/openapi-spec.yaml#/components/schemas/Used';
+        document.paths['/a'] = {
+            get: {
+                responses: {
+                    '200': {
+                        description: 'ok',
+                        content: {
+                            'application/json': {schema: {$ref: absoluteRef}},
+                        },
+                    },
+                },
+            },
+        };
+
+        const result = buildCompanionDocument(document, spec([endpoint('get', '/a')]));
+        const json = serializeCompanionDocument(result);
+
+        expect(json).not.toContain('/Users/runner');
+        expect(json).not.toContain('openapi-spec.yaml');
+        expect(result.components?.schemas?.Used).toBeDefined();
+
+        const response = result.paths['/a']?.get?.responses?.['200'] as unknown as {
+            content: {'application/json': {schema: {$ref: string}}};
+        };
+        expect(response.content['application/json'].schema.$ref).toBe('#/components/schemas/Used');
+    });
 });
 
 describe('buildCompanionDocument (OpenAPI 3.1.0)', () => {

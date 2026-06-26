@@ -1,3 +1,7 @@
+**english** | [русский](https://github.com/diplodoc-platform/openapi-extension/blob/master/README.ru.md)
+
+---
+
 [![NPM version](https://img.shields.io/npm/v/@diplodoc/openapi-extension.svg?style=flat)](https://www.npmjs.org/package/@diplodoc/openapi-extension)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=diplodoc-platform_openapi-extension&metric=alert_status)](https://sonarcloud.io/summary/overall?id=diplodoc-platform_openapi-extension)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=diplodoc-platform_openapi-extension&metric=coverage)](https://sonarcloud.io/summary/overall?id=diplodoc-platform_openapi-extension)

@@ -63,7 +63,6 @@
   },
   "devDependencies": {
     "@diplodoc/infra": "2.2.0",
-    "@diplodoc/tsconfig": "^1.0.2",
     "@gravity-ui/icons": "^2.13.0",
     "@gravity-ui/uikit": "^7.26.0",
     "@types/js-yaml": "^4.0.5",

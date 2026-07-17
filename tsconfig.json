@@ -3,7 +3,7 @@
   "compilerOptions": {
     "target": "es2022",
     "module": "es2022",
-    "jsx": "react",
+    "jsx": "react-jsx",
     "declaration": true,
     "baseUrl": ".",
     "types": ["node"]

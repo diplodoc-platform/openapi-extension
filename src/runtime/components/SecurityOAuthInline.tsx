@@ -1,6 +1,6 @@
 import type {V3SecurityOAuthInline} from '../../includer/models';
 
-import React, {useState} from 'react';
+import {type FC, useState} from 'react';
 import {Button, Col, Flex, Row, Text, TextArea} from '@gravity-ui/uikit';
 
 type SecurityOAuthInlineProps = V3SecurityOAuthInline & {
@@ -9,8 +9,10 @@ type SecurityOAuthInlineProps = V3SecurityOAuthInline & {
     setAuth: (params: {type: 'oauth2'; value: string}) => void;
 };
 
-export const SecurityOAuthInline = ({close, initialValue, setAuth}: SecurityOAuthInlineProps) => {
+export const SecurityOAuthInline: FC<SecurityOAuthInlineProps> = (props) => {
+    const {close, initialValue, setAuth} = props;
     const [value, setValue] = useState(calcInitialValue(initialValue));
+
     return (
         <Flex direction="column" width="100%" gap={4}>
             <Flex direction="column" width="100%" gap={4}>

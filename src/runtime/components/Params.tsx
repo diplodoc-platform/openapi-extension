@@ -2,7 +2,7 @@ import type {OpenAPIV3} from 'openapi-types';
 import type {Primitive} from '../../includer/models';
 import type {Field, Nullable} from '../types';
 
-import React from 'react';
+import {Component} from 'react';
 import {Text, TextInput} from '@gravity-ui/uikit';
 
 import {merge} from '../utils';
@@ -20,25 +20,23 @@ function validate(
     return Object.keys(errors).length ? errors : undefined;
 }
 
+interface ParamsState {
+    values: Record<string, Nullable<Primitive>>;
+    errors: Nullable<Record<string, string>>;
+}
+
+export interface ParamsProps {
+    title: string;
+    params?: Array<OpenAPIV3.ParameterObject & {placeholder?: string}>;
+}
+
 export class Params
-    extends React.Component<
-        {
-            title: string;
-            params?: Array<OpenAPIV3.ParameterObject & {placeholder?: string}>;
-        },
-        {
-            values: Record<string, Nullable<Primitive>>;
-            errors: Nullable<Record<string, string>>;
-        }
-    >
+    extends Component<ParamsProps, ParamsState>
     implements Field<Record<string, Nullable<Primitive>>, Record<string, string>>
 {
     private onchange: Record<string, (value: string) => void>;
 
-    constructor(props: {
-        title: string;
-        params?: Array<OpenAPIV3.ParameterObject & {placeholder?: string}>;
-    }) {
+    constructor(props: ParamsProps) {
         super(props);
 
         this.state = {

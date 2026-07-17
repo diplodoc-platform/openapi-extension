@@ -1,6 +1,6 @@
 import type {ErrorState, ResponseState} from '../types';
 
-import React, {useEffect, useState} from 'react';
+import {type FC, useEffect, useState} from 'react';
 
 import {Loader} from './Loader';
 import {ResponsePart} from './Response';
@@ -52,9 +52,12 @@ async function processResponse(response: Response): Promise<ResponseState> {
     }
 }
 
-export const Result: React.FC<{
+export interface ResultProps {
     request: Promise<Response>;
-}> = ({request}) => {
+}
+
+export const Result: FC<ResultProps> = (props) => {
+    const {request} = props;
     const [response, setResponse] = useState<ResponseState | null>(null);
     const [error, setError] = useState<ErrorState | null>(null);
 

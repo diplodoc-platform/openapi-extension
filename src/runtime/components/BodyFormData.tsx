@@ -2,7 +2,7 @@ import type {OpenAPIV3} from 'openapi-types';
 import type {Field, Nullable} from '../types';
 import type {Dereference} from '../../includer/models';
 
-import React from 'react';
+import {Component} from 'react';
 import {Text, TextArea} from '@gravity-ui/uikit';
 
 import {Text as TextEnum} from '../../plugin/constants';
@@ -20,7 +20,7 @@ type State = {
     error: Nullable<string>;
 };
 
-export class BodyFormData extends React.Component<Props, State> implements Field<FormData, string> {
+export class BodyFormData extends Component<Props, State> implements Field<FormData, string> {
     private formValue: FormData;
     constructor(props: Props) {
         super(props);

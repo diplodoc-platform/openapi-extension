@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.2.2](https://github.com/diplodoc-platform/openapi-extension/compare/v5.2.1...v5.2.2) (2026-07-21)
+
+
+### Bug Fixes
+
+* update react ([#163](https://github.com/diplodoc-platform/openapi-extension/issues/163)) ([80e7b12](https://github.com/diplodoc-platform/openapi-extension/commit/80e7b12e4a1106f677951266429340c619edf266))
+
 ## [5.2.1](https://github.com/diplodoc-platform/openapi-extension/compare/v5.2.0...v5.2.1) (2026-06-19)
 
 

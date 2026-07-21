@@ -1,4 +1,4 @@
-import React, {useCallback, useRef, useState} from 'react';
+import {type ChangeEvent, type FC, useCallback, useRef, useState} from 'react';
 import {Button} from '@gravity-ui/uikit';
 
 import {Column} from './Column';
@@ -11,13 +11,14 @@ type Props = {
 
 type IndexedFiles = Record<number, File | undefined>;
 
-export const FileInputArray: React.FC<Props> = ({onChange}) => {
+export const FileInputArray: FC<Props> = (props) => {
+    const {onChange} = props;
     const ref = useRef(1);
     const [inputs, setInputs] = useState<IndexedFiles>({});
 
     const createOnChange = useCallback(
-        (idWithChange: number): React.ChangeEventHandler<HTMLInputElement> =>
-            (event) => {
+        (idWithChange: number) => {
+            return (event: ChangeEvent<HTMLInputElement>) => {
                 setInputs((oldState) => {
                     const file = event.target.files?.[0];
                     const nextState = {...oldState, [idWithChange]: file};
@@ -26,7 +27,8 @@ export const FileInputArray: React.FC<Props> = ({onChange}) => {
 
                     return nextState;
                 });
-            },
+            };
+        },
         [setInputs],
     );
 

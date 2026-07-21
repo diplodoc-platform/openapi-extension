@@ -1,7 +1,8 @@
 import type {SandboxProps} from '../includer/models';
 import type {FormState} from './types';
+import type {FC, SubmitEvent} from 'react';
 
-import React, {useRef, useState} from 'react';
+import {useRef, useState} from 'react';
 import {Button} from '@gravity-ui/uikit';
 
 import {Text, yfmSandbox} from '../plugin/constants';
@@ -10,17 +11,17 @@ import {BodyFormData, BodyJson, Column, Params, Result, Security} from './compon
 import {collectErrors, collectValues, prepareRequest} from './utils';
 import './sandbox.scss';
 
-export const Sandbox: React.FC<SandboxProps> = (props) => {
+export const Sandbox: FC<SandboxProps> = (props) => {
     const refs = {
-        path: useRef(null),
-        search: useRef(null),
-        headers: useRef(null),
-        bodyJson: useRef(null),
-        bodyFormData: useRef(null),
+        path: useRef<Params>(null),
+        search: useRef<Params>(null),
+        headers: useRef<Params>(null),
+        bodyJson: useRef<BodyJson>(null),
+        bodyFormData: useRef<BodyFormData>(null),
     };
     const [request, setRequest] = useState<Promise<Response> | null>(null);
 
-    const onSubmit = async (event: React.FormEvent) => {
+    const onSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         if (collectErrors(refs)) {

@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import {type FC, useEffect, useState} from 'react';
 import {createPortal} from 'react-dom';
 
 import {Sandbox} from './sandbox';
 import './index.scss';
 
-export const Runtime: React.FC = () => {
+export const Runtime: FC = () => {
     const [sandbox, setSandbox] = useState<HTMLElement | null>(null);
 
     useEffect(() => {

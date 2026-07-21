@@ -1,6 +1,6 @@
 import type {Field, Nullable} from '../types';
 
-import React from 'react';
+import {Component} from 'react';
 import {Text, TextArea} from '@gravity-ui/uikit';
 
 import {Text as TextEnum} from '../../plugin/constants';
@@ -17,7 +17,7 @@ type State = {
     value: Nullable<string>;
 };
 
-export class BodyJson extends React.Component<Props, State> implements Field<string, string> {
+export class BodyJson extends Component<Props, State> implements Field<string, string> {
     constructor(props: Props) {
         super(props);
 

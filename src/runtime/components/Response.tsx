@@ -1,15 +1,17 @@
 import type {ResponseState} from '../types';
 
-import React, {useEffect, useState} from 'react';
+import {type FC, useEffect, useState} from 'react';
 import {Card, ClipboardButton, Text} from '@gravity-ui/uikit';
 
 import {Text as TextEnum, yfmSandbox} from '../../plugin/constants';
 
 import {Column} from '.';
 
-export const ResponsePart: React.FC<{
+export interface ResponsePartProps {
     response: ResponseState;
-}> = ({response}) => {
+}
+
+export const ResponsePart: FC<ResponsePartProps> = ({response}) => {
     const {url, status, file, text} = response;
 
     const [fileUrl, setFileUrl] = useState<string | null>(null);

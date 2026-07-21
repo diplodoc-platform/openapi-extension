@@ -1,6 +1,6 @@
 import type {V3SecurityApiKey} from '../../includer/models';
 
-import React, {useState} from 'react';
+import {type FC, useState} from 'react';
 import {Button, Col, Flex, Row, Text, TextArea} from '@gravity-ui/uikit';
 
 import {MapperNames} from '../../plugin/constants';
@@ -11,13 +11,8 @@ type SecurityApiKeyProps = V3SecurityApiKey & {
     setAuth: (params: {type: 'apiKey'; value: string}) => void;
 };
 
-export function SecurityApiKey({
-    in: inFromProps,
-    name,
-    close,
-    initialValue,
-    setAuth,
-}: SecurityApiKeyProps) {
+export const SecurityApiKey: FC<SecurityApiKeyProps> = (props) => {
+    const {in: inFromProps, name, close, initialValue, setAuth} = props;
     const [value, setValue] = useState<string>(calcInitialValue(initialValue));
 
     return (
@@ -74,7 +69,7 @@ export function SecurityApiKey({
             </Flex>
         </Flex>
     );
-}
+};
 
 function calcInitialValue(value: string) {
     if (value) {

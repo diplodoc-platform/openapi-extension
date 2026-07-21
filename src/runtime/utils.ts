@@ -83,7 +83,7 @@ export const prepareRequest = (
     };
 };
 
-export function collectErrors(fields: Record<string, RefObject<Field>>) {
+export function collectErrors(fields: Record<string, RefObject<Field | null>>) {
     const errors = Object.keys(fields).reduce(
         (acc, key) => {
             const field = fields[key].current;
@@ -110,7 +110,7 @@ export function collectErrors(fields: Record<string, RefObject<Field>>) {
     return errors;
 }
 
-export function collectValues<F extends Record<string, RefObject<Field>>>(
+export function collectValues<F extends Record<string, RefObject<Field | null>>>(
     fields: F,
 ): Record<keyof F, unknown> {
     return Object.keys(fields).reduce(

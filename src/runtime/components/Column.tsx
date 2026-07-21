@@ -1,16 +1,17 @@
-import type {PropsWithChildren} from 'react';
-
-import React from 'react';
+import type {FC, ReactNode} from 'react';
 
 import {yfmSandbox} from '../../plugin/constants';
 
-export const Column: React.FC<
-    PropsWithChildren & {
-        className?: string;
-        gap?: number;
-        minWidth?: number;
-    }
-> = ({className, gap = 20, children, minWidth}) => {
+export interface ColumnProps {
+    className?: string;
+    gap?: number;
+    minWidth?: number;
+    children?: ReactNode;
+}
+
+export const Column: FC<ColumnProps> = (props) => {
+    const {className, gap = 20, children, minWidth} = props;
+
     const style = {
         gap: gap + 'px',
         minWidth,

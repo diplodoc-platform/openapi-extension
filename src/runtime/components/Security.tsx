@@ -1,7 +1,7 @@
 import type {OpenAPIV3} from 'openapi-types';
 import type {V3SecurityType} from '../../includer/models';
 
-import React, {useCallback, useMemo, useState} from 'react';
+import {type FC, useCallback, useMemo, useState} from 'react';
 import {Box, Button, Dialog, RadioGroup, Text} from '@gravity-ui/uikit';
 import {CircleCheck} from '@gravity-ui/icons';
 
@@ -15,7 +15,7 @@ type SecurityProps = {
     projectName: string;
 };
 
-export const Security: React.FC<SecurityProps> = (props) => {
+export const Security: FC<SecurityProps> = (props) => {
     const {security = []} = props;
     const {
         isOpen,

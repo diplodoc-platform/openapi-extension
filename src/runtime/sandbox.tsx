@@ -1,6 +1,6 @@
 import type {SandboxProps} from '../includer/models';
 import type {FormState} from './types';
-import type {FC, SubmitEvent} from 'react';
+import type {FC, FormEvent} from 'react';
 
 import {useRef, useState} from 'react';
 import {Button} from '@gravity-ui/uikit';
@@ -21,7 +21,7 @@ export const Sandbox: FC<SandboxProps> = (props) => {
     };
     const [request, setRequest] = useState<Promise<Response> | null>(null);
 
-    const onSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
+    const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         if (collectErrors(refs)) {

@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.2.3](https://github.com/diplodoc-platform/openapi-extension/compare/v5.2.2...v5.2.3) (2026-07-22)
+
+
+### Bug Fixes
+
+* use FormEvent insted SubmitEvent ([#165](https://github.com/diplodoc-platform/openapi-extension/issues/165)) ([87bb8eb](https://github.com/diplodoc-platform/openapi-extension/commit/87bb8ebcfd9aa39af139eb80d17ba1a33bba92a1))
+
 ## [5.2.2](https://github.com/diplodoc-platform/openapi-extension/compare/v5.2.1...v5.2.2) (2026-07-21)
 
 

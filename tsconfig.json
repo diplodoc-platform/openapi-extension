@@ -5,8 +5,8 @@
     "module": "es2022",
     "jsx": "react-jsx",
     "declaration": true,
-    "baseUrl": ".",
-    "types": ["node"]
+    "types": ["node"],
+    "moduleResolution": "bundler"
   },
   "include": ["src"],
   "exclude": ["node_modules", "build", "esbuild"]

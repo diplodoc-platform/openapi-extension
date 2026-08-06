@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.2.4](https://github.com/diplodoc-platform/openapi-extension/compare/v5.2.3...v5.2.4) (2026-08-06)
+
+
+### Bug Fixes
+
+* Upgrade typescript to 5.9.3 DOCSTOOLS-6357 ([472f71b](https://github.com/diplodoc-platform/openapi-extension/commit/472f71b206f02367b67887f9f231b040ff949d6b))
+* Upgrade typescript to 6.0.3 DOCSTOOLS-6359 ([55b1500](https://github.com/diplodoc-platform/openapi-extension/commit/55b150074f02cff102eb8515a23b76b16e13b652))
+
 ## [5.2.3](https://github.com/diplodoc-platform/openapi-extension/compare/v5.2.2...v5.2.3) (2026-07-22)
 
 

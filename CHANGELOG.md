@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.2.5](https://github.com/diplodoc-platform/openapi-extension/compare/v5.2.4...v5.2.5) (2026-09-30)
+
+
+### Bug Fixes
+
+* fixed openapi bar styles ([#171](https://github.com/diplodoc-platform/openapi-extension/issues/171)) ([86c6e28](https://github.com/diplodoc-platform/openapi-extension/commit/86c6e28988d212bfaa554faa91ce96de8a927470))
+
 ## [5.2.4](https://github.com/diplodoc-platform/openapi-extension/compare/v5.2.3...v5.2.4) (2026-08-06)
 
 

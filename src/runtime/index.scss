@@ -147,9 +147,15 @@
             code {
                 padding: 6px 20px 6px 6px;
                 border-radius: 0;
-                overflow-x: hidden;
+
+                scrollbar-width: none;
+
+                &::-webkit-scrollbar {
+                    height: 0;
+                }
 
                 &.wrap {
+                    overflow-x: hidden;
                     overflow-wrap: anywhere;
                 }
             }

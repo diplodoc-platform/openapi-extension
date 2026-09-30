@@ -113,8 +113,7 @@
 
     & &__request {
         display: inline-flex;
-        align-items: center;
-        overflow-y: scroll;
+        align-items: flex-start;
         max-width: 100%;
         margin-bottom: 5px;
 
@@ -139,21 +138,67 @@
         & > .yfm-clipboard,
         // for @diplodoc/transform >=4.69.0
         & > .yfm-code-floating-container {
+            min-width: 0;
             border: 2px solid var(--method);
             border-radius: 0 5px 5px 0;
             white-space: nowrap;
             overflow: visible;
-            position: initial;
 
             code {
                 padding: 6px 20px 6px 6px;
+                border-radius: 0;
+
+                scrollbar-width: none;
+
+                @media screen {
+                    @supports selector(::-webkit-scrollbar) {
+                        scrollbar-width: auto;
+                        scrollbar-color: auto;
+
+                        &:not(.wrap) {
+                            padding-bottom: 0;
+                            overflow-x: scroll;
+                        }
+
+                        &::-webkit-scrollbar {
+                            height: 6px;
+                        }
+
+                        &::-webkit-scrollbar-thumb {
+                            min-width: 24px;
+                            border-radius: 3px;
+                            background-color: var(
+                                --g-color-scroll-handle,
+                                var(--yfm-color-text, var(--yfm-color-text-private))
+                            );
+                        }
+                    }
+                }
+
+                &.wrap {
+                    overflow-x: hidden;
+                    overflow-wrap: anywhere;
+                }
             }
 
-            pre,
-            code {
+            pre {
                 border-radius: 0;
                 overflow: visible;
             }
+        }
+
+        & > .yfm-code-floating-container .yfm-code-floating {
+            $background: var(--yfm-color-code-background, var(--yfm-color-code-background-private));
+
+            top: 2px;
+            right: 6px;
+            background:
+                linear-gradient($background, $background),
+                var(--yfm-color-base, var(--yfm-color-base-private));
+        }
+
+        & > .yfm-clipboard {
+            position: initial;
 
             svg {
                 display: block;

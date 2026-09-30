@@ -150,8 +150,29 @@
 
                 scrollbar-width: none;
 
-                &::-webkit-scrollbar {
-                    height: 0;
+                @media screen {
+                    @supports selector(::-webkit-scrollbar) {
+                        scrollbar-width: auto;
+                        scrollbar-color: auto;
+
+                        &:not(.wrap) {
+                            padding-bottom: 0;
+                            overflow-x: scroll;
+                        }
+
+                        &::-webkit-scrollbar {
+                            height: 6px;
+                        }
+
+                        &::-webkit-scrollbar-thumb {
+                            min-width: 24px;
+                            border-radius: 3px;
+                            background-color: var(
+                                --g-color-scroll-handle,
+                                var(--yfm-color-text, var(--yfm-color-text-private))
+                            );
+                        }
+                    }
                 }
 
                 &.wrap {

@@ -188,13 +188,8 @@
         }
 
         & > .yfm-code-floating-container .yfm-code-floating {
-            $background: var(--yfm-color-code-background, var(--yfm-color-code-background-private));
-
             top: 2px;
             right: 6px;
-            background:
-                linear-gradient($background, $background),
-                var(--yfm-color-base, var(--yfm-color-base-private));
         }
 
         & > .yfm-clipboard {

@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.2.6](https://github.com/diplodoc-platform/openapi-extension/compare/v5.2.5...v5.2.6) (2026-09-30)
+
+
+### Bug Fixes
+
+* fixed buttons styles ([#173](https://github.com/diplodoc-platform/openapi-extension/issues/173)) ([6fa2f69](https://github.com/diplodoc-platform/openapi-extension/commit/6fa2f69076a6bf905b748d4ffdb027bc7bb6f176))
+
 ## [5.2.5](https://github.com/diplodoc-platform/openapi-extension/compare/v5.2.4...v5.2.5) (2026-09-30)
 
 

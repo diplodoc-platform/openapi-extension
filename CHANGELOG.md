@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.2.7](https://github.com/diplodoc-platform/openapi-extension/compare/v5.2.6...v5.2.7) (2026-10-02)
+
+
+### Bug Fixes
+
+* inherit request line height for method labels ([#175](https://github.com/diplodoc-platform/openapi-extension/issues/175)) ([23011c9](https://github.com/diplodoc-platform/openapi-extension/commit/23011c95680ea81ac04bdad7a6e33f871cacd572))
+
 ## [5.2.6](https://github.com/diplodoc-platform/openapi-extension/compare/v5.2.5...v5.2.6) (2026-09-30)
 
 

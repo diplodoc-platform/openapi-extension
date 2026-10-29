@@ -3,6 +3,7 @@ import block from 'bem-cn-lite';
 
 export const Text = {
     BUTTON_SUBMIT: 'Send',
+    HOST_FIELD: 'Host',
 
     HEADER_PARAMS_SECTION_TITLE: 'Header parameters',
     QUERY_PARAMS_SECTION_TITLE: 'Query parameters',

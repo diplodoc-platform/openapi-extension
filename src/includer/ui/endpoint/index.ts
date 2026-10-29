@@ -1,5 +1,5 @@
 import type {Context} from '../../index';
-import type {V3Endpoint} from '../../models';
+import type {OpenApiIncluderParams, V3Endpoint} from '../../models';
 
 import {INFO_TAB_NAME, SANDBOX_TAB_NAME} from '../../constants';
 import {block, deprecated, meta, nolint, openapi, tabs, terms, title} from '../common';
@@ -8,9 +8,21 @@ import {Renderer} from './renderer';
 
 export type RenderMode = 'read' | 'write';
 
+function interpolateHost(host: string | undefined, vars: Context['vars']): string | undefined {
+    if (host === undefined || !host.includes('{{')) {
+        return host;
+    }
+
+    return host.replace(/{{\s*([^{}]+?)\s*}}/g, (placeholder, variable: string) => {
+        const name = variable.trim();
+
+        return Object.prototype.hasOwnProperty.call(vars, name) ? vars[name] : placeholder;
+    });
+}
+
 export function endpoint(
     data: V3Endpoint,
-    sandboxPlugin: {host?: string; tabName?: string} | undefined,
+    sandboxPlugin: OpenApiIncluderParams['sandbox'],
     ctx: Context,
 ) {
     const render = new Renderer(ctx);
@@ -24,7 +36,8 @@ export function endpoint(
             [INFO_TAB_NAME]: content,
             [sandboxPlugin?.tabName ?? SANDBOX_TAB_NAME]: render.sandbox({
                 params: data.parameters,
-                host: sandboxPlugin?.host,
+                host: interpolateHost(sandboxPlugin?.host, ctx.vars),
+                customHost: sandboxPlugin?.customHost,
                 path: data.path,
                 security: data.security,
                 requestBody: data.requestBody,

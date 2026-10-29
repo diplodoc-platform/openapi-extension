@@ -1,12 +1,71 @@
 import type {OpenAPIV3} from 'openapi-types';
 import type {RefObject} from 'react';
 import type {
+    SandboxProps,
     V3SecurityApiKey,
     V3SecurityOAuthImplicit,
     V3SecurityOAuthInline,
     V3SecurityType,
 } from '../includer/models';
 import type {Field, FormState} from './types';
+
+export function getCustomHostStorageKey(
+    props: Pick<SandboxProps, 'projectName' | 'method' | 'path'>,
+): string {
+    const locationQuery = new URLSearchParams(window.location.search);
+    const routerAs = window.__DATA__?.router?.as;
+    const routerSearch = routerAs?.includes('?') ? routerAs.slice(routerAs.indexOf('?')) : '';
+    const routerQuery = new URLSearchParams(routerSearch);
+    const context = ['revision', 'version', 'tag', 'lang']
+        .map((key) => {
+            const value =
+                locationQuery.get(key) ??
+                routerQuery.get(key) ??
+                getInitialQueryValue(window.__DATA__?.query?.[key]);
+
+            return `${key}=${value}`;
+        })
+        .join('&');
+
+    return [
+        'diplodoc-openapi-host',
+        props.projectName,
+        window.location.pathname,
+        context,
+        props.method,
+        props.path,
+    ]
+        .map(encodeURIComponent)
+        .join(':');
+}
+
+function getInitialQueryValue(value: unknown): string {
+    if (typeof value === 'string') {
+        return value;
+    }
+
+    if (Array.isArray(value) && typeof value[0] === 'string') {
+        return value[0];
+    }
+
+    return '';
+}
+
+export function getCustomHost(storageKey: string, defaultHost: string): string {
+    try {
+        return window.localStorage.getItem(storageKey) ?? defaultHost;
+    } catch {
+        return defaultHost;
+    }
+}
+
+export function storeCustomHost(storageKey: string, host: string): void {
+    try {
+        window.localStorage.setItem(storageKey, host);
+    } catch {
+        // The request should still use the selected host when storage is unavailable.
+    }
+}
 
 export const merge = <T, R>(items: T[], iterator: (item: T) => Record<string, R> | undefined) => {
     return items.reduce((acc, item) => Object.assign(acc, iterator(item)), {} as Record<string, R>);

@@ -10,5 +10,7 @@ interface Window {
                 };
             };
         };
+        query?: Record<string, unknown>;
+        router?: {as?: string};
     };
 }

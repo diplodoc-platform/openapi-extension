@@ -63,6 +63,17 @@ The includer entry point is exported as `@diplodoc/openapi-extension/includer`. 
 - Resolve and normalize references
 - Generate Markdown pages for endpoints and schema sections
 
+The `sandbox` option accepts `host` and `customHost`. YFM preset variables in `host` are
+resolved while the pages are generated. Set `customHost: true` to show a host input in each
+sandbox; its last submitted value is stored per project, specification revision and operation.
+Submitting an empty value restores the configured `host`.
+
+```yaml
+sandbox:
+  host: "{{apiHost}}"
+  customHost: true
+```
+
 For details about the processing stages, see:
 
 - `adr/ADR-002-openapi-processing-pipeline.md`

@@ -441,7 +441,7 @@ function generateContent(spec: Specification, ctx: Context): EndpointRoute[] {
 function handleEndpointIncluder(
     endpoint: V3Endpoint,
     pathPrefix: string,
-    sandbox: {host?: string} | undefined,
+    sandbox: OpenApiIncluderParams['sandbox'],
     ctx: Context,
 ) {
     const path = join(pathPrefix, mdPath(endpoint));

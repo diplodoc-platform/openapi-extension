@@ -9,6 +9,7 @@ import {code} from '../../common';
 export type SandboxData = {
     params?: OpenAPIV3.ParameterObject[];
     host?: string;
+    customHost?: boolean;
     path: string;
     security: OpenAPIV3.SecuritySchemeObject[];
     requestBody?: V3Schema;
@@ -16,7 +17,7 @@ export type SandboxData = {
 };
 
 export function renderSandbox(render: Renderer, data: SandboxData) {
-    const {params, host, path, security, requestBody, method} = data;
+    const {params, host, customHost, path, security, requestBody, method} = data;
     const pathParams = params?.filter((param: OpenAPIV3.ParameterObject) => param.in === 'path');
     const searchParams = params?.filter((param: OpenAPIV3.ParameterObject) => param.in === 'query');
     const headers = params?.filter((param: OpenAPIV3.ParameterObject) => param.in === 'header');
@@ -37,6 +38,7 @@ export function renderSandbox(render: Renderer, data: SandboxData) {
         security,
         path: path,
         host: host ?? '',
+        customHost: customHost === true ? true : undefined,
     });
 
     return code(props, 'openapi-sandbox');

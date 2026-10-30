@@ -16,7 +16,7 @@ function interpolateHost(host: string | undefined, vars: Context['vars']): strin
     return host.replace(/{{([^{}]+)}}/g, (placeholder, variable: string) => {
         const name = variable.trim();
 
-        return Object.hasOwn(vars, name) ? vars[name] : placeholder;
+        return Object.getOwnPropertyDescriptor(vars, name) === undefined ? placeholder : vars[name];
     });
 }
 

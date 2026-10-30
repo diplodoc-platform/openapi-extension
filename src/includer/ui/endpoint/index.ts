@@ -9,14 +9,14 @@ import {Renderer} from './renderer';
 export type RenderMode = 'read' | 'write';
 
 function interpolateHost(host: string | undefined, vars: Context['vars']): string | undefined {
-    if (host === undefined || !host.includes('{{')) {
+    if (!host?.includes('{{')) {
         return host;
     }
 
-    return host.replace(/{{\s*([^{}]+?)\s*}}/g, (placeholder, variable: string) => {
+    return host.replace(/{{([^{}]+)}}/g, (placeholder, variable: string) => {
         const name = variable.trim();
 
-        return Object.prototype.hasOwnProperty.call(vars, name) ? vars[name] : placeholder;
+        return Object.hasOwn(vars, name) ? vars[name] : placeholder;
     });
 }
 

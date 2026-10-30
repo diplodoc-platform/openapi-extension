@@ -3,12 +3,19 @@ import type {FormState} from './types';
 import type {FC, FormEvent} from 'react';
 
 import {useRef, useState} from 'react';
-import {Button} from '@gravity-ui/uikit';
+import {Button, TextInput, Text as UIKitText} from '@gravity-ui/uikit';
 
 import {Text, yfmSandbox} from '../plugin/constants';
 
 import {BodyFormData, BodyJson, Column, Params, Result, Security} from './components';
-import {collectErrors, collectValues, prepareRequest} from './utils';
+import {
+    collectErrors,
+    collectValues,
+    getCustomHost,
+    getCustomHostStorageKey,
+    prepareRequest,
+    storeCustomHost,
+} from './utils';
 import './sandbox.scss';
 
 export const Sandbox: FC<SandboxProps> = (props) => {
@@ -20,6 +27,11 @@ export const Sandbox: FC<SandboxProps> = (props) => {
         bodyFormData: useRef<BodyFormData>(null),
     };
     const [request, setRequest] = useState<Promise<Response> | null>(null);
+    const defaultHost = props.host ?? '';
+    const hostStorageKey = props.customHost ? getCustomHostStorageKey(props) : null;
+    const [host, setHost] = useState(() =>
+        hostStorageKey ? getCustomHost(hostStorageKey, defaultHost) : defaultHost,
+    );
 
     const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -29,8 +41,15 @@ export const Sandbox: FC<SandboxProps> = (props) => {
         }
 
         const values = collectValues(refs) as FormState;
+        const requestHost = props.customHost ? host.trim() || defaultHost : defaultHost;
+
+        if (props.customHost && hostStorageKey) {
+            setHost(requestHost);
+            storeCustomHost(hostStorageKey, requestHost);
+        }
+
         const {url, headers, body} = prepareRequest(
-            (props.host ?? '') + '/' + props.path,
+            requestHost + '/' + props.path,
             values,
             props.projectName,
             props.bodyType,
@@ -49,6 +68,12 @@ export const Sandbox: FC<SandboxProps> = (props) => {
     return (
         <form onSubmit={onSubmit} className={yfmSandbox()}>
             <Column>
+                {props.customHost && (
+                    <Column gap={5}>
+                        <UIKitText variant="body-2">{Text.HOST_FIELD}</UIKitText>
+                        <TextInput value={host} name="host" onUpdate={setHost} />
+                    </Column>
+                )}
                 <Security security={props.security} projectName={props.projectName} />
                 <Params
                     ref={refs.path}

@@ -40,6 +40,7 @@ export interface YfmTocItem {
 export type SandboxProps = {
     path: string;
     host?: string;
+    customHost?: boolean;
     method: Method;
     pathParams?: Dereference<OpenAPIV3.ParameterObject>[];
     searchParams?: Dereference<OpenAPIV3.ParameterObject>[];
@@ -123,6 +124,7 @@ export type OpenApiIncluderParams = {
     sandbox?: {
         tabName?: string;
         host?: string;
+        customHost?: boolean;
     };
     tags?: {
         [tag: string]: CustomTag | undefined;

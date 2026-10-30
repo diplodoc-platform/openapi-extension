@@ -3,7 +3,7 @@ import type {FormState} from './types';
 import type {FC, FormEvent} from 'react';
 
 import {useRef, useState} from 'react';
-import {Button, Text as UIKitText, TextInput} from '@gravity-ui/uikit';
+import {Button, TextInput, Text as UIKitText} from '@gravity-ui/uikit';
 
 import {Text, yfmSandbox} from '../plugin/constants';
 
@@ -71,11 +71,7 @@ export const Sandbox: FC<SandboxProps> = (props) => {
                 {props.customHost && (
                     <Column gap={5}>
                         <UIKitText variant="body-2">{Text.HOST_FIELD}</UIKitText>
-                        <TextInput
-                            value={host}
-                            name="host"
-                            onUpdate={setHost}
-                        />
+                        <TextInput value={host} name="host" onUpdate={setHost} />
                     </Column>
                 )}
                 <Security security={props.security} projectName={props.projectName} />

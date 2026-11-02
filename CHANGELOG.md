@@ -1,5 +1,18 @@
 # Changelog
 
+## [5.3.0](https://github.com/diplodoc-platform/openapi-extension/compare/v5.2.7...v5.3.0) (2026-11-02)
+
+
+### Features
+
+* **openapi:** support custom sandbox host ([909aae7](https://github.com/diplodoc-platform/openapi-extension/commit/909aae7ef94ac5b841a6da2d56a99021251b342f))
+
+
+### Bug Fixes
+
+* **openapi:** satisfy quality checks for custom host ([5239ef2](https://github.com/diplodoc-platform/openapi-extension/commit/5239ef220ca745b7013643f4d2fc5300803491f0))
+* **openapi:** support publish TypeScript target ([fe8b5ff](https://github.com/diplodoc-platform/openapi-extension/commit/fe8b5ff980d136784e2743eb87d66db9cdfaf52f))
+
 ## [5.2.7](https://github.com/diplodoc-platform/openapi-extension/compare/v5.2.6...v5.2.7) (2026-10-02)
 
 

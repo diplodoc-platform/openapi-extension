@@ -80,7 +80,8 @@ export class Params
                                 name={param.name}
                                 placeholder={param.placeholder}
                                 onUpdate={this.onchange[param.name]}
-                                error={(errors && errors[param.name]) || false}
+                                validationState={errors?.[param.name] ? 'invalid' : undefined}
+                                errorMessage={errors?.[param.name]}
                             />
                         </Column>
                     ))}

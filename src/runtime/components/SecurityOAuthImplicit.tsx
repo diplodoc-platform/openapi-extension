@@ -3,6 +3,8 @@ import type {V3SecurityOAuthImplicit} from '../../includer/models';
 import {type FC, useState} from 'react';
 import {Button, Checkbox, Col, Flex, Row, Text, TextArea} from '@gravity-ui/uikit';
 
+import {yfmSandbox} from '../../plugin/constants';
+
 type SecurityOAuthImplicitProps = V3SecurityOAuthImplicit & {
     close: () => void;
     initialValue: string;
@@ -56,28 +58,28 @@ export const SecurityOAuthImplicit: FC<SecurityOAuthImplicitProps> = (props) => 
         setAuth({value: '', type: 'oauth2'});
     };
     return (
-        <Flex direction="column" width="100%" gap={4}>
+        <Flex direction="column" width="100%" gap="spacing-4">
             <Text variant="subheader-2">Authorization Url</Text>
             <Text variant="body-1" color="secondary">
                 {authorizationUrl}
             </Text>
 
-            <Flex direction="column" width="100%" gap={4}>
-                <Row space={1}>
-                    <Col s={2}>
+            <Flex direction="column" width="100%" gap="spacing-4">
+                <Row className={yfmSandbox('security-row')}>
+                    <Col size={2}>
                         <Text variant="subheader-1">Flow</Text>
                     </Col>
-                    <Col s={10}>
+                    <Col size={10}>
                         <Text variant="body-1" color="secondary">
                             implicit
                         </Text>
                     </Col>
                 </Row>
-                <Row space={1}>
-                    <Col s={2} style={{marginTop: 6}}>
+                <Row className={yfmSandbox('security-row')}>
+                    <Col size={2} style={{marginTop: 6}}>
                         <Text variant="subheader-1">Client_id</Text>
                     </Col>
-                    <Col s={10} style={{marginTop: hasToken ? 8 : 0}}>
+                    <Col size={10} style={{marginTop: hasToken ? 8 : 0}}>
                         {hasToken ? (
                             <Text variant="body-1">**********</Text>
                         ) : (
@@ -91,16 +93,17 @@ export const SecurityOAuthImplicit: FC<SecurityOAuthImplicitProps> = (props) => 
                                 onFocus={() => {
                                     setClientId('');
                                 }}
-                                error={error}
+                                validationState={error ? 'invalid' : undefined}
+                                errorMessage={error}
                             />
                         )}
                     </Col>
                 </Row>
-                <Row space={1}>
-                    <Col s={2}>{viewScopes && <Text variant="subheader-1">Scopes</Text>}</Col>
-                    <Col s={10} style={{marginTop: 4}}>
+                <Row className={yfmSandbox('security-row')}>
+                    <Col size={2}>{viewScopes && <Text variant="subheader-1">Scopes</Text>}</Col>
+                    <Col size={10} style={{marginTop: 4}}>
                         {viewScopes && (
-                            <Flex direction="column" gap={1}>
+                            <Flex direction="column" gap="spacing-1">
                                 {scopesArray.map((scope) => {
                                     return (
                                         <Checkbox
@@ -123,7 +126,7 @@ export const SecurityOAuthImplicit: FC<SecurityOAuthImplicitProps> = (props) => 
                 </Row>
             </Flex>
 
-            <Flex justifyContent="end" spacing={{mb: 4}} gap={4}>
+            <Flex justifyContent="end" marginBlockEnd="spacing-4" gap="spacing-4">
                 <Button size="l" view="flat" onClick={close}>
                     Cancel
                 </Button>

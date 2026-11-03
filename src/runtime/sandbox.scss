@@ -1,4 +1,53 @@
 .yfm-sandbox {
+    &__security-dialog {
+        padding-block: 0;
+
+        .g-dialog-header {
+            min-height: 0;
+            padding-block: 20px 10px;
+            padding-inline: 32px 56px;
+        }
+
+        .g-dialog-body {
+            padding: 10px 32px;
+        }
+
+        .g-dialog-btn-close {
+            inset-block-start: 14px;
+            inset-inline-end: 14px;
+        }
+
+        .g-radio-group_direction_horizontal.g-radio-group_size_m
+            .g-radio-group__option:not(:last-child) {
+            margin-inline-end: 12px;
+        }
+
+        .g-control-label_size_m {
+            align-items: normal;
+            line-height: 15px;
+        }
+
+        .g-control-label__indicator {
+            display: inline-block;
+        }
+
+        .g-radio__control:focus-visible + .g-radio__outline,
+        .g-checkbox__control:focus-visible + .g-checkbox__outline {
+            outline-offset: 0;
+        }
+    }
+
+    &__security-row {
+        margin-block-start: calc(-1 * var(--g-spacing-1));
+        margin-inline-start: calc(-1 * var(--g-spacing-1));
+
+        > .g-col {
+            box-sizing: border-box;
+            padding-block-start: var(--g-spacing-1);
+            padding-inline-start: var(--g-spacing-1);
+        }
+    }
+
     &__column {
         display: flex;
         flex-direction: column;

@@ -1,3 +1,4 @@
+import {join} from 'node:path';
 import {describe, expect, it} from 'vitest';
 
 import {LeadingPageMode} from '../includer/constants';
@@ -44,7 +45,7 @@ describe('noindex preset conditions', () => {
 
         expect(fs.match('listPets.md').includes('noIndex: true')).toBe(expected);
         expect(fs.match('health.md')).not.toContain('noIndex: true');
-        expect(fs.pages['pets/index.md']).not.toContain('noIndex: true');
+        expect(fs.pages[join('pets', 'index.md')]).not.toContain('noIndex: true');
     });
 
     it('evaluates a tag condition with nested variables and booleans', async () => {
@@ -56,7 +57,7 @@ describe('noindex preset conditions', () => {
 
         expect(fs.match('listPets.md')).toContain('noIndex: true');
         expect(fs.match('health.md')).not.toContain('noIndex: true');
-        expect(fs.pages['pets/index.md']).toMatch(/^---\nnoIndex: true\n---/);
+        expect(fs.pages[join('pets', 'index.md')]).toMatch(/^---\nnoIndex: true\n---/);
     });
 
     it.each([LeadingPageMode.Leaf, LeadingPageMode.Section])(
@@ -68,9 +69,9 @@ describe('noindex preset conditions', () => {
                 tags: {pets: {alias: 'animals'}},
             });
 
-            expect(fs.pages['animals/index.md']).toMatch(/^---\nnoIndex: true\n---/);
-            expect(fs.pages['animals/listPets.md']).toContain('noIndex: true');
-            expect(fs.pages['public/index.md']).not.toContain('noIndex: true');
+            expect(fs.pages[join('animals', 'index.md')]).toMatch(/^---\nnoIndex: true\n---/);
+            expect(fs.pages[join('animals', 'listPets.md')]).toContain('noIndex: true');
+            expect(fs.pages[join('public', 'index.md')]).not.toContain('noIndex: true');
             expect(fs.pages['index.md']).not.toContain('noIndex: true');
             expect(fs.pages['health.md']).not.toContain('noIndex: true');
         },
@@ -79,8 +80,8 @@ describe('noindex preset conditions', () => {
     it('excludes a matching tag landing page even without endpoints', async () => {
         const fs = await run(spec, {noindex: {tag: "id == 'empty'"}});
 
-        expect(fs.pages['empty/index.md']).toMatch(/^---\nnoIndex: true\n---/);
-        expect(fs.pages['pets/index.md']).not.toContain('noIndex: true');
+        expect(fs.pages[join('empty', 'index.md')]).toMatch(/^---\nnoIndex: true\n---/);
+        expect(fs.pages[join('pets', 'index.md')]).not.toContain('noIndex: true');
     });
 
     it('preserves the tag flag when filtering content', async () => {
@@ -89,13 +90,13 @@ describe('noindex preset conditions', () => {
             filter: {endpoint: "operationId == 'listPets'"},
         });
 
-        expect(fs.pages['pets/index.md']).toMatch(/^---\nnoIndex: true\n---/);
+        expect(fs.pages[join('pets', 'index.md')]).toMatch(/^---\nnoIndex: true\n---/);
     });
 
     it('does not exclude landing pages when the tag condition is false', async () => {
         const fs = await run(spec, {noindex: {tag: 'vars.tags contains id'}}, {tags: []});
 
-        expect(fs.pages['pets/index.md']).not.toContain('noIndex: true');
-        expect(fs.pages['pets/listPets.md']).not.toContain('noIndex: true');
+        expect(fs.pages[join('pets', 'index.md')]).not.toContain('noIndex: true');
+        expect(fs.pages[join('pets', 'listPets.md')]).not.toContain('noIndex: true');
     });
 });

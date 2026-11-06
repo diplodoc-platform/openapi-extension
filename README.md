@@ -103,6 +103,8 @@ items:
 This generates the `deletePet` endpoint page with `noIndex: true` in its frontmatter;
 other endpoint pages remain indexable. The page is still generated and included in the TOC.
 A tag condition can use `tag: vars.noIndexTags contains name` instead.
+Matching tags also receive `noIndex: true` on their generated landing pages.
+An endpoint-only condition does not change indexing of its tag's landing page.
 
 Variables are resolved for the TOC containing the include, using its directory and
 ancestor `presets.yaml` files, rather than the specification or generated output directory.

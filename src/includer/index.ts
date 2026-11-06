@@ -241,9 +241,16 @@ function filterSpec(data: Dereference<OpenAPIV3.Document>, ctx: Context) {
     const {filter, noindex, hidden} = params;
 
     const filterContent = filterUsefulContent(filter, vars);
-    const applyNoindex = matchFilter(noindex || {}, vars, (endpoint) => {
-        endpoint.noindex = true;
-    });
+    const applyNoindex = matchFilter(
+        noindex || {},
+        vars,
+        (endpoint) => {
+            endpoint.noindex = true;
+        },
+        (tag) => {
+            tag.noindex = true;
+        },
+    );
 
     const applyHidden = matchFilter(hidden || {}, vars, (endpoint) => {
         endpoint.hidden = true;

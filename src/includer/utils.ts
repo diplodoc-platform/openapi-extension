@@ -17,7 +17,7 @@ export function companionFilename(input: string): string {
 
 export function matchFilter(
     filter: OpenApiIncluderParams['filter'],
-    vars: Record<string, string>,
+    vars: YfmPreset,
     action: (endpoint: V3Endpoint, tag?: V3Tag) => void,
 ) {
     const {endpoint: endpointExpr, tag: tagExpr} = filter || {};

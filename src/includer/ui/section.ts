@@ -2,10 +2,16 @@ import type {V3Endpoint, V3Tag} from '../models';
 
 import {ENDPOINTS_SECTION_NAME} from '../constants';
 
-import {block, link, list, nolint, title} from './common';
+import {block, link, list, meta, nolint, title} from './common';
 
 export function section(tag: V3Tag) {
-    return block([title(1)(tag.name), nolint(), tag.description, endpoints(tag.endpoints)]);
+    return block([
+        meta([tag.noindex && 'noIndex: true']),
+        title(1)(tag.name),
+        nolint(),
+        tag.description,
+        endpoints(tag.endpoints),
+    ]);
 }
 
 function endpoints(data?: V3Endpoint[]) {

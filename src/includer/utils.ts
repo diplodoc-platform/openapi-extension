@@ -19,6 +19,7 @@ export function matchFilter(
     filter: OpenApiIncluderParams['filter'],
     vars: YfmPreset,
     action: (endpoint: V3Endpoint, tag?: V3Tag) => void,
+    tagAction?: (tag: V3Tag) => void,
 ) {
     const {endpoint: endpointExpr, tag: tagExpr} = filter || {};
     const matchTag = tagExpr ? (tag: V3Tag) => evaluate(tagExpr as string, {...tag, vars}) : null;
@@ -40,6 +41,7 @@ export function matchFilter(
             const {endpoints: endpointsOfTag} = tag;
 
             if (matchTag && matchTag(tag)) {
+                tagAction?.(tag);
                 for (const endpoint of endpointsOfTag) {
                     action(endpoint, tag);
                 }

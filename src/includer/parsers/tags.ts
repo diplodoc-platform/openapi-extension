@@ -13,6 +13,7 @@ export type V3Tag = {
     name: string;
     description?: string;
     endpoints: V3Endpoint[];
+    noindex?: boolean;
 };
 
 export function tags(spec: Dereference<OpenAPIV3.Document>): Map<string, V3Tag> {

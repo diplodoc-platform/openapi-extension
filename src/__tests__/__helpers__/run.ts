@@ -1,4 +1,4 @@
-import type {OpenApiIncluderParams, Run} from '../../includer/models';
+import type {OpenApiIncluderParams, Run, YfmPreset} from '../../includer/models';
 import type {OpenAPIV3} from 'openapi-types';
 
 import {vi} from 'vitest';
@@ -118,7 +118,11 @@ export class DocumentBuilder {
     }
 }
 
-export async function run(spec: string, options: Partial<OpenApiIncluderParams> = {}) {
+export async function run(
+    spec: string,
+    options: Partial<OpenApiIncluderParams> = {},
+    vars: YfmPreset = {},
+) {
     const id = Math.ceil(Math.random() * 10000000);
     const tempRoot = nodeFS.mkdtempSync(join(tmpdir(), 'openapi-test-'));
     const params = {
@@ -129,7 +133,7 @@ export async function run(spec: string, options: Partial<OpenApiIncluderParams> 
         input: tempRoot,
         read: async () => '',
         vars: {
-            for: vi.fn(),
+            for: vi.fn().mockReturnValue(vars),
         },
     } as Run;
 

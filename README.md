@@ -74,6 +74,46 @@ sandbox:
   customHost: true
 ```
 
+#### Preset variables in conditions
+
+The `noindex`, `filter`, and `hidden` options accept Liquid expressions in their
+`endpoint` and `tag` fields. Endpoint or tag properties are available directly;
+preset variables are available under `vars`. Do not wrap these expressions in `{{ }}`.
+
+```yaml
+# presets.yaml
+default:
+  noIndexOperations: [deletePet]
+```
+
+```yaml
+# toc.yaml
+items:
+  - name: API
+    include:
+      path: api
+      mode: link
+      includers:
+        - name: openapi
+          input: petstore.yaml
+          noindex:
+            endpoint: vars.noIndexOperations contains operationId
+```
+
+This generates the `deletePet` endpoint page with `noIndex: true` in its frontmatter;
+other endpoint pages remain indexable. The page is still generated and included in the TOC.
+A tag condition can use `tag: vars.noIndexTags contains name` instead.
+
+Variables are resolved for the TOC containing the include, using its directory and
+ancestor `presets.yaml` files, rather than the specification or generated output directory.
+`--vars-preset` selects a preset that overrides `default` within each file; closer
+preset files take precedence over ancestor files. `--vars` overrides preset values.
+Arrays, booleans, numbers, and nested objects are supported as well as strings.
+An empty `noIndexOperations` array matches no endpoints.
+
+Programmatic callers of `includer(run, params, tocPath)` must initialize their variable
+service before invoking the includer. The CLI does this before processing TOCs.
+
 For details about the processing stages, see:
 
 - `adr/ADR-002-openapi-processing-pipeline.md`

@@ -27,7 +27,7 @@ type DereferenceObject<T extends object> = {
     [K in keyof T]: Dereference<T[K]>;
 };
 
-export type YfmPreset = Record<string, string>;
+export type YfmPreset = Record<string, unknown>;
 
 export interface YfmTocItem {
     name?: string;

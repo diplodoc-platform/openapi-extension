@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.3.1](https://github.com/diplodoc-platform/openapi-extension/compare/v5.3.0...v5.3.1) (2026-11-06)
+
+
+### Bug Fixes
+
+* **openapi:** support structured preset variables in conditions ([54a9f35](https://github.com/diplodoc-platform/openapi-extension/commit/54a9f35faad2c07f77d642dbfbb861b9f429d38b))
+
 ## [5.3.0](https://github.com/diplodoc-platform/openapi-extension/compare/v5.2.7...v5.3.0) (2026-11-02)
 
 

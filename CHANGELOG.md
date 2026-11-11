@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.3.2](https://github.com/diplodoc-platform/openapi-extension/compare/v5.3.1...v5.3.2) (2026-11-11)
+
+
+### Bug Fixes
+
+* **openapi:** apply tag noindex to generated landing pages ([91e6705](https://github.com/diplodoc-platform/openapi-extension/commit/91e6705eaf8ef2a779deec04bf9d0240ddcd4ac1))
+* **test:** use platform paths for tag landing pages ([a681112](https://github.com/diplodoc-platform/openapi-extension/commit/a6811124fa7aad91c09b0a14582a5bb581b602a9))
+
 ## [5.3.1](https://github.com/diplodoc-platform/openapi-extension/compare/v5.3.0...v5.3.1) (2026-11-06)
 
 

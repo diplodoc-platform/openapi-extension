@@ -1,5 +1,4 @@
-import type MarkdownIt from 'markdown-it';
-import type Token from 'markdown-it/lib/token';
+import type {MarkdownIt, Token} from 'markdown-it';
 
 import {load} from 'js-yaml';
 

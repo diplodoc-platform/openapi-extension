@@ -30,6 +30,8 @@ OpenAPI extension for the Diplodoc platform. Provides:
 npm install @diplodoc/openapi-extension
 ```
 
+Version 6 requires `markdown-it` ^15.0.3 and uses its built-in TypeScript types.
+
 ## Usage
 
 ### Transform plugin (`openapi-sandbox` blocks)
@@ -70,7 +72,7 @@ Submitting an empty value restores the configured `host`.
 
 ```yaml
 sandbox:
-  host: "{{apiHost}}"
+  host: '{{apiHost}}'
   customHost: true
 ```
 

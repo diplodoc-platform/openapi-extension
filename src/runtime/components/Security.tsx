@@ -1,10 +1,20 @@
 import type {OpenAPIV3} from 'openapi-types';
 import type {V3SecurityType} from '../../includer/models';
 
-import {type FC, useCallback, useMemo, useState} from 'react';
-import {Box, Button, Dialog, RadioGroup, Text} from '@gravity-ui/uikit';
+import {
+    type FC,
+    type PropsWithChildren,
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react';
+import {Box, Button, Dialog, MobileContext, RadioGroup, Text} from '@gravity-ui/uikit';
 import {CircleCheck} from '@gravity-ui/icons';
 
+import {yfmSandbox} from '../../plugin/constants';
 import {isV3SecurityApiKey, isV3SecurityOAuthImplicit, isV3SecurityOAuthInline} from '../utils';
 import {useAuthSessionStorage} from '../hooks/useAuthSessionStorage';
 
@@ -17,6 +27,8 @@ type SecurityProps = {
 
 export const Security: FC<SecurityProps> = (props) => {
     const {security = []} = props;
+    const mobileContext = useContext(MobileContext);
+    const dialogMobileContext = useMemo(() => ({...mobileContext, mobile: false}), [mobileContext]);
     const {
         isOpen,
         close,
@@ -40,37 +52,107 @@ export const Security: FC<SecurityProps> = (props) => {
             <Button size="m" width="auto" style={{marginLeft: 'auto'}} view="normal" onClick={open}>
                 {hasAnyAuthorization && <CircleCheck color="#3AB935" />} Authorization
             </Button>
-            <Dialog open={isOpen} onClose={close} hasCloseButton>
-                <Dialog.Header caption="Available authorizations" />
-                <Dialog.Body>
-                    <Column gap={0} minWidth={400}>
-                        <Box>
-                            <RadioGroup
-                                onChange={(event) => {
-                                    setActiveType(event.currentTarget.value as V3SecurityType);
-                                }}
-                                value={activeType}
-                                options={security.map((item) => ({
-                                    value: item.type,
-                                    content: item.type,
-                                }))}
-                                size="m"
-                            />
-                        </Box>
-                        <Box spacing={{pt: '4'}}>
-                            <SecurityTab
-                                close={close}
-                                security={activeSecurityTab}
-                                initialValue={auth.type === activeType ? auth.value : ''}
-                                setAuth={setAuth}
-                            />
-                        </Box>
-                    </Column>
-                </Dialog.Body>
-            </Dialog>
+            <MobileContext.Provider value={dialogMobileContext}>
+                <Dialog
+                    open={isOpen}
+                    onOpenChange={(isOpen) => {
+                        if (!isOpen) {
+                            close();
+                        }
+                    }}
+                    className={yfmSandbox('security-dialog')}
+                    hasCloseButton
+                >
+                    <Dialog.Header caption="Available authorizations" />
+                    <SecurityDialogBody>
+                        <Column gap={0} minWidth={400}>
+                            <Box>
+                                <RadioGroup
+                                    onChange={(event) => {
+                                        setActiveType(event.currentTarget.value as V3SecurityType);
+                                    }}
+                                    value={activeType}
+                                    options={security.map((item) => ({
+                                        value: item.type,
+                                        content: item.type,
+                                    }))}
+                                    size="m"
+                                />
+                            </Box>
+                            <Box paddingBlockStart="spacing-4">
+                                <SecurityTab
+                                    close={close}
+                                    security={activeSecurityTab}
+                                    initialValue={auth.type === activeType ? auth.value : ''}
+                                    setAuth={setAuth}
+                                />
+                            </Box>
+                        </Column>
+                    </SecurityDialogBody>
+                </Dialog>
+            </MobileContext.Provider>
         </Column>
     );
 };
+
+function SecurityDialogBody({children}: PropsWithChildren) {
+    const contentRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const content = contentRef.current;
+        const body = content?.parentElement;
+        if (!content || !body) {
+            return;
+        }
+
+        let height = 0;
+        let animation: Animation | undefined;
+        const observer = new ResizeObserver(([entry]) => {
+            const nextHeight = entry.contentRect.height;
+            if (height === 0 || nextHeight === 0 || nextHeight === height) {
+                height = nextHeight;
+                return;
+            }
+
+            const style = getComputedStyle(body);
+            const boxAdjustment =
+                style.boxSizing === 'border-box'
+                    ? parseFloat(style.paddingTop) +
+                      parseFloat(style.paddingBottom) +
+                      parseFloat(style.borderTopWidth) +
+                      parseFloat(style.borderBottomWidth)
+                    : 0;
+            const previousHeight =
+                animation?.playState === 'running'
+                    ? parseFloat(style.height)
+                    : height + boxAdjustment;
+            height = nextHeight;
+            animation?.cancel();
+
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                animation = body.animate(
+                    [
+                        {height: `${previousHeight}px`, overflowY: 'clip'},
+                        {height: `${nextHeight + boxAdjustment}px`, overflowY: 'clip'},
+                    ],
+                    {duration: 350, easing: 'ease-in-out'},
+                );
+            }
+        });
+        observer.observe(content);
+
+        return () => {
+            observer.disconnect();
+            animation?.cancel();
+        };
+    }, []);
+
+    return (
+        <Dialog.Body>
+            <div ref={contentRef}>{children}</div>
+        </Dialog.Body>
+    );
+}
 
 function useEnhance({projectName, security}: SecurityProps) {
     security = security || [];

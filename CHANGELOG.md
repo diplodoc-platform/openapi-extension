@@ -1,5 +1,16 @@
 # Changelog
 
+## [6.0.0](https://github.com/diplodoc-platform/openapi-extension/compare/v5.3.2...v6.0.0) (2026-11-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* **markdown-it:** OpenAPI plugin hosts must use Markdown-it 15.0.3 or newer within major 15. Public declarations use the bundled Markdown-it types.
+
+### Features
+
+* **markdown-it:** require Markdown-it 15 ([34ae740](https://github.com/diplodoc-platform/openapi-extension/commit/34ae74053730ebb2efd6cb342a7b131152e95177))
+
 ## [5.3.2](https://github.com/diplodoc-platform/openapi-extension/compare/v5.3.1...v5.3.2) (2026-11-11)
 
 

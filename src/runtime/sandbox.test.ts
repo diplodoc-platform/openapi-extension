@@ -3,19 +3,11 @@ import type {ReactNode} from 'react';
 import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {afterEach, describe, expect, it, vi} from 'vitest';
+import {ThemeProvider} from '@gravity-ui/uikit';
 
 import {Sandbox} from './sandbox';
-
-vi.mock('@gravity-ui/uikit', async () => {
-    const {createElement} = await import('react');
-
-    return {
-        Button: () => null,
-        Text: ({children}: {children?: ReactNode}) => createElement('span', null, children),
-        TextInput: ({name, value}: {name: string; value: string}) =>
-            createElement('input', {name, value, readOnly: true}),
-    };
-});
+import {BodyJson} from './components/BodyJson';
+import {Params} from './components/Params';
 
 vi.mock('./components', async () => {
     const {createElement} = await import('react');
@@ -42,7 +34,7 @@ describe('Sandbox custom host field', () => {
             localStorage: {getItem: () => null},
         } as unknown as Window);
 
-        const markup = renderToStaticMarkup(
+        const markup = render(
             createElement(Sandbox, {
                 path: 'items',
                 host: 'https://api.example',
@@ -58,3 +50,36 @@ describe('Sandbox custom host field', () => {
         expect(markup).toContain('name="host"');
     });
 });
+
+describe('Sandbox field validation', () => {
+    it('renders required parameter errors and clears the invalid state', () => {
+        const field = new Params({
+            title: 'Path parameters',
+            params: [{name: 'id', in: 'path', required: true}],
+        });
+        field.state = {values: {id: ''}, errors: {id: 'Required'}};
+
+        const invalid = render(field.render());
+
+        expect(invalid).toContain('aria-invalid="true"');
+        expect(invalid).toContain('Required');
+
+        field.state = {values: {id: '123'}, errors: undefined};
+
+        expect(render(field.render())).not.toContain('aria-invalid="true"');
+    });
+
+    it('renders a required JSON body error', () => {
+        const field = new BodyJson({value: '{}', bodyType: 'application/json'});
+        field.state = {value: '', error: 'Required'};
+
+        const markup = render(field.render());
+
+        expect(markup).toContain('aria-invalid="true"');
+        expect(markup).toContain('Required');
+    });
+});
+
+function render(children: ReactNode) {
+    return renderToStaticMarkup(createElement(ThemeProvider, {children}));
+}

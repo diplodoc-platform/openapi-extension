@@ -126,6 +126,8 @@ For details about the processing stages, see:
 
 The runtime is exported as `@diplodoc/openapi-extension/runtime`. It renders the interactive UI into `.yfm-openapi-sandbox-js` placeholders produced by the transform plugin.
 
+The runtime requires Gravity UI UIKit 8 and React/React DOM 18 or 19.
+
 Import runtime entry and styles in your bundle:
 
 ```js

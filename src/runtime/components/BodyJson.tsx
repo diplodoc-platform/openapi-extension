@@ -45,7 +45,8 @@ export class BodyJson extends Component<Props, State> implements Field<string, s
             <Column gap={10}>
                 <Text variant="header-1">{TextEnum.BODY_INPUT_LABEL}</Text>
                 <TextArea
-                    error={error || false}
+                    validationState={error ? 'invalid' : undefined}
+                    errorMessage={error || undefined}
                     rows={10}
                     name="body"
                     value={value}
